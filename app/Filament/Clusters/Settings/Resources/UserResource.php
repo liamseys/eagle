@@ -7,8 +7,10 @@ use App\Filament\Clusters\Settings\Resources\UserResource\Pages;
 use App\Filament\Clusters\Settings\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -38,6 +40,24 @@ class UserResource extends Resource
                     ->password()
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Select::make('groups')
+                    ->relationship(name: 'groups', titleAttribute: 'name')
+                    ->multiple()
+                    ->preload()
+                    ->createOptionForm([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255)
+                            ->columnSpanFull(),
+                        Forms\Components\TextInput::make('description')
+                            ->maxLength(255)
+                            ->placeholder(__('(Optional) A brief description of the group'))
+                            ->columnSpanFull(),
+                    ])
+                    ->createOptionModalHeading(__('Create group'))
+                    ->createOptionAction(
+                        fn (Action $action) => $action->modalWidth(MaxWidth::Large),
+                    ),
             ]);
     }
 
