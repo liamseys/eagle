@@ -19,7 +19,7 @@ class FormFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => fake()->word(),
+            'name' => fake()->words(3, true),
             'description' => fake()->paragraph(),
             'is_public' => fake()->boolean(),
             'is_active' => fake()->boolean(),
