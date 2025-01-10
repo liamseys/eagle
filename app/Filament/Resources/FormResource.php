@@ -25,9 +25,11 @@ class FormResource extends Resource
                         Forms\Components\Section::make()
                             ->schema([
                                 Forms\Components\TextInput::make('name')
+                                    ->label(__('Name'))
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\Textarea::make('description')
+                                    ->label(__('Description'))
                                     ->columnSpanFull(),
                             ]),
                     ])->columnSpan(['lg' => 2]),
@@ -36,8 +38,10 @@ class FormResource extends Resource
                         Forms\Components\Section::make(__('Status'))
                             ->schema([
                                 Forms\Components\Toggle::make('is_public')
+                                    ->label(__('Public'))
                                     ->required(),
                                 Forms\Components\Toggle::make('is_active')
+                                    ->label(__('Active'))
                                     ->required(),
                             ]),
                     ])->columnSpan(1),
@@ -49,16 +53,21 @@ class FormResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
+                    ->label(__('Name'))
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_public')
+                    ->label(__('Public'))
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_active')
+                    ->label(__('Active'))
                     ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('Created at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('Updated at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
