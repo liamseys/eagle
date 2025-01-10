@@ -32,6 +32,7 @@ class AppPanelProvider extends PanelProvider
             ])
             ->brandLogo(asset('img/logo/logo-black.svg'))
             ->brandLogoHeight('2rem')
+            ->favicon(asset('favicon.png'))
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->pages([
