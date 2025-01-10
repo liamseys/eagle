@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\AvatarProviders\GravatarProvider;
+use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -35,14 +36,15 @@ class AppPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->font('Lexend', provider: GoogleFontProvider::class)
+            ->viteTheme('resources/css/filament/app/theme.css')
+            ->darkMode(false)
             ->brandLogo(fn() => Auth::guest()
                 ? asset('img/logo/logo-black.svg')
                 : asset('img/logo/logo-white.svg'))
             ->brandLogoHeight('2rem')
             ->favicon(asset('favicon.png'))
             ->defaultAvatarProvider(GravatarProvider::class)
-            ->darkMode(false)
-            ->viteTheme('resources/css/filament/app/theme.css')
             ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
             ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
