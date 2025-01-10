@@ -20,24 +20,27 @@ class FormResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make()
-                        ->schema([
-                            Forms\Components\TextInput::make('name')
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\Textarea::make('description')
-                                ->columnSpanFull(),
-                        ]),
-                ])->columnSpan(['lg' => 2]),
-                Forms\Components\Group::make()->schema([
-                    Forms\Components\Section::make(__('Status'))->schema([
-                        Forms\Components\Toggle::make('is_public')
-                            ->required(),
-                        Forms\Components\Toggle::make('is_active')
-                            ->required(),
-                    ]),
-                ])->columnSpan(1),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\Textarea::make('description')
+                                    ->columnSpanFull(),
+                            ]),
+                    ])->columnSpan(['lg' => 2]),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make(__('Status'))
+                            ->schema([
+                                Forms\Components\Toggle::make('is_public')
+                                    ->required(),
+                                Forms\Components\Toggle::make('is_active')
+                                    ->required(),
+                            ]),
+                    ])->columnSpan(1),
             ])->columns(3);
     }
 
