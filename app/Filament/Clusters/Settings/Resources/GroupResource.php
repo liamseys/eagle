@@ -46,6 +46,9 @@ class GroupResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('users_count')
+                    ->counts('users')
+                    ->label(__('Users')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
