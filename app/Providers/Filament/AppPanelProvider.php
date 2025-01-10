@@ -16,6 +16,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AppPanelProvider extends PanelProvider
@@ -30,7 +31,9 @@ class AppPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
-            ->brandLogo(asset('img/logo/logo-black.svg'))
+            ->brandLogo(fn() => Auth::guest()
+                ? asset('img/logo/logo-black.svg')
+                : asset('img/logo/logo-white.svg'))
             ->brandLogoHeight('2rem')
             ->favicon(asset('favicon.png'))
             ->darkMode(false)

@@ -1,3 +1,21 @@
 @import '/vendor/filament/filament/resources/css/theme.css';
 
 @config 'tailwind.config.js';
+
+.fi-topbar {
+    nav {
+        @apply bg-[#000000];
+
+        .fi-input-wrp {
+            @apply bg-white/10;
+
+            .fi-input {
+                @apply text-white;
+            }
+        }
+    }
+}
+
+.fi-sidebar-header {
+    @apply bg-[#000000];
+}
