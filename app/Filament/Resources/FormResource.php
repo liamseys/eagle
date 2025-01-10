@@ -17,15 +17,12 @@ class FormResource extends Resource
 {
     protected static ?string $model = FormModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->maxLength(26),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
