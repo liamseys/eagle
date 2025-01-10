@@ -3,20 +3,20 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\FormResource\Pages;
-use App\Models\Form as FormModel;
+use App\Models\Form;
 use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Forms\Form as FilamentForm;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 
 class FormResource extends Resource
 {
-    protected static ?string $model = FormModel::class;
+    protected static ?string $model = Form::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    public static function form(Form $form): Form
+    public static function form(FilamentForm $form): FilamentForm
     {
         return $form
             ->schema([
@@ -28,8 +28,24 @@ class FormResource extends Resource
                                     ->label(__('Name'))
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\Textarea::make('description')
+                                Forms\Components\RichEditor::make('description')
                                     ->label(__('Description'))
+                                    ->toolbarButtons([
+                                        'blockquote',
+                                        'bold',
+                                        'bulletList',
+                                        'h2',
+                                        'h3',
+                                        'italic',
+                                        'link',
+                                        'orderedList',
+                                        'redo',
+                                        'strike',
+                                        'underline',
+                                        'undo',
+                                    ])
+                                    ->maxLength(500)
+                                    ->helperText(__('(Optional) A brief description of the form. This will be displayed on the form\'s page. Max 500 characters.'))
                                     ->columnSpanFull(),
                             ]),
                     ])->columnSpan(['lg' => 2]),
@@ -44,6 +60,20 @@ class FormResource extends Resource
                                     ->label(__('Active'))
                                     ->required(),
                             ]),
+                        Forms\Components\Section::make(__('Metadata'))
+                            ->schema([
+                                Forms\Components\Placeholder::make('created_by')
+                                    ->label(__('Created by'))
+                                    ->content(fn(Form $record): ?string => $record->user?->name),
+
+                                Forms\Components\Placeholder::make('created_at')
+                                    ->label(__('Created at'))
+                                    ->content(fn(Form $record): ?string => $record->created_at?->diffForHumans()),
+
+                                Forms\Components\Placeholder::make('updated_at')
+                                    ->label(__('Updated at'))
+                                    ->content(fn(Form $record): ?string => $record->updated_at?->diffForHumans()),
+                            ])->hiddenOn(['create']),
                     ])->columnSpan(1),
             ])->columns(3);
     }
