@@ -41,7 +41,7 @@ class GroupResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->formatStateUsing(fn($record) => new HtmlString(sprintf(
+                    ->formatStateUsing(fn ($record) => new HtmlString(sprintf(
                         '%s<br><span class="text-xs text-gray-500">%s</span>',
                         $record->name,
                         $record->description
