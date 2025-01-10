@@ -4,7 +4,6 @@ namespace App\Filament\Clusters\Settings\Resources;
 
 use App\Filament\Clusters\Settings;
 use App\Filament\Clusters\Settings\Resources\GroupResource\Pages;
-use App\Filament\Clusters\Settings\Resources\GroupResource\RelationManagers;
 use App\Models\Group;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -12,8 +11,6 @@ use Filament\Resources\Resource;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class GroupResource extends Resource
 {

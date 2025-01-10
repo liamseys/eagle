@@ -4,7 +4,6 @@ namespace App\Filament\Clusters\Settings\Resources;
 
 use App\Filament\Clusters\Settings;
 use App\Filament\Clusters\Settings\Resources\UserResource\Pages;
-use App\Filament\Clusters\Settings\Resources\UserResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
@@ -13,8 +12,6 @@ use Filament\Resources\Resource;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {

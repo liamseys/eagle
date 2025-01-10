@@ -3,7 +3,6 @@
 namespace App\Filament\AvatarProviders;
 
 use Filament\AvatarProviders\Contracts;
-use Filament\Facades\Filament;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
@@ -18,9 +17,9 @@ class GravatarProvider implements Contracts\AvatarProvider
     {
         $hash = md5(strtolower(trim($email)));
 
-        return "https://gravatar.com/avatar/{$hash}?" . http_build_query(array_filter([
-                'd' => 'mp',
-                's' => $size,
-            ]));
+        return "https://gravatar.com/avatar/{$hash}?".http_build_query(array_filter([
+            'd' => 'mp',
+            's' => $size,
+        ]));
     }
 }
