@@ -47,7 +47,7 @@ class AppPanelProvider extends PanelProvider
             ->emailVerification()
             ->profile()
             ->colors([
-                'primary' => Color::Amber,
+                'primary' => Color::hex('#f8cb09'),
             ])
             ->font('Lexend', provider: GoogleFontProvider::class)
             ->viteTheme('resources/css/filament/app/theme.css')
