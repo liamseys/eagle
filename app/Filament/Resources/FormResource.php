@@ -9,6 +9,7 @@ use Filament\Forms\Form as FilamentForm;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 
 class FormResource extends Resource
 {
@@ -45,7 +46,7 @@ class FormResource extends Resource
                                         'undo',
                                     ])
                                     ->maxLength(500)
-                                    ->helperText(__('(Optional) A brief description of the form. This will be displayed on the form\'s page. Max 500 characters.'))
+                                    ->helperText(fn () => new HtmlString(__('(Optional) A brief description of the form. This will be displayed on the form\'s page.').'<br>'.__('Max 500 characters.')))
                                     ->columnSpanFull(),
                             ]),
                     ])->columnSpan(['lg' => 2]),
@@ -64,15 +65,15 @@ class FormResource extends Resource
                             ->schema([
                                 Forms\Components\Placeholder::make('created_by')
                                     ->label(__('Created by'))
-                                    ->content(fn(Form $record): ?string => $record->user?->name),
+                                    ->content(fn (Form $record): ?string => $record->user?->name),
 
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label(__('Created at'))
-                                    ->content(fn(Form $record): ?string => $record->created_at?->diffForHumans()),
+                                    ->content(fn (Form $record): ?string => $record->created_at?->diffForHumans()),
 
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label(__('Updated at'))
-                                    ->content(fn(Form $record): ?string => $record->updated_at?->diffForHumans()),
+                                    ->content(fn (Form $record): ?string => $record->updated_at?->diffForHumans()),
                             ])->hiddenOn(['create']),
                     ])->columnSpan(1),
             ])->columns(3);
