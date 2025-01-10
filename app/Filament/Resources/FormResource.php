@@ -114,6 +114,7 @@ class FormResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
+            ->defaultSort('sort', 'ASC')
             ->reorderable('sort');
     }
 
