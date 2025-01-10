@@ -28,10 +28,6 @@ class FormResource extends Resource
                     ->maxLength(255),
                 Forms\Components\Textarea::make('description')
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('sort')
-                    ->required()
-                    ->numeric()
-                    ->default(1),
                 Forms\Components\Toggle::make('is_public')
                     ->required(),
                 Forms\Components\Toggle::make('is_active')
