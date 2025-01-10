@@ -48,16 +48,8 @@ class FormResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('user_id')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('sort')
-                    ->numeric()
-                    ->sortable(),
                 Tables\Columns\IconColumn::make('is_public')
                     ->boolean(),
                 Tables\Columns\IconColumn::make('is_active')
