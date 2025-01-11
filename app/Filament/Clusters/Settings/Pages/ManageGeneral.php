@@ -5,7 +5,6 @@ namespace App\Filament\Clusters\Settings\Pages;
 use App\Filament\Clusters\Settings;
 use App\Settings\GeneralSettings;
 use Filament\Forms\Components\Section;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
 
@@ -29,10 +28,17 @@ class ManageGeneral extends SettingsPage
     {
         return $form
             ->schema([
-                Section::make()
+                Section::make(__('Application'))
                     ->schema([
-                        TextInput::make('site_name')
-                            ->required(),
+                        //
+                    ]),
+                Section::make(__('Notifications'))
+                    ->schema([
+                        //
+                    ]),
+                Section::make(__('Allowlisted domains'))
+                    ->schema([
+                        //
                     ]),
             ]);
     }

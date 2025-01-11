@@ -6,9 +6,9 @@ use Spatie\LaravelSettings\Settings;
 
 class GeneralSettings extends Settings
 {
-    public string $site_name;
+    public string $app_name;
 
-    public bool $site_active;
+    public bool $app_active;
 
     public static function group(): string
     {
