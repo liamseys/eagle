@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ObservedBy([FormObserver::class])]
 class Form extends Model
@@ -51,5 +52,15 @@ class Form extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * A form has many fields.
+     *
+     * @return HasMany
+     */
+    public function fields()
+    {
+        return $this->hasMany(FormField::class);
     }
 }
