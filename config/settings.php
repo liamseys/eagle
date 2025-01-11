@@ -1,5 +1,7 @@
 <?php
 
+use App\Settings\GeneralSettings;
+
 return [
 
     /*
@@ -7,7 +9,7 @@ return [
      * put them (manually) here.
      */
     'settings' => [
-
+        GeneralSettings::class
     ],
 
     /*
