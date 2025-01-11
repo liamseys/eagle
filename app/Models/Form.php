@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use App\Observers\FormObserver;
+use App\Traits\HasActiveScope;
+use App\Traits\HasPublicScope;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -13,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Form extends Model
 {
     /** @use HasFactory<\Database\Factories\FormFactory> */
-    use HasFactory, HasUlids;
+    use HasActiveScope, HasFactory, HasPublicScope, HasUlids;
 
     /**
      * The attributes that are mass assignable.
