@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\AvatarProviders\GravatarProvider;
+use App\Filament\Pages\Auth\EditProfile;
 use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -45,7 +46,7 @@ class AppPanelProvider extends PanelProvider
             ->login()
             ->passwordReset()
             ->emailVerification()
-            ->profile()
+            ->profile(EditProfile::class)
             ->colors([
                 'primary' => Color::hex('#000000'),
             ])
