@@ -70,6 +70,7 @@ class FormResource extends Resource
                                     ->helperText(__('Public forms are visible to everyone.')),
                                 Forms\Components\Toggle::make('is_active')
                                     ->label(__('Active'))
+                                    ->default(true)
                                     ->required(),
                             ]),
                         Forms\Components\Section::make(__('Metadata'))
