@@ -50,9 +50,11 @@ class FormResource extends Resource
                                     ->maxLength(500)
                                     ->live()
                                     ->helperText(fn ($state, $component) => new HtmlString(
-                                        '<div class="flex flex-row justify-between">'.
+                                        '<div class="flex flex-row justify-between gap-4">'.
                                         '<span>'.__('(Optional) A brief description of the form. This will be displayed on the form\'s page.').'</span>'.
-                                        '<span>'.($component->getMaxLength() - strlen($state)).'/'.$component->getMaxLength().'</span>'.
+                                        '<span class="'.((strlen($state) > $component->getMaxLength()) ? 'text-red-600' : 'text-gray-500').'">'.
+                                        (strlen($state)).'/'.$component->getMaxLength().
+                                        '</span>'.
                                         '</div>'
                                     ))
                                     ->columnSpanFull(),
