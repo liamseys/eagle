@@ -28,15 +28,23 @@ class ManageGeneral extends SettingsPage
     {
         return $form
             ->schema([
-                Section::make(__('Application'))
+                Section::make(__('Basics'))
+                    ->description(__('This information will appear on your public pages.'))
                     ->schema([
                         //
                     ]),
                 Section::make(__('Notifications'))
+                    ->description(__('Select which notifications you would like to receive.'))
                     ->schema([
                         //
                     ]),
                 Section::make(__('Allowlisted domains'))
+                    ->description(__('These domains are allowed to access Eagle.'))
+                    ->schema([
+                        //
+                    ]),
+                Section::make(__('Preferences'))
+                    ->description(__('Customize your experience.'))
                     ->schema([
                         //
                     ]),
