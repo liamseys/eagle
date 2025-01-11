@@ -48,7 +48,13 @@ class FormResource extends Resource
                                         'undo',
                                     ])
                                     ->maxLength(500)
-                                    ->helperText(fn () => new HtmlString(__('(Optional) A brief description of the form. This will be displayed on the form\'s page.').'<br>'.__('Max 500 characters.')))
+                                    ->live()
+                                    ->helperText(fn ($state, $component) => new HtmlString(
+                                        '<div class="flex flex-row justify-between">'.
+                                        '<span>'.__('(Optional) A brief description of the form. This will be displayed on the form\'s page.').'</span>'.
+                                        '<span>'.($component->getMaxLength() - strlen($state)).'/'.$component->getMaxLength().'</span>'.
+                                        '</div>'
+                                    ))
                                     ->columnSpanFull(),
                             ]),
                     ])->columnSpan(['lg' => 2]),
