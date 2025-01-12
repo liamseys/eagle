@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\FormField;
+use Illuminate\Support\Str;
 
 class FormFieldObserver
 {
@@ -11,6 +12,17 @@ class FormFieldObserver
      */
     public function creating(FormField $formField): void
     {
+        if (isset($formField->label)) {
+            // Generate the base name from the label
+            $baseName = Str::slug($formField->label, '_');
+
+            // Append a random number to ensure uniqueness
+            $uniqueName = $baseName.'_'.rand(1000, 9999);
+
+            // Assign the generated unique name to the form field
+            $formField->name = $uniqueName;
+        }
+
         $formField->sort = FormField::max('sort') + 1;
     }
 
