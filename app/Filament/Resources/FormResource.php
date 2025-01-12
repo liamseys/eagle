@@ -57,8 +57,17 @@ class FormResource extends Resource
                                         (strlen($state)).'/'.$component->getMaxLength().
                                         '</span>'.
                                         '</div>'
-                                    ))
-                                    ->columnSpanFull(),
+                                    )),
+                                Forms\Components\Group::make()
+                                    ->schema([
+                                        Forms\Components\Select::make('default_group_id')
+                                            ->label(__('Default group'))
+                                            ->relationship('defaultGroup', 'name')
+                                            ->searchable()
+                                            ->preload()
+                                            ->helperText(__('(Optional) When the form is submitted, the ticket will be assigned to this group.')),
+                                    ])
+                                    ->columns(),
                             ]),
                         Forms\Components\Section::make(__('Fields'))
                             ->schema([

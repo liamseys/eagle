@@ -26,6 +26,7 @@ class Form extends Model
     protected $fillable = [
         'name',
         'description',
+        'default_group_id',
         'sort',
         'is_embeddable',
         'is_public',
@@ -54,6 +55,17 @@ class Form extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * The default group for the form.
+     * When submitted, the generated ticket will be assigned to this group.
+     *
+     * @return BelongsTo
+     */
+    public function defaultGroup()
+    {
+        return $this->belongsTo(Group::class, 'default_group_id');
     }
 
     /**
