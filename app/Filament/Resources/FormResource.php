@@ -118,6 +118,19 @@ class FormResource extends Resource
                                     ->label(__('Updated at'))
                                     ->content(fn (Form $record): ?string => $record->updated_at?->diffForHumans()),
                             ])->hiddenOn(['create']),
+                        Forms\Components\Section::make(__('Embed'))
+                            ->schema([
+                                Forms\Components\Toggle::make('is_embeddable')
+                                    ->label(__('Allow embedding'))
+                                    ->default(false)
+                                    ->required()
+                                    ->live(),
+                                Forms\Components\Textarea::make('embed_code')
+                                    ->label(__('Embed code'))
+                                    ->autosize()
+                                    ->helperText(__('Copy and paste this code into your website to embed the form.'))
+                                    ->visible(fn ($get) => $get('is_embeddable')),
+                            ])->hiddenOn(['create']),
                     ])->columnSpan(1),
             ])->columns(3);
     }

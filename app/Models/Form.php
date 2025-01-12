@@ -27,6 +27,7 @@ class Form extends Model
         'name',
         'description',
         'sort',
+        'is_embeddable',
         'is_public',
         'is_active',
     ];
@@ -39,6 +40,7 @@ class Form extends Model
     protected function casts(): array
     {
         return [
+            'is_embeddable' => 'boolean',
             'is_public' => 'boolean',
             'is_active' => 'boolean',
         ];

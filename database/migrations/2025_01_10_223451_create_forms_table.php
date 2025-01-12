@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->unsignedSmallInteger('sort')->default(1);
+            $table->boolean('is_embeddable')->default(false);
             $table->boolean('is_public')->default(false);
             $table->boolean('is_active')->default(true);
             $table->timestamps();
