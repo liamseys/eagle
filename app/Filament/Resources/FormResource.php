@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Forms\FormFieldType;
 use App\Filament\Resources\FormResource\Pages;
 use App\Models\Form;
 use Filament\Forms;
@@ -59,6 +60,36 @@ class FormResource extends Resource
                                     ))
                                     ->columnSpanFull(),
                             ]),
+                        Forms\Components\Section::make(__('Fields'))
+                            ->schema([
+                                Forms\Components\Repeater::make('fields')
+                                    ->label('')
+                                    ->relationship()
+                                    ->schema([
+                                        Forms\Components\Select::make('type')
+                                            ->label(__('Type'))
+                                            ->options(FormFieldType::class)
+                                            ->searchable()
+                                            ->preload()
+                                            ->required(),
+                                        Forms\Components\TextInput::make('label')
+                                            ->label(__('Label'))
+                                            ->required()
+                                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('description')
+                                            ->label(__('Description'))
+                                            ->columnSpanFull(),
+                                        Forms\Components\Toggle::make('is_visible')
+                                            ->label(__('Visible'))
+                                            ->default(true)
+                                            ->required()
+                                            ->helperText(__('Visible fields appear on the form, while hidden fields are only accessible to agents.')),
+                                    ])
+                                    ->addActionLabel(__('Add Field'))
+                                    ->orderColumn('sort')
+                                    ->columns(2),
+                            ])
+                            ->hiddenOn(['create']),
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
