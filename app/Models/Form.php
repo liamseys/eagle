@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Tickets\TicketPriority;
 use App\Observers\FormObserver;
 use App\Traits\HasActiveScope;
 use App\Traits\HasPublicScope;
@@ -27,6 +28,7 @@ class Form extends Model
         'name',
         'description',
         'default_group_id',
+        'default_ticket_priority',
         'sort',
         'is_embeddable',
         'is_public',
@@ -41,6 +43,7 @@ class Form extends Model
     protected function casts(): array
     {
         return [
+            'default_ticket_priority' => TicketPriority::class,
             'is_embeddable' => 'boolean',
             'is_public' => 'boolean',
             'is_active' => 'boolean',

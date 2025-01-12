@@ -3,6 +3,7 @@
 namespace App\Filament\Resources;
 
 use App\Enums\Forms\FormFieldType;
+use App\Enums\Tickets\TicketPriority;
 use App\Filament\Resources\FormResource\Pages;
 use App\Models\Form;
 use Filament\Forms;
@@ -66,6 +67,13 @@ class FormResource extends Resource
                                             ->searchable()
                                             ->preload()
                                             ->helperText(__('(Optional) When the form is submitted, the ticket will be assigned to this group.')),
+                                        Forms\Components\Select::make('default_ticket_priority')
+                                            ->label(__('Default ticket priority'))
+                                            ->options(TicketPriority::class)
+                                            ->searchable()
+                                            ->preload()
+                                            ->required()
+                                            ->helperText(__('The default priority assigned to tickets created from this form.')),
                                     ])
                                     ->columns(),
                             ]),
