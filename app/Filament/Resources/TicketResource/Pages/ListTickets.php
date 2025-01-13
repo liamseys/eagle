@@ -13,6 +13,9 @@ class ListTickets extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('escalate')
+                ->label(__('Escalate ticket'))
+                ->color('gray'),
             Actions\CreateAction::make(),
         ];
     }
