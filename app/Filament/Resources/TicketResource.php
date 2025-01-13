@@ -31,19 +31,27 @@ class TicketResource extends Resource
                             ->schema([
                                 Forms\Components\Grid::make()
                                     ->schema([
-                                        Forms\Components\Select::make('assignee_id')
-                                            ->label(__('Assignee'))
-                                            ->relationship(name: 'assignee', titleAttribute: 'name')
+                                        Forms\Components\Select::make('priority')
+                                            ->label(__('Priority'))
+                                            ->options(TicketPriority::class)
                                             ->searchable()
                                             ->preload()
-                                            ->helperText(__('The agent assigned to the ticket.')),
-                                        Forms\Components\Select::make('group_id')
-                                            ->label(__('Group'))
-                                            ->relationship(name: 'group', titleAttribute: 'name')
+                                            ->required()
+                                            ->default(TicketPriority::NORMAL),
+                                        Forms\Components\Select::make('type')
+                                            ->label(__('Type'))
+                                            ->options(TicketType::class)
                                             ->searchable()
                                             ->preload()
-                                            ->helperText(__('The group assigned to the ticket.')),
-                                    ]),
+                                            ->required(),
+                                        Forms\Components\Select::make('status')
+                                            ->label(__('Status'))
+                                            ->options(TicketStatus::class)
+                                            ->searchable()
+                                            ->preload()
+                                            ->required()
+                                            ->default(TicketStatus::OPEN),
+                                    ])->columns(3),
                                 Forms\Components\TextInput::make('subject')
                                     ->label(__('Subject'))
                                     ->placeholder(__('Enter the subject of the ticket'))
@@ -53,28 +61,20 @@ class TicketResource extends Resource
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Section::make(__('Status'))
+                        Forms\Components\Section::make(__('Associations'))
                             ->schema([
-                                Forms\Components\Select::make('priority')
-                                    ->label(__('Priority'))
-                                    ->options(TicketPriority::class)
+                                Forms\Components\Select::make('assignee_id')
+                                    ->label(__('Assignee'))
+                                    ->relationship(name: 'assignee', titleAttribute: 'name')
                                     ->searchable()
                                     ->preload()
-                                    ->required()
-                                    ->default(TicketPriority::NORMAL),
-                                Forms\Components\Select::make('type')
-                                    ->label(__('Type'))
-                                    ->options(TicketType::class)
+                                    ->helperText(__('The agent assigned to the ticket.')),
+                                Forms\Components\Select::make('group_id')
+                                    ->label(__('Group'))
+                                    ->relationship(name: 'group', titleAttribute: 'name')
                                     ->searchable()
                                     ->preload()
-                                    ->required(),
-                                Forms\Components\Select::make('status')
-                                    ->label(__('Status'))
-                                    ->options(TicketStatus::class)
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-                                    ->default(TicketStatus::OPEN),
+                                    ->helperText(__('The group assigned to the ticket.')),
                             ]),
                     ])->columnSpan(1),
             ])->columns(3);
