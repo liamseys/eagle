@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Tickets\TicketPriority;
+use App\Enums\Tickets\TicketStatus;
+use App\Enums\Tickets\TicketType;
 use App\Filament\Resources\TicketResource\Pages;
 use App\Models\Ticket;
 use Filament\Forms;
@@ -22,25 +25,56 @@ class TicketResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('assignee_id')
-                    ->maxLength(26),
-                Forms\Components\TextInput::make('group_id')
-                    ->maxLength(26),
-                Forms\Components\TextInput::make('subject')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('type')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('open'),
-                Forms\Components\TextInput::make('priority')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('normal'),
-            ]);
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\Grid::make()
+                                    ->schema([
+                                        Forms\Components\Select::make('assignee_id')
+                                            ->label(__('Assignee'))
+                                            ->relationship(name: 'assignee', titleAttribute: 'name')
+                                            ->searchable()
+                                            ->preload(),
+                                        Forms\Components\Select::make('group_id')
+                                            ->label(__('Group'))
+                                            ->relationship(name: 'group', titleAttribute: 'name')
+                                            ->searchable()
+                                            ->preload(),
+                                    ]),
+                                Forms\Components\TextInput::make('subject')
+                                    ->label(__('Subject'))
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                    ])->columnSpan(['lg' => 2]),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make(__('Status'))
+                            ->schema([
+                                Forms\Components\Select::make('type')
+                                    ->label(__('Type'))
+                                    ->options(TicketType::class)
+                                    ->searchable()
+                                    ->preload()
+                                    ->required(),
+                                Forms\Components\Select::make('status')
+                                    ->label(__('Status'))
+                                    ->options(TicketStatus::class)
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->default(TicketStatus::OPEN),
+                                Forms\Components\Select::make('priority')
+                                    ->label(__('Priority'))
+                                    ->options(TicketPriority::class)
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->default(TicketPriority::NORMAL),
+                            ]),
+                    ])->columnSpan(1),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -48,20 +82,26 @@ class TicketResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('subject')
+                    ->label(__('Subject'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->label(__('Type'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->label(__('Status'))
                     ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('priority')
+                    ->label(__('Priority'))
                     ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('Created at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('Updated at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
