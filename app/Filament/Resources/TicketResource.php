@@ -34,6 +34,9 @@ class TicketResource extends Resource
                     ->maxLength(255),
                 Forms\Components\TextInput::make('status')
                     ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('status')
+                    ->required()
                     ->maxLength(255)
                     ->default('open'),
                 Forms\Components\TextInput::make('priority')
@@ -47,18 +50,16 @@ class TicketResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('assignee_id')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('group_id')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('subject')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('type')
+                    ->badge()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('priority')
+                    ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
