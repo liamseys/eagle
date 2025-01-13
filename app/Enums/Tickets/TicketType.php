@@ -15,7 +15,7 @@ enum TicketType: string implements HasIcon, HasLabel
     public function getIcon(): ?string
     {
         return match ($this) {
-            self::QUESTION => 'heroicon-o-chat-bubble-oval-left-ellipsis',
+            self::QUESTION => 'heroicon-o-chat-bubble-bottom-center-text',
             self::INCIDENT => 'heroicon-o-fire',
             self::PROBLEM => 'heroicon-o-puzzle-piece',
             self::TASK => 'heroicon-o-bolt',
