@@ -55,6 +55,13 @@ class TicketResource extends Resource
                     ->schema([
                         Forms\Components\Section::make(__('Status'))
                             ->schema([
+                                Forms\Components\Select::make('priority')
+                                    ->label(__('Priority'))
+                                    ->options(TicketPriority::class)
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->default(TicketPriority::NORMAL),
                                 Forms\Components\Select::make('type')
                                     ->label(__('Type'))
                                     ->options(TicketType::class)
@@ -68,13 +75,6 @@ class TicketResource extends Resource
                                     ->preload()
                                     ->required()
                                     ->default(TicketStatus::OPEN),
-                                Forms\Components\Select::make('priority')
-                                    ->label(__('Priority'))
-                                    ->options(TicketPriority::class)
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-                                    ->default(TicketPriority::NORMAL),
                             ]),
                     ])->columnSpan(1),
             ])->columns(3);

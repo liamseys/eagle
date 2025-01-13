@@ -24,11 +24,11 @@ return new class extends Migration
                 ->constrained()
                 ->nullOnDelete();
             $table->string('subject');
+            $table->string('priority')
+                ->default(TicketPriority::NORMAL);
             $table->string('type');
             $table->string('status')
                 ->default(TicketStatus::OPEN);
-            $table->string('priority')
-                ->default(TicketPriority::NORMAL);
             $table->timestamps();
         });
     }

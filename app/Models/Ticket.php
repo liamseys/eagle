@@ -24,9 +24,9 @@ class Ticket extends Model
         'assignee_id',
         'group_id',
         'subject',
+        'priority',
         'type',
         'status',
-        'priority',
     ];
 
     /**
@@ -37,9 +37,9 @@ class Ticket extends Model
     protected function casts(): array
     {
         return [
+            'priority' => TicketPriority::class,
             'type' => TicketType::class,
             'status' => TicketStatus::class,
-            'priority' => TicketPriority::class,
             'tags' => 'array',
         ];
     }
