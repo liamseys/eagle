@@ -35,15 +35,18 @@ class TicketResource extends Resource
                                             ->label(__('Assignee'))
                                             ->relationship(name: 'assignee', titleAttribute: 'name')
                                             ->searchable()
-                                            ->preload(),
+                                            ->preload()
+                                            ->helperText(__('The agent assigned to the ticket.')),
                                         Forms\Components\Select::make('group_id')
                                             ->label(__('Group'))
                                             ->relationship(name: 'group', titleAttribute: 'name')
                                             ->searchable()
-                                            ->preload(),
+                                            ->preload()
+                                            ->helperText(__('The group assigned to the ticket.')),
                                     ]),
                                 Forms\Components\TextInput::make('subject')
                                     ->label(__('Subject'))
+                                    ->placeholder(__('Enter the subject of the ticket'))
                                     ->required()
                                     ->maxLength(255),
                             ]),
