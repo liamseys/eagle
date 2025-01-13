@@ -87,15 +87,16 @@ class TicketResource extends Resource
                 Tables\Columns\TextColumn::make('subject')
                     ->label(__('Subject'))
                     ->searchable(),
+                Tables\Columns\TextColumn::make('priority')
+                    ->label(__('Priority'))
+                    ->badge()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('type')
                     ->label(__('Type'))
+                    ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label(__('Status'))
-                    ->badge()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('priority')
-                    ->label(__('Priority'))
                     ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
