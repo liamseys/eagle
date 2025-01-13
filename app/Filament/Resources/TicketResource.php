@@ -76,6 +76,16 @@ class TicketResource extends Resource
                                     ->preload()
                                     ->helperText(__('The group assigned to the ticket.')),
                             ]),
+                        Forms\Components\Section::make(__('Metadata'))
+                            ->schema([
+                                Forms\Components\Placeholder::make('created_at')
+                                    ->label(__('Created at'))
+                                    ->content(fn (Ticket $record): ?string => $record->created_at?->diffForHumans()),
+
+                                Forms\Components\Placeholder::make('updated_at')
+                                    ->label(__('Updated at'))
+                                    ->content(fn (Ticket $record): ?string => $record->updated_at?->diffForHumans()),
+                            ])->hiddenOn(['create']),
                     ])->columnSpan(1),
             ])->columns(3);
     }
