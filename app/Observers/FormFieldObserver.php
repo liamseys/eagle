@@ -23,7 +23,7 @@ class FormFieldObserver
             $formField->name = $uniqueName;
         }
 
-        $formField->sort = FormField::max('sort') + 1;
+        $formField->sort = FormField::where('form_id', $formField->form_id)->max('sort') + 1;
     }
 
     /**
