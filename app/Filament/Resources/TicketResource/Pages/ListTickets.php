@@ -23,7 +23,7 @@ class ListTickets extends ListRecords
                 ->color('gray')
                 ->modalWidth('lg')
                 ->modalHeading(__('Escalate ticket'))
-                ->modalDescription(__('When you escalate a ticket, it is marked as urgent and handled with top priority. A ticket can only be escalated once.'))
+                ->modalDescription(__('By escalating a ticket, it’s marked as urgent and handled with top priority. This can only be done once and isn’t available for all tickets.'))
                 ->modalSubmitActionLabel(__('Escalate'))
                 ->form([
                     Textarea::make('reason')
