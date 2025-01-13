@@ -15,10 +15,10 @@ enum TicketPriority: string implements HasColor, HasLabel
     public function getColor(): string|array|null
     {
         return match ($this) {
-            self::LOW => 'green',
-            self::NORMAL => 'blue',
-            self::HIGH => 'yellow',
-            self::URGENT => 'red',
+            self::LOW => 'success',
+            self::NORMAL => 'info',
+            self::HIGH => 'warning',
+            self::URGENT => 'danger',
         };
     }
 

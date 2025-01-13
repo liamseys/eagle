@@ -53,7 +53,6 @@ class TicketResource extends Resource
                 Tables\Columns\TextColumn::make('subject')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
-                    ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
