@@ -59,23 +59,6 @@ class FormResource extends Resource
                                         '</span>'.
                                         '</div>'
                                     )),
-                                Forms\Components\Group::make()
-                                    ->schema([
-                                        Forms\Components\Select::make('default_group_id')
-                                            ->label(__('Default group'))
-                                            ->relationship('defaultGroup', 'name')
-                                            ->searchable()
-                                            ->preload()
-                                            ->helperText(__('(Optional) When the form is submitted, the ticket will be assigned to this group.')),
-                                        Forms\Components\Select::make('default_ticket_priority')
-                                            ->label(__('Default ticket priority'))
-                                            ->options(TicketPriority::class)
-                                            ->searchable()
-                                            ->preload()
-                                            ->required()
-                                            ->helperText(__('The default priority assigned to tickets created from this form.')),
-                                    ])
-                                    ->columns(),
                             ]),
                         Forms\Components\Section::make(__('Fields'))
                             ->schema([
@@ -124,6 +107,22 @@ class FormResource extends Resource
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
+                        Forms\Components\Section::make(__('Associations'))
+                            ->schema([
+                                Forms\Components\Select::make('default_group_id')
+                                    ->label(__('Default group'))
+                                    ->relationship('defaultGroup', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->helperText(__('(Optional) When the form is submitted, the ticket will be assigned to this group.')),
+                                Forms\Components\Select::make('default_ticket_priority')
+                                    ->label(__('Default ticket priority'))
+                                    ->options(TicketPriority::class)
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->helperText(__('The default priority assigned to tickets created from this form.')),
+                            ]),
                         Forms\Components\Section::make(__('Status'))
                             ->schema([
                                 Forms\Components\Toggle::make('is_public')
