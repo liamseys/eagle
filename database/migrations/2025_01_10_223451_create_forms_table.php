@@ -15,8 +15,9 @@ return new class extends Migration
         Schema::create('forms', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUlid('user_id')
+                ->nullable()
                 ->constrained()
-                ->cascadeOnDelete();
+                ->nullOnDelete();
             $table->string('name');
             $table->text('description')->nullable();
             $table->foreignUlid('default_group_id')
