@@ -20,7 +20,7 @@ enum TicketStatus: string implements HasColor, HasLabel
             self::PENDING => 'warning',
             self::ON_HOLD => 'danger',
             self::RESOLVED => 'success',
-            self::CLOSED => 'secondary',
+            self::CLOSED => 'gray',
         };
     }
 
