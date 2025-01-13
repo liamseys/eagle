@@ -88,11 +88,25 @@ class FormResource extends Resource
                                             ->options(FormFieldType::class)
                                             ->searchable()
                                             ->preload()
-                                            ->required(),
+                                            ->required()
+                                            ->live(),
                                         Forms\Components\TextInput::make('label')
                                             ->label(__('Label'))
                                             ->required()
                                             ->maxLength(255),
+                                        Forms\Components\KeyValue::make('options')
+                                            ->addActionLabel(__('Add option'))
+                                            ->requiredIf('type', [
+                                                FormFieldType::CHECKBOX->value,
+                                                FormFieldType::RADIO->value,
+                                                FormFieldType::SELECT->value,
+                                            ])
+                                            ->visible(fn ($get) => in_array($get('type'), [
+                                                FormFieldType::CHECKBOX->value,
+                                                FormFieldType::RADIO->value,
+                                                FormFieldType::SELECT->value,
+                                            ]))
+                                            ->columnSpanFull(),
                                         Forms\Components\TextInput::make('description')
                                             ->label(__('Description'))
                                             ->columnSpanFull(),
