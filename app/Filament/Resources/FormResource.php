@@ -118,6 +118,7 @@ class FormResource extends Resource
                                 Forms\Components\Select::make('default_ticket_priority')
                                     ->label(__('Default ticket priority'))
                                     ->options(TicketPriority::class)
+                                    ->default(TicketPriority::NORMAL)
                                     ->searchable()
                                     ->preload()
                                     ->required()
