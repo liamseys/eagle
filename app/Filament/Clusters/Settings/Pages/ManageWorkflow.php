@@ -39,9 +39,12 @@ class ManageWorkflow extends SettingsPage
                         Repeater::make('sla_policies')
                             ->label('')
                             ->schema([
-                                Select::make('priority')
-                                    ->label(__('Priority'))
-                                    ->options(TicketPriority::class),
+                                Grid::make()
+                                    ->schema([
+                                        Select::make('priority')
+                                            ->label(__('Priority'))
+                                            ->options(TicketPriority::class),
+                                    ]),
                                 Grid::make()
                                     ->schema([
                                         TextInput::make('first_response_time')
