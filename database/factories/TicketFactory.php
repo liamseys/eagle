@@ -28,6 +28,7 @@ class TicketFactory extends Factory
             'priority' => fake()->randomElement(TicketPriority::cases()),
             'type' => fake()->randomElement(TicketType::cases()),
             'status' => fake()->randomElement(TicketStatus::cases()),
+            'is_escalated' => fake()->boolean(),
         ];
     }
 }

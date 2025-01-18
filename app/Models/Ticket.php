@@ -27,6 +27,7 @@ class Ticket extends Model
         'priority',
         'type',
         'status',
+        'is_escalated',
     ];
 
     /**
@@ -41,6 +42,7 @@ class Ticket extends Model
             'type' => TicketType::class,
             'status' => TicketStatus::class,
             'tags' => 'array',
+            'is_escalated' => 'boolean',
         ];
     }
 
