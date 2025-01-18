@@ -3,15 +3,12 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClientResource\Pages;
-use App\Filament\Resources\ClientResource\RelationManagers;
 use App\Models\Client;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Symfony\Component\Intl\Languages;
 use Symfony\Component\Intl\Timezones;
 
@@ -56,7 +53,8 @@ class ClientResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                Tables\Columns\ViewColumn::make('name')
+                    ->view('filament.tables.columns.avatar-name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
                     ->searchable(),
