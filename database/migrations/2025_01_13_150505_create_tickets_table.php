@@ -27,6 +27,8 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
+            $table->unsignedInteger('ticket_id')
+                ->unique();
             $table->string('subject');
             $table->string('priority')
                 ->default(TicketPriority::NORMAL);
