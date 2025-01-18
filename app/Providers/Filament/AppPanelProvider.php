@@ -33,7 +33,7 @@ class AppPanelProvider extends PanelProvider
 
         FilamentView::registerRenderHook(
             PanelsRenderHook::SIDEBAR_FOOTER,
-            fn (): View => view('disclaimer'),
+            fn (): View => view('filament.disclaimer'),
         );
     }
 
