@@ -6,9 +6,11 @@ use App\Filament\Resources\ClientResource\Pages;
 use App\Filament\Resources\ClientResource\RelationManagers\TicketsRelationManager;
 use App\Models\Client;
 use Filament\Forms;
+use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Columns\SpatieTagsColumn;
 use Filament\Tables\Table;
 use Symfony\Component\Intl\Languages;
 use Symfony\Component\Intl\Timezones;
@@ -51,6 +53,7 @@ class ClientResource extends Resource
                                     ->preload()
                                     ->required()
                                     ->default('UTC'),
+                                SpatieTagsInput::make('tags'),
                             ]),
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
@@ -80,6 +83,7 @@ class ClientResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
                     ->searchable(),
+                SpatieTagsColumn::make('tags'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
