@@ -24,32 +24,48 @@ class ClientResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make()
+                Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('email')
-                            ->email()
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('phone')
-                            ->tel()
-                            ->maxLength(255),
-                        Forms\Components\Select::make('language')
-                            ->options(Languages::getNames())
-                            ->searchable()
-                            ->preload()
-                            ->required()
-                            ->default('en'),
-                        Forms\Components\Select::make('timezone')
-                            ->options(Timezones::getNames())
-                            ->searchable()
-                            ->preload()
-                            ->required()
-                            ->default('UTC'),
-                    ])
-            ]);
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('email')
+                                    ->email()
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('phone')
+                                    ->tel()
+                                    ->maxLength(255),
+                                Forms\Components\Select::make('language')
+                                    ->options(Languages::getNames())
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->default('en'),
+                                Forms\Components\Select::make('timezone')
+                                    ->options(Timezones::getNames())
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->default('UTC'),
+                            ]),
+                    ])->columnSpan(['lg' => 2]),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make(__('Metadata'))
+                            ->schema([
+                                Forms\Components\Placeholder::make('created_at')
+                                    ->label(__('Created at'))
+                                    ->content(fn (Client $record): ?string => $record->created_at?->diffForHumans()),
+
+                                Forms\Components\Placeholder::make('updated_at')
+                                    ->label(__('Updated at'))
+                                    ->content(fn (Client $record): ?string => $record->updated_at?->diffForHumans()),
+                            ])->hiddenOn(['create']),
+                    ])->columnSpan(1),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
