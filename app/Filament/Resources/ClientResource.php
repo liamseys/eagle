@@ -34,25 +34,31 @@ class ClientResource extends Resource
                                 Forms\Components\TextInput::make('name')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('email')
-                                    ->email()
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('phone')
-                                    ->tel()
-                                    ->maxLength(255),
-                                Forms\Components\Select::make('language')
-                                    ->options(Languages::getNames())
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-                                    ->default('en'),
-                                Forms\Components\Select::make('timezone')
-                                    ->options(Timezones::getNames())
-                                    ->searchable()
-                                    ->preload()
-                                    ->required()
-                                    ->default('UTC'),
+                                Forms\Components\Grid::make()
+                                    ->schema([
+                                        Forms\Components\TextInput::make('email')
+                                            ->email()
+                                            ->required()
+                                            ->maxLength(255),
+                                        Forms\Components\TextInput::make('phone')
+                                            ->tel()
+                                            ->maxLength(255),
+                                    ]),
+                                Forms\Components\Grid::make()
+                                    ->schema([
+                                        Forms\Components\Select::make('language')
+                                            ->options(Languages::getNames())
+                                            ->searchable()
+                                            ->preload()
+                                            ->required()
+                                            ->default('en'),
+                                        Forms\Components\Select::make('timezone')
+                                            ->options(Timezones::getNames())
+                                            ->searchable()
+                                            ->preload()
+                                            ->required()
+                                            ->default('UTC'),
+                                    ]),
                                 SpatieTagsInput::make('tags'),
                             ]),
                     ])->columnSpan(['lg' => 2]),
