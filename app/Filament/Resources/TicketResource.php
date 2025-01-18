@@ -55,7 +55,7 @@ class TicketResource extends Resource
                                 Forms\Components\TextInput::make('subject')
                                     ->label(__('Subject'))
                                     ->placeholder(__('Enter the subject of the ticket'))
-                                    ->disabled()
+                                    ->disabledOn(['edit'])
                                     ->required()
                                     ->maxLength(255),
                             ]),
