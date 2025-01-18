@@ -3,15 +3,14 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\ClientResource\Pages;
-use App\Filament\Resources\ClientResource\RelationManagers;
 use App\Models\Client;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Symfony\Component\Intl\Languages;
+use Symfony\Component\Intl\Timezones;
 
 class ClientResource extends Resource
 {
@@ -35,13 +34,17 @@ class ClientResource extends Resource
                 Forms\Components\TextInput::make('phone')
                     ->tel()
                     ->maxLength(255),
-                Forms\Components\TextInput::make('language')
+                Forms\Components\Select::make('language')
+                    ->options(Languages::getNames())
+                    ->searchable()
+                    ->preload()
                     ->required()
-                    ->maxLength(255)
                     ->default('en'),
-                Forms\Components\TextInput::make('timezone')
+                Forms\Components\Select::make('timezone')
+                    ->options(Timezones::getNames())
+                    ->searchable()
+                    ->preload()
                     ->required()
-                    ->maxLength(255)
                     ->default('UTC'),
             ]);
     }
@@ -50,9 +53,6 @@ class ClientResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
