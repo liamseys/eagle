@@ -34,28 +34,33 @@ class ClientResource extends Resource
                                 Forms\Components\Grid::make()
                                     ->schema([
                                         Forms\Components\TextInput::make('name')
+                                            ->label(__('Name'))
                                             ->required()
                                             ->maxLength(255),
                                     ]),
                                 Forms\Components\Grid::make()
                                     ->schema([
                                         Forms\Components\TextInput::make('email')
+                                            ->label(__('Email'))
                                             ->email()
                                             ->required()
                                             ->maxLength(255),
                                         Forms\Components\TextInput::make('phone')
+                                            ->label(__('Phone'))
                                             ->tel()
                                             ->maxLength(255),
                                     ]),
                                 Forms\Components\Grid::make()
                                     ->schema([
                                         Forms\Components\Select::make('language')
+                                            ->label(__('Language'))
                                             ->options(Languages::getNames())
                                             ->searchable()
                                             ->preload()
                                             ->required()
                                             ->default('en'),
                                         Forms\Components\Select::make('timezone')
+                                            ->label(__('Timezone'))
                                             ->options(Timezones::getNames())
                                             ->searchable()
                                             ->preload()
@@ -86,18 +91,23 @@ class ClientResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\ViewColumn::make('name')
+                    ->label(__('Name'))
                     ->view('filament.tables.columns.avatar-name')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('email')
+                    ->label(__('Email'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('phone')
+                    ->label(__('Phone'))
                     ->searchable(),
                 SpatieTagsColumn::make('tags'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('Created at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('Updated at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
