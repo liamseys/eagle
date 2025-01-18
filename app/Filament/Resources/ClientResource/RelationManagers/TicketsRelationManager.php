@@ -28,6 +28,15 @@ class TicketsRelationManager extends RelationManager
             ->recordTitleAttribute('subject')
             ->columns([
                 Tables\Columns\TextColumn::make('subject'),
+                Tables\Columns\TextColumn::make('priority')
+                    ->label(__('Priority'))
+                    ->badge(),
+                Tables\Columns\TextColumn::make('type')
+                    ->label(__('Type'))
+                    ->badge(),
+                Tables\Columns\TextColumn::make('status')
+                    ->label(__('Status'))
+                    ->badge(),
             ])
             ->filters([
                 //
