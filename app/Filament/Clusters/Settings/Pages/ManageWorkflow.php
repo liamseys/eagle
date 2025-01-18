@@ -43,7 +43,8 @@ class ManageWorkflow extends SettingsPage
                                     ->schema([
                                         Select::make('priority')
                                             ->label(__('Priority'))
-                                            ->options(TicketPriority::class),
+                                            ->options(TicketPriority::class)
+                                            ->disabled(),
                                     ]),
                                 Grid::make()
                                     ->schema([
