@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Filament\AvatarProviders\GravatarProvider;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,5 +34,15 @@ class Client extends Model
     public function tickets()
     {
         return $this->hasMany(Ticket::class);
+    }
+
+    /**
+     * Retrieve the client's avatar.
+     *
+     * @return string
+     */
+    public function getAvatarAttribute()
+    {
+        return app(GravatarProvider::class)->get($this);
     }
 }
