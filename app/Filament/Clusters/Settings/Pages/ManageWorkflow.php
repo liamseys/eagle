@@ -34,7 +34,7 @@ class ManageWorkflow extends SettingsPage
         return $form
             ->schema([
                 Section::make(__('SLA Policy'))
-                    ->description(__('Test'))
+                    ->description(__('Define and manage Service Level Agreement (SLA) policies for each ticket priority. Specify the time limits for first response, subsequent responses, and resolution to ensure consistent and efficient customer support.'))
                     ->schema([
                         Repeater::make('sla_policies')
                             ->label('')
