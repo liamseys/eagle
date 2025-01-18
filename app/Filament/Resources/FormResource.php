@@ -17,7 +17,7 @@ class FormResource extends Resource
 {
     protected static ?string $model = Form::class;
 
-    protected static ?int $navigationSort = 2;
+    protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
