@@ -24,28 +24,31 @@ class ClientResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('email')
-                    ->email()
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('phone')
-                    ->tel()
-                    ->maxLength(255),
-                Forms\Components\Select::make('language')
-                    ->options(Languages::getNames())
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->default('en'),
-                Forms\Components\Select::make('timezone')
-                    ->options(Timezones::getNames())
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->default('UTC'),
+                Forms\Components\Section::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('email')
+                            ->email()
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('phone')
+                            ->tel()
+                            ->maxLength(255),
+                        Forms\Components\Select::make('language')
+                            ->options(Languages::getNames())
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->default('en'),
+                        Forms\Components\Select::make('timezone')
+                            ->options(Timezones::getNames())
+                            ->searchable()
+                            ->preload()
+                            ->required()
+                            ->default('UTC'),
+                    ])
             ]);
     }
 
