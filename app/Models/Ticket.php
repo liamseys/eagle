@@ -21,6 +21,7 @@ class Ticket extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'requester_id',
         'assignee_id',
         'group_id',
         'subject',
@@ -44,6 +45,16 @@ class Ticket extends Model
             'tags' => 'array',
             'is_escalated' => 'boolean',
         ];
+    }
+
+    /**
+     * The client that the ticket belongs to.
+     *
+     * @return BelongsTo
+     */
+    public function requester()
+    {
+        return $this->belongsTo(Client::class);
     }
 
     /**

@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketStatus;
 use App\Enums\Tickets\TicketType;
+use App\Models\Client;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -22,6 +23,7 @@ class TicketFactory extends Factory
     public function definition(): array
     {
         return [
+            'requester_id' => Client::factory(),
             'assignee_id' => User::factory(),
             'group_id' => Group::factory(),
             'subject' => fake()->sentence(),

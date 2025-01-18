@@ -64,6 +64,12 @@ class TicketResource extends Resource
                     ->schema([
                         Forms\Components\Section::make(__('Associations'))
                             ->schema([
+                                Forms\Components\Select::make('requester_id')
+                                    ->label(__('Requester'))
+                                    ->relationship(name: 'requester', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->helperText(__('The client who requested the ticket.')),
                                 Forms\Components\Select::make('assignee_id')
                                     ->label(__('Assignee'))
                                     ->relationship(name: 'assignee', titleAttribute: 'name')

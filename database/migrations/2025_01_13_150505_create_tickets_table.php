@@ -6,7 +6,8 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration {
+return new class extends Migration
+{
     /**
      * Run the migrations.
      */
@@ -14,6 +15,10 @@ return new class extends Migration {
     {
         Schema::create('tickets', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->foreignUlid('requester_id')
+                ->nullable()
+                ->constrained('clients')
+                ->nullOnDelete();
             $table->foreignUlid('assignee_id')
                 ->nullable()
                 ->constrained('users')
