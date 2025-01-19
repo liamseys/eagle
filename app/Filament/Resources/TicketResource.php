@@ -101,6 +101,10 @@ class TicketResource extends Resource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('ticket_id')
+                    ->label(__('Ticket ID'))
+                    ->prefix('#')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('subject')
                     ->label(__('Subject'))
                     ->searchable(),
