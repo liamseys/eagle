@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ObservedBy([TicketObserver::class])]
 class Ticket extends Model
@@ -78,5 +79,15 @@ class Ticket extends Model
     public function group()
     {
         return $this->belongsTo(Group::class);
+    }
+
+    /**
+     * A ticket has many comments.
+     *
+     * @return HasMany
+     */
+    public function comments()
+    {
+        return $this->hasMany(TicketComment::class);
     }
 }
