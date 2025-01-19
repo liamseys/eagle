@@ -11,6 +11,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class TicketResource extends Resource
@@ -135,7 +136,16 @@ class TicketResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('priority')
+                    ->label(__('Priority'))
+                    ->options(TicketPriority::class)
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('type')
+                    ->label(__('Type'))
+                    ->options(TicketType::class)
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
