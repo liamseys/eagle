@@ -104,6 +104,9 @@ class TicketResource extends Resource
                 Tables\Columns\TextColumn::make('ticket_id')
                     ->label(__('Ticket ID'))
                     ->prefix('#')
+                    ->copyable()
+                    ->copyMessage(__('Ticket ID copied to clipboard'))
+                    ->copyMessageDuration(1500)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('subject')
                     ->label(__('Subject'))
