@@ -6,6 +6,7 @@ use App\Enums\Tickets\TicketPriority;
 use App\Filament\Clusters\Settings;
 use App\Settings\WorkflowSettings;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -45,6 +46,7 @@ class ManageWorkflow extends SettingsPage
                                             ->label(__('Priority'))
                                             ->options(TicketPriority::class)
                                             ->disabled(),
+                                        Hidden::make('priority'),
                                     ]),
                                 Grid::make()
                                     ->schema([
