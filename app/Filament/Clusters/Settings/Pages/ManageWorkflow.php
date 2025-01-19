@@ -49,15 +49,15 @@ class ManageWorkflow extends SettingsPage
                                 Grid::make()
                                     ->schema([
                                         TextInput::make('first_response_time')
-                                            ->label(__('First Response Time (minutes)'))
+                                            ->label(__('First response time (minutes)'))
                                             ->numeric()
                                             ->required(),
                                         TextInput::make('every_response_time')
-                                            ->label(__('Every Response Time (minutes)'))
+                                            ->label(__('Every response time (minutes)'))
                                             ->numeric()
                                             ->required(),
                                         TextInput::make('resolution_time')
-                                            ->label(__('Resolution Time (minutes)'))
+                                            ->label(__('Resolution time (minutes)'))
                                             ->numeric()
                                             ->required(),
                                     ])->columns(3),
