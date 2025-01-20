@@ -2,9 +2,7 @@
 
 namespace App\Observers;
 
-use App\Enums\Tickets\TicketSlaType;
 use App\Models\Ticket;
-use App\Settings\WorkflowSettings;
 
 class TicketObserver
 {
@@ -21,28 +19,7 @@ class TicketObserver
      */
     public function created(Ticket $ticket): void
     {
-        $workflowSettings = app(WorkflowSettings::class);
-
-        $slaPolicies = collect($workflowSettings->sla_policies);
-
-        $slaPolicy = $slaPolicies->firstWhere('priority', $ticket->priority);
-
-        $ticket->slas()->createMany([[
-            'group_id' => $ticket->group_id,
-            'type' => TicketSlaType::INITIAL_RESPONSE,
-            'started_at' => now(),
-            'expires_at' => now()->addMinutes($slaPolicy['first_response_time']),
-        ], [
-            'group_id' => $ticket->group_id,
-            'type' => TicketSlaType::NEXT_RESPONSE,
-            'started_at' => now(),
-            'expires_at' => now()->addMinutes($slaPolicy['every_response_time']),
-        ], [
-            'group_id' => $ticket->group_id,
-            'type' => TicketSlaType::RESOLUTION,
-            'started_at' => now(),
-            'expires_at' => now()->addMinutes($slaPolicy['resolution_time']),
-        ]]);
+        $ticket->createSlas();
     }
 
     /**
@@ -50,7 +27,13 @@ class TicketObserver
      */
     public function updated(Ticket $ticket): void
     {
-        //
+        if ($ticket->isDirty('group_id')) {
+            foreach ($ticket->slas as $ticketSla) {
+                $ticketSla->close();
+            }
+
+            $ticket->createSlas();
+        }
     }
 
     /**
