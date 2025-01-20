@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Filament\AvatarProviders\GravatarProvider;
+use App\Traits\HasNotes;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Spatie\Tags\HasTags;
 class Client extends Model
 {
     /** @use HasFactory<\Database\Factories\ClientFactory> */
-    use HasFactory, HasTags, HasUlids;
+    use HasFactory, HasNotes, HasTags, HasUlids;
 
     /**
      * The attributes that are mass assignable.
