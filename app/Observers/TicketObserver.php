@@ -19,8 +19,10 @@ class TicketObserver
     /**
      * Handle the Ticket "created" event.
      */
-    public function created(Ticket $ticket, WorkflowSettings $workflowSettings): void
+    public function created(Ticket $ticket): void
     {
+        $workflowSettings = app(WorkflowSettings::class);
+
         $slaPolicies = collect($workflowSettings->sla_policies);
 
         $slaPolicy = $slaPolicies->firstWhere('priority', $ticket->priority);
@@ -29,17 +31,17 @@ class TicketObserver
             'group_id' => $ticket->group_id,
             'type' => TicketSlaType::INITIAL_RESPONSE,
             'started_at' => now(),
-            'expires_at' => now()->addMinutes($slaPolicy->first_response_time),
+            'expires_at' => now()->addMinutes($slaPolicy['first_response_time']),
         ], [
             'group_id' => $ticket->group_id,
             'type' => TicketSlaType::NEXT_RESPONSE,
             'started_at' => now(),
-            'expires_at' => now()->addMinutes($slaPolicy->every_response_time),
+            'expires_at' => now()->addMinutes($slaPolicy['every_response_time']),
         ], [
             'group_id' => $ticket->group_id,
             'type' => TicketSlaType::RESOLUTION,
             'started_at' => now(),
-            'expires_at' => now()->addMinutes($slaPolicy->resolution_time),
+            'expires_at' => now()->addMinutes($slaPolicy['resolution_time']),
         ]]);
     }
 
