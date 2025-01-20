@@ -13,6 +13,18 @@ class Note extends Model
     use HasFactory, HasUlids;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'user_id',
+        'noteable_type',
+        'noteable_id',
+        'body',
+    ];
+
+    /**
      * Get the parent noteable model.
      *
      * @return MorphTo
