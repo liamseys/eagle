@@ -28,9 +28,7 @@ class TicketObserver
     public function updated(Ticket $ticket): void
     {
         if ($ticket->isDirty('group_id')) {
-            foreach ($ticket->slas as $ticketSla) {
-                $ticketSla->close();
-            }
+            $ticket->closeSlas();
 
             $ticket->createSlas();
         }
