@@ -143,7 +143,9 @@ class Ticket extends Model
      */
     public function closeSlas()
     {
-        foreach ($this->slas as $ticketSla) {
+        $ticketSlas = $this->slas;
+
+        foreach ($ticketSlas as $ticketSla) {
             $ticketSla->update([
                 'status' => TicketSlaStatus::CLOSED,
             ]);
