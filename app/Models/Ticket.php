@@ -91,4 +91,14 @@ class Ticket extends Model
     {
         return $this->hasMany(TicketComment::class);
     }
+
+    /**
+     * A ticket has many SLAs.
+     *
+     * @return HasMany
+     */
+    public function slas()
+    {
+        return $this->hasMany(TicketSla::class);
+    }
 }
