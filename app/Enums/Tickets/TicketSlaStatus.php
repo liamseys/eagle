@@ -9,7 +9,6 @@ enum TicketSlaStatus: string implements HasLabel
     case ACTIVE = 'active';
     case PAUSED = 'paused';
     case CLOSED = 'closed';
-
     case ACTIVE_BREACHED = 'active_breached';
     case PAUSED_BREACHED = 'paused_breached';
     case CLOSED_BREACHED = 'closed_breached';
