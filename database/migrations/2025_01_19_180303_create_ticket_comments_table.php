@@ -16,10 +16,7 @@ return new class extends Migration
             $table->foreignUlid('ticket_id')
                 ->constrained()
                 ->cascadeOnDelete();
-            $table->foreignUlid('author_id')
-                ->nullable()
-                ->constrained('users')
-                ->nullOnDelete();
+            $table->nullableUlidMorphs('authorable');
             $table->text('body');
             $table->boolean('is_public')->default(true);
             $table->timestamps();

@@ -20,7 +20,8 @@ class TicketCommentFactory extends Factory
     {
         return [
             'ticket_id' => Ticket::factory(),
-            'author_id' => User::factory(),
+            'authorable_type' => User::class,
+            'authorable_id' => User::factory(),
             'body' => fake()->paragraph(),
             'is_public' => fake()->boolean(),
         ];

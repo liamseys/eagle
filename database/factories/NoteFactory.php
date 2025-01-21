@@ -20,7 +20,7 @@ class NoteFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'noteable_type' => 'App\Models\Client',
+            'noteable_type' => Client::class,
             'noteable_id' => Client::factory(),
             'body' => fake()->paragraph(),
         ];
