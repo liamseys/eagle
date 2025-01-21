@@ -8,6 +8,7 @@ use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Livewire\Component;
 
 class CreateTicketComment extends Component implements HasForms
@@ -61,6 +62,14 @@ class CreateTicketComment extends Component implements HasForms
             'body' => $this->form->getState()['comment'],
             'is_public' => $this->form->getState()['is_public'],
         ]);
+
+        $this->reset();
+
+        Notification::make()
+            ->title(__('Success'))
+            ->body(__('Your comment has been added to the ticket. The requester will be notified.'))
+            ->success()
+            ->send();
     }
 
     public function render()
