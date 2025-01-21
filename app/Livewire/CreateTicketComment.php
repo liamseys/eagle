@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Models\Ticket;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
@@ -44,13 +45,23 @@ class CreateTicketComment extends Component implements HasForms
                     ])
                     ->maxLength(2500)
                     ->required(),
+                Toggle::make('is_public')
+                    ->label(__('Public'))
+                    ->default(true)
+                    ->required()
+                    ->helperText(__('Non-public comments are only visible internally.')),
             ])
             ->statePath('data');
     }
 
     public function create(): void
     {
-        dd($this->form->getState());
+        $this->ticket->comments()->create([
+            'authorable_type' => auth()->user()::class,
+            'authorable_id' => auth()->id(),
+            'body' => $this->form->getState()['comment'],
+            'is_public' => $this->form->getState()['is_public'],
+        ]);
     }
 
     public function render()
