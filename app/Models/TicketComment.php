@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class TicketComment extends Model
 {
@@ -38,10 +39,10 @@ class TicketComment extends Model
     /**
      * A ticket comment belongs to an author.
      *
-     * @return BelongsTo
+     * @return MorphTo
      */
-    public function author()
+    public function authorable()
     {
-        return $this->belongsTo(User::class, 'author_id');
+        return $this->morphTo();
     }
 }
