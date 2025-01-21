@@ -13,6 +13,19 @@ class TicketComment extends Model
     use HasFactory, HasUlids;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'ticket_id',
+        'authorable_type',
+        'authorable_id',
+        'body',
+        'is_public',
+    ];
+
+    /**
      * A ticket comment belongs to a ticket.
      *
      * @return BelongsTo
