@@ -51,7 +51,7 @@ class TicketResource extends Resource
                                             ->searchable()
                                             ->preload()
                                             ->required()
-                                            ->default(TicketStatus::OPEN),
+                                            ->hiddenOn(['create']),
                                     ])->columns(3),
                                 Forms\Components\TextInput::make('subject')
                                     ->label(__('Subject'))
