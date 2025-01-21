@@ -1,3 +1,3 @@
 <div {{ $attributes }}>
-    {{ $getChildComponentContainer() }}
+    <livewire:create-ticket-comment :ticket="$getRecord()" />
 </div>
