@@ -32,7 +32,6 @@ class CreateTicketComment extends Component implements HasForms
                 RichEditor::make('comment')
                     ->label(__('Comment'))
                     ->toolbarButtons([
-                        'blockquote',
                         'bold',
                         'bulletList',
                         'italic',
