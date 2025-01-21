@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketStatus;
 use App\Enums\Tickets\TicketType;
+use App\Filament\Forms\Components\TicketComments;
 use App\Filament\Resources\TicketResource\Pages;
 use App\Models\Ticket;
 use Filament\Forms;
@@ -60,6 +61,7 @@ class TicketResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                             ]),
+                        TicketComments::make(),
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
