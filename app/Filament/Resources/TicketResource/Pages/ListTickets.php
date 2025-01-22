@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\TicketResource\Pages;
 
+use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketStatus;
 use App\Filament\Resources\TicketResource;
 use App\Models\Ticket;
@@ -9,6 +10,7 @@ use Closure;
 use Filament\Actions;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
+use Filament\Notifications\Notification;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,7 +52,18 @@ class ListTickets extends ListRecords
                         ->required(),
                 ])
                 ->action(function (array $data) {
-                    dd($data);
+                    $ticket = Ticket::where('ticket_id', $data['ticket_id'])->first();
+
+                    $ticket->update([
+                        'priority' => TicketPriority::URGENT,
+                        'is_escalated' => true,
+                    ]);
+
+                    Notification::make()
+                        ->title(__('Success'))
+                        ->body(__('The ticket has been successfully escalated.'))
+                        ->success()
+                        ->send();
                 }),
             Actions\CreateAction::make(),
         ];
