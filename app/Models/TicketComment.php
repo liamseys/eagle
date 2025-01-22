@@ -45,4 +45,12 @@ class TicketComment extends Model
     {
         return $this->morphTo();
     }
+
+    /**
+     * Check if the comment was made by the requester.
+     */
+    public function isRequester(): bool
+    {
+        return $this->authorable->id === $this->ticket->requester_id;
+    }
 }

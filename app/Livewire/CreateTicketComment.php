@@ -63,7 +63,10 @@ class CreateTicketComment extends Component implements HasForms
             'is_public' => $this->form->getState()['is_public'],
         ]);
 
-        $this->reset();
+        $this->reset('data');
+        $this->form->fill();
+
+        $this->dispatch('comment-created');
 
         Notification::make()
             ->title(__('Success'))
