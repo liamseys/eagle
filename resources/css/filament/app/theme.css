@@ -19,3 +19,9 @@
 .fi-sidebar-header {
     @apply bg-[#000000];
 }
+
+.ticket-comment-body {
+    p {
+        @apply text-sm;
+    }
+}

@@ -15,7 +15,7 @@
             <div class="w-full sm:w-3/4 p-4 rounded-lg {{ $bgColor }}">
                 <div class="flex flex-col space-y-1">
                     <p class="font-semibold">{{ $comment->authorable->name }}</p>
-                    <p>{!! $comment->body !!}</p>
+                    <div class="ticket-comment-body">{!! $comment->body !!}</div>
                     <p class="text-xs text-gray-500">{{ $comment->created_at->format('jS F Y, H:i') }}</p>
 
                     @if(!$comment->is_public)
