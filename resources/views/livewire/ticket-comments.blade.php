@@ -1,4 +1,4 @@
-<div class="flex flex-col space-y-6 mb-6">
+<div class="flex flex-col space-y-6 pb-6">
     @foreach($comments as $comment)
         @php
             $bgColor = $comment->is_public
