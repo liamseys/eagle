@@ -61,7 +61,8 @@ class TicketResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                             ]),
-                        TicketComments::make(),
+                        TicketComments::make()
+                            ->hiddenOn(['create']),
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
