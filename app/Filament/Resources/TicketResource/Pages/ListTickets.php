@@ -5,8 +5,10 @@ namespace App\Filament\Resources\TicketResource\Pages;
 use App\Enums\Tickets\TicketStatus;
 use App\Filament\Resources\TicketResource;
 use App\Models\Ticket;
+use Closure;
 use Filament\Actions;
 use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
@@ -26,13 +28,29 @@ class ListTickets extends ListRecords
                 ->modalDescription(__('By escalating a ticket, it’s marked as urgent and handled with top priority. This can only be done once and isn’t available for all tickets.'))
                 ->modalSubmitActionLabel(__('Escalate'))
                 ->form([
+                    TextInput::make('ticket_id')
+                        ->label(__('Ticket ID'))
+                        ->rules([
+                            fn (): Closure => function (string $attribute, $value, Closure $fail) {
+                                $ticket = Ticket::where('ticket_id', $value)->first();
+
+                                if (! $ticket) {
+                                    return $fail(__('Ticket not found.'));
+                                }
+
+                                if ($ticket->is_escalated) {
+                                    return $fail(__('Ticket has already been escalated.'));
+                                }
+                            },
+                        ])
+                        ->required(),
                     Textarea::make('reason')
                         ->label(__('Reason'))
                         ->placeholder(__('Enter the reason for escalating the ticket'))
                         ->required(),
                 ])
                 ->action(function (array $data) {
-                    //
+                    dd($data);
                 }),
             Actions\CreateAction::make(),
         ];
