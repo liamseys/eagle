@@ -2,6 +2,7 @@
 
 namespace Database\Factories\HelpCenter;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,11 @@ class ArticleFactory extends Factory
     public function definition(): array
     {
         return [
+            'author_id' => User::factory(),
             'title' => fake()->sentence(),
+            'description' => fake()->paragraph(),
+            'body' => fake()->paragraph(),
+            'is_public' => fake()->boolean(),
         ];
     }
 }
