@@ -3,6 +3,7 @@
 namespace App\Observers\HelpCenter;
 
 use App\Models\HelpCenter\Category;
+use Illuminate\Support\Str;
 
 class CategoryObserver
 {
@@ -11,6 +12,17 @@ class CategoryObserver
      */
     public function creating(Category $category): void
     {
+        if (isset($category->name)) {
+            // Generate the base slug from the name
+            $baseSlug = Str::slug($category->name);
+
+            // Append a random number to ensure uniqueness
+            $uniqueSlug = $baseSlug.'_'.rand(1000, 9999);
+
+            // Assign the generated unique slug to the category
+            $category->slug = $uniqueSlug;
+        }
+
         $category->sort = Category::max('sort') + 1;
     }
 
