@@ -74,7 +74,7 @@ class ArticleResource extends Resource
                                     ])
                                     ->createOptionModalHeading(__('Create category'))
                                     ->createOptionAction(
-                                        fn (Action $action) => $action->modalWidth(MaxWidth::Large),
+                                        fn (Action $action) => $action->modalWidth(MaxWidth::Medium),
                                     )
                                     ->required(),
                             ]),
