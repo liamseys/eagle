@@ -10,6 +10,7 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 
 class CategoryResource extends Resource
 {
@@ -40,8 +41,11 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('description')
+                    ->formatStateUsing(fn ($record) => new HtmlString(sprintf(
+                        '%s<br><span class="text-xs text-gray-500">%s</span>',
+                        $record->name,
+                        $record->description
+                    )))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
