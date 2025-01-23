@@ -6,6 +6,7 @@ use App\Enums\HelpCenter\ArticleStatus;
 use App\Filament\Clusters\HelpCenter;
 use App\Filament\Clusters\HelpCenter\Resources\ArticleResource\Pages;
 use App\Models\HelpCenter\Article;
+use App\Services\Icons;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
@@ -69,6 +70,12 @@ class ArticleResource extends Resource
                                     ->searchable()
                                     ->preload()
                                     ->createOptionForm([
+                                        Forms\Components\Select::make('icon')
+                                            ->label(__('Icon'))
+                                            ->options(Icons::all())
+                                            ->searchable()
+                                            ->required()
+                                            ->columnSpanFull(),
                                         Forms\Components\TextInput::make('name')
                                             ->required()
                                             ->maxLength(255)

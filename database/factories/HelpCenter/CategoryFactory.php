@@ -2,6 +2,7 @@
 
 namespace Database\Factories\HelpCenter;
 
+use App\Services\Icons;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,6 +18,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
+            'icon' => fake()->randomElement(Icons::all()),
             'name' => fake()->word(),
             'description' => fake()->sentence(),
         ];

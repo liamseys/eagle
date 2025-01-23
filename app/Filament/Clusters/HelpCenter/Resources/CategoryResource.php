@@ -5,6 +5,7 @@ namespace App\Filament\Clusters\HelpCenter\Resources;
 use App\Filament\Clusters\HelpCenter;
 use App\Filament\Clusters\HelpCenter\Resources\CategoryResource\Pages;
 use App\Models\HelpCenter\Category;
+use App\Services\Icons;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -25,6 +26,12 @@ class CategoryResource extends Resource
     {
         return $form
             ->schema([
+                Forms\Components\Select::make('icon')
+                    ->label(__('Icon'))
+                    ->options(Icons::all())
+                    ->searchable()
+                    ->required()
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255)

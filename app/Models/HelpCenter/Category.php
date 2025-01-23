@@ -25,6 +25,7 @@ class Category extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'icon',
         'name',
         'description',
         'sort',
