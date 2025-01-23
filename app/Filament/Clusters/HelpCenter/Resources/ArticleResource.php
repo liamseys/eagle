@@ -23,28 +23,41 @@ class ArticleResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('author_id')
-                    ->required()
-                    ->maxLength(26),
-                Forms\Components\TextInput::make('title')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('description')
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('body')
-                    ->required()
-                    ->columnSpanFull(),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('draft'),
-                Forms\Components\TextInput::make('sort')
-                    ->required()
-                    ->numeric()
-                    ->default(1),
-                Forms\Components\Toggle::make('is_public')
-                    ->required(),
-            ]);
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\TextInput::make('title')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\Textarea::make('description')
+                            ->columnSpanFull(),
+                        Forms\Components\Textarea::make('body')
+                            ->required()
+                            ->columnSpanFull(),
+                        Forms\Components\TextInput::make('status')
+                            ->required()
+                            ->maxLength(255)
+                            ->default('draft'),
+                        Forms\Components\Toggle::make('is_public')
+                            ->required(),
+                    ])->columnSpan(['lg' => 2]),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make(__('Metadata'))
+                            ->schema([
+                                Forms\Components\Placeholder::make('created_by')
+                                    ->label(__('Created by'))
+                                    ->content(fn (Article $record): ?string => $record->author?->name),
+
+                                Forms\Components\Placeholder::make('created_at')
+                                    ->label(__('Created at'))
+                                    ->content(fn (Article $record): ?string => $record->created_at?->diffForHumans()),
+
+                                Forms\Components\Placeholder::make('updated_at')
+                                    ->label(__('Updated at'))
+                                    ->content(fn (Article $record): ?string => $record->updated_at?->diffForHumans()),
+                            ])->hiddenOn(['create']),
+                    ])->columnSpan(1),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
