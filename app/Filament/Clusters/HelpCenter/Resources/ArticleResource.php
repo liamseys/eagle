@@ -13,6 +13,7 @@ use Filament\Resources\Resource;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Support\HtmlString;
 
 class ArticleResource extends Resource
 {
@@ -116,11 +117,13 @@ class ArticleResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('author.name')
-                    ->label(__('Author'))
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('title')
                     ->label(__('Title'))
+                    ->formatStateUsing(fn ($record) => new HtmlString(sprintf(
+                        '%s<br><span class="text-xs text-gray-500">%s</span>',
+                        $record->title,
+                        $record->category?->name,
+                    )))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
                     ->label(__('Status'))
@@ -129,6 +132,9 @@ class ArticleResource extends Resource
                 Tables\Columns\IconColumn::make('is_public')
                     ->label(__('Public'))
                     ->boolean(),
+                Tables\Columns\TextColumn::make('author.name')
+                    ->label(__('Author'))
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->label(__('Created at'))
                     ->dateTime()
