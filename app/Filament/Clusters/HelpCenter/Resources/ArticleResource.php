@@ -168,8 +168,7 @@ class ArticleResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('sort', 'ASC')
-            ->reorderable('sort');
+            ->defaultSort('sort', 'ASC');
     }
 
     public static function getRelations(): array
