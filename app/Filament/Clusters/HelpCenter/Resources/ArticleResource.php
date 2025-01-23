@@ -80,7 +80,7 @@ class ArticleResource extends Resource
                                             ->required()
                                             ->maxLength(255)
                                             ->columnSpanFull(),
-                                        Forms\Components\TextInput::make('description')
+                                        Forms\Components\Textarea::make('description')
                                             ->maxLength(255)
                                             ->placeholder(__('(Optional) A brief description of the category.'))
                                             ->columnSpanFull(),
