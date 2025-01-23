@@ -65,6 +65,16 @@ class Article extends Model
     }
 
     /**
+     * The category of the article.
+     *
+     * @return BelongsTo
+     */
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    /**
      * Scope a query to only include draft articles.
      */
     public function scopeDraft(Builder $query): void

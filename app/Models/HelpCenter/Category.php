@@ -17,4 +17,13 @@ class Category extends Model
      * @var string
      */
     protected $table = 'hc_categories';
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+    ];
 }

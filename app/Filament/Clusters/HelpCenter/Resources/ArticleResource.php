@@ -7,8 +7,10 @@ use App\Filament\Clusters\HelpCenter;
 use App\Filament\Clusters\HelpCenter\Resources\ArticleResource\Pages;
 use App\Models\HelpCenter\Article;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 
@@ -57,6 +59,25 @@ class ArticleResource extends Resource
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
+                        Forms\Components\Section::make(__('Associations'))
+                            ->schema([
+                                Forms\Components\Select::make('category_id')
+                                    ->label(__('Category'))
+                                    ->relationship('category', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('name')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->columnSpanFull(),
+                                    ])
+                                    ->createOptionModalHeading(__('Create category'))
+                                    ->createOptionAction(
+                                        fn (Action $action) => $action->modalWidth(MaxWidth::Large),
+                                    )
+                                    ->required(),
+                            ]),
                         Forms\Components\Section::make(__('Status'))
                             ->schema([
                                 Forms\Components\Select::make('status')
