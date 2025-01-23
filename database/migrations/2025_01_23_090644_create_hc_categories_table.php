@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('hc_categories', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->string('name');
+            $table->string('description')->nullable();
+            $table->unsignedSmallInteger('sort')->default(1);
             $table->timestamps();
         });
     }

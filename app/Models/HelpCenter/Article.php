@@ -38,6 +38,7 @@ class Article extends Model
         'description',
         'body',
         'status',
+        'sort',
         'is_public',
     ];
 
