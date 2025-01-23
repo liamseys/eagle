@@ -51,6 +51,12 @@ class ArticleResource extends Resource
                                     ])
                                     ->required()
                                     ->columnSpanFull(),
+                            ]),
+                    ])->columnSpan(['lg' => 2]),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make(__('Status'))
+                            ->schema([
                                 Forms\Components\Select::make('status')
                                     ->label(__('Status'))
                                     ->options(ArticleStatus::class)
@@ -58,11 +64,9 @@ class ArticleResource extends Resource
                                     ->required(),
                                 Forms\Components\Toggle::make('is_public')
                                     ->label(__('Public'))
-                                    ->required(),
+                                    ->required()
+                                    ->helperText(__('Public articles are visible to everyone.')),
                             ]),
-                    ])->columnSpan(['lg' => 2]),
-                Forms\Components\Group::make()
-                    ->schema([
                         Forms\Components\Section::make(__('Metadata'))
                             ->schema([
                                 Forms\Components\Placeholder::make('created_by')
