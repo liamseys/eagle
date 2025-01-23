@@ -3,6 +3,7 @@
 namespace App\Observers\HelpCenter;
 
 use App\Models\HelpCenter\Article;
+use Illuminate\Support\Str;
 
 class ArticleObserver
 {
@@ -13,6 +14,17 @@ class ArticleObserver
     {
         if (auth()->check()) {
             $article->author_id = auth()->id();
+        }
+
+        if (isset($article->name)) {
+            // Generate the base slug from the name
+            $baseSlug = Str::slug($article->name);
+
+            // Append a random number to ensure uniqueness
+            $uniqueSlug = $baseSlug.'_'.rand(1000, 9999);
+
+            // Assign the generated unique slug to the article
+            $article->slug = $uniqueSlug;
         }
 
         $article->sort = Article::max('sort') + 1;
