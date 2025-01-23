@@ -32,6 +32,8 @@ class ArticleResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\Textarea::make('description')
+                                    ->label(__('Description'))
+                                    ->helperText(__('(Optional) A brief description of the article. This will be displayed on the article\'s page. '))
                                     ->columnSpanFull(),
                                 Forms\Components\RichEditor::make('body')
                                     ->label(__('Content'))
