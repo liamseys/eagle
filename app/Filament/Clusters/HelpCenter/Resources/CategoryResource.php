@@ -47,6 +47,9 @@ class CategoryResource extends Resource
                         $record->description
                     )))
                     ->searchable(),
+                Tables\Columns\TextColumn::make('articles_count')
+                    ->counts('articles')
+                    ->label(__('Articles')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

@@ -5,6 +5,7 @@ namespace App\Models\HelpCenter;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Category extends Model
 {
@@ -28,4 +29,14 @@ class Category extends Model
         'description',
         'sort',
     ];
+
+    /**
+     * Category has many articles.
+     *
+     * @return HasMany
+     */
+    public function articles()
+    {
+        return $this->hasMany(Article::class);
+    }
 }
