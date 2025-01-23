@@ -5,6 +5,7 @@ namespace App\Models\HelpCenter;
 use App\Enums\HelpCenter\ArticleStatus;
 use App\Models\User;
 use App\Observers\HelpCenter\ArticleObserver;
+use App\Traits\HasPublicScope;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -16,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Article extends Model
 {
     /** @use HasFactory<\Database\Factories\HelpCenter\ArticleFactory> */
-    use HasFactory, HasUlids;
+    use HasFactory, HasPublicScope, HasUlids;
 
     /**
      * The table associated with the model.
