@@ -3,9 +3,11 @@
 namespace App\Models\HelpCenter;
 
 use App\Enums\HelpCenter\ArticleStatus;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Article extends Model
 {
@@ -39,5 +41,15 @@ class Article extends Model
             'status' => ArticleStatus::class,
             'is_public' => 'boolean',
         ];
+    }
+
+    /**
+     * The author of the article.
+     *
+     * @return BelongsTo
+     */
+    public function author()
+    {
+        return $this->belongsTo(User::class, 'author_id');
     }
 }
