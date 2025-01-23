@@ -12,12 +12,13 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Tags\HasTags;
 
 #[ObservedBy([ArticleObserver::class])]
 class Article extends Model
 {
     /** @use HasFactory<\Database\Factories\HelpCenter\ArticleFactory> */
-    use HasFactory, HasPublicScope, HasUlids;
+    use HasFactory, HasPublicScope, HasTags, HasUlids;
 
     /**
      * The table associated with the model.
