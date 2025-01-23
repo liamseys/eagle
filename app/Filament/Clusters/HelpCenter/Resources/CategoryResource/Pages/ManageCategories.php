@@ -5,6 +5,7 @@ namespace App\Filament\Clusters\HelpCenter\Resources\CategoryResource\Pages;
 use App\Filament\Clusters\HelpCenter\Resources\CategoryResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ManageRecords;
+use Filament\Support\Enums\MaxWidth;
 
 class ManageCategories extends ManageRecords
 {
@@ -13,7 +14,8 @@ class ManageCategories extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->modalWidth(MaxWidth::Medium),
         ];
     }
 }

@@ -8,6 +8,7 @@ use App\Models\HelpCenter\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
@@ -26,13 +27,12 @@ class CategoryResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->columnSpanFull(),
                 Forms\Components\TextInput::make('description')
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('sort')
-                    ->required()
-                    ->numeric()
-                    ->default(1),
+                    ->maxLength(255)
+                    ->placeholder(__('(Optional) A brief description of the category'))
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -60,7 +60,8 @@ class CategoryResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->modalWidth(MaxWidth::Medium),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
