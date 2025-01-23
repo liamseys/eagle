@@ -2,6 +2,7 @@
 
 namespace App\Filament\Clusters\HelpCenter\Resources;
 
+use App\Enums\HelpCenter\ArticleStatus;
 use App\Filament\Clusters\HelpCenter;
 use App\Filament\Clusters\HelpCenter\Resources\ArticleResource\Pages;
 use App\Models\HelpCenter\Article;
@@ -33,10 +34,11 @@ class ArticleResource extends Resource
                         Forms\Components\Textarea::make('body')
                             ->required()
                             ->columnSpanFull(),
-                        Forms\Components\TextInput::make('status')
-                            ->required()
-                            ->maxLength(255)
-                            ->default('draft'),
+                        Forms\Components\Select::make('status')
+                            ->label(__('Status'))
+                            ->options(ArticleStatus::class)
+                            ->default(ArticleStatus::DRAFT)
+                            ->required(),
                         Forms\Components\Toggle::make('is_public')
                             ->required(),
                     ])->columnSpan(['lg' => 2]),
