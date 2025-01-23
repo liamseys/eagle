@@ -6,6 +6,7 @@ use App\Enums\HelpCenter\ArticleStatus;
 use App\Models\User;
 use App\Observers\HelpCenter\ArticleObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -59,5 +60,21 @@ class Article extends Model
     public function author()
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    /**
+     * Scope a query to only include draft articles.
+     */
+    public function scopeDraft(Builder $query): void
+    {
+        $query->where('status', ArticleStatus::DRAFT);
+    }
+
+    /**
+     * Scope a query to only include published articles.
+     */
+    public function scopePublished(Builder $query): void
+    {
+        $query->where('status', ArticleStatus::PUBLISHED);
     }
 }
