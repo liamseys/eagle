@@ -17,6 +17,10 @@ return new class extends Migration
             $table->foreignUlid('author_id')
                 ->constrained('users')
                 ->cascadeOnDelete();
+            $table->foreignUlid('category_id')
+                ->nullable()
+                ->constrained('hc_categories')
+                ->nullOnDelete();
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('body');
