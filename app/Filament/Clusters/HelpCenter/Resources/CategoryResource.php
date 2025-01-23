@@ -13,6 +13,7 @@ use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
+use Illuminate\Support\Str;
 
 class CategoryResource extends Resource
 {
@@ -51,7 +52,7 @@ class CategoryResource extends Resource
                     ->formatStateUsing(fn ($record) => new HtmlString(sprintf(
                         '%s<br><span class="text-xs text-gray-500">%s</span>',
                         $record->name,
-                        $record->description
+                        Str::limit($record->description, 75),
                     )))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('articles_count')
