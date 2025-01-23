@@ -11,7 +11,11 @@ class ArticleObserver
      */
     public function creating(Article $article): void
     {
-        //
+        if (auth()->check()) {
+            $article->author_id = auth()->id();
+        }
+
+        $article->sort = Article::max('sort') + 1;
     }
 
     /**
