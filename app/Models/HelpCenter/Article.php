@@ -30,7 +30,12 @@ class Article extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'author_id',
         'title',
+        'description',
+        'body',
+        'status',
+        'is_public',
     ];
 
     /**

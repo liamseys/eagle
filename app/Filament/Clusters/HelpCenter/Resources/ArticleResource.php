@@ -26,21 +26,40 @@ class ArticleResource extends Resource
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\Textarea::make('description')
-                            ->columnSpanFull(),
-                        Forms\Components\Textarea::make('body')
-                            ->required()
-                            ->columnSpanFull(),
-                        Forms\Components\Select::make('status')
-                            ->label(__('Status'))
-                            ->options(ArticleStatus::class)
-                            ->default(ArticleStatus::DRAFT)
-                            ->required(),
-                        Forms\Components\Toggle::make('is_public')
-                            ->required(),
+                        Forms\Components\Section::make()
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\Textarea::make('description')
+                                    ->columnSpanFull(),
+                                Forms\Components\RichEditor::make('body')
+                                    ->label(__('Content'))
+                                    ->toolbarButtons([
+                                        'blockquote',
+                                        'bold',
+                                        'bulletList',
+                                        'h2',
+                                        'h3',
+                                        'italic',
+                                        'link',
+                                        'orderedList',
+                                        'redo',
+                                        'strike',
+                                        'underline',
+                                        'undo',
+                                    ])
+                                    ->required()
+                                    ->columnSpanFull(),
+                                Forms\Components\Select::make('status')
+                                    ->label(__('Status'))
+                                    ->options(ArticleStatus::class)
+                                    ->default(ArticleStatus::DRAFT)
+                                    ->required(),
+                                Forms\Components\Toggle::make('is_public')
+                                    ->label(__('Public'))
+                                    ->required(),
+                            ]),
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
