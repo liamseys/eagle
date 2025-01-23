@@ -1,4 +1,4 @@
-<x-master-layout class="bg-gray-100">
+<x-master-layout class="bg-white">
     <header>
         //
     </header>
