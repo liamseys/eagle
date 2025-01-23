@@ -2,6 +2,7 @@
 
 namespace App\Models\HelpCenter;
 
+use App\Enums\HelpCenter\ArticleStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,4 +27,17 @@ class Article extends Model
     protected $fillable = [
         'title',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'status' => ArticleStatus::class,
+            'is_public' => 'boolean',
+        ];
+    }
 }

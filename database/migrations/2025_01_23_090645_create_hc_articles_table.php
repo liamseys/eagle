@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\HelpCenter\ArticleStatus;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,7 +14,15 @@ return new class extends Migration
     {
         Schema::create('hc_articles', function (Blueprint $table) {
             $table->ulid('id')->primary();
+            $table->foreignUlid('author_id')
+                ->constrained('users')
+                ->cascadeOnDelete();
             $table->string('title');
+            $table->text('description')->nullable();
+            $table->text('body');
+            $table->string('status')->default(ArticleStatus::DRAFT);
+            $table->unsignedSmallInteger('sort')->default(1);
+            $table->boolean('is_public')->default(true);
             $table->timestamps();
         });
     }
