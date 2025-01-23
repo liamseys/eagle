@@ -27,7 +27,7 @@ class ArticleObserver
             $article->slug = $uniqueSlug;
         }
 
-        $article->sort = Article::max('sort') + 1;
+        $article->sort = Article::where('category_id', $article->category_id)->max('sort') + 1;
     }
 
     /**
