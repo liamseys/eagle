@@ -1,4 +1,4 @@
-<x-master-layout class="bg-white">
+<x-master-layout class="bg-gray-100">
     <header class="bg-black">
         <x-container>
             <div class="relative flex h-16 items-center justify-between">
