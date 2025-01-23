@@ -8,5 +8,5 @@ class HelpCenter extends Cluster
 {
     protected static ?int $navigationSort = 4;
 
-    protected static ?string $navigationIcon = 'heroicon-o-squares-2x2';
+    protected static ?string $navigationIcon = 'heroicon-o-lifebuoy';
 }
