@@ -2,11 +2,14 @@
 
 namespace App\Models\HelpCenter;
 
+use App\Observers\HelpCenter\CategoryObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
+#[ObservedBy([CategoryObserver::class])]
 class Category extends Model
 {
     /** @use HasFactory<\Database\Factories\HelpCenter\CategoryFactory> */
