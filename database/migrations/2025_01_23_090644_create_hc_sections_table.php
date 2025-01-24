@@ -17,6 +17,8 @@ return new class extends Migration
                 ->constrained('hc_categories')
                 ->cascadeOnDelete();
             $table->string('name');
+            $table->string('description')->nullable();
+            $table->unsignedSmallInteger('sort')->default(1);
             $table->timestamps();
         });
     }

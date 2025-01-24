@@ -27,6 +27,8 @@ class Section extends Model
     protected $fillable = [
         'category_id',
         'name',
+        'description',
+        'sort',
     ];
 
     /**

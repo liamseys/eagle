@@ -20,6 +20,7 @@ class SectionFactory extends Factory
         return [
             'category_id' => Category::factory(),
             'name' => fake()->word(),
+            'description' => fake()->sentence(),
         ];
     }
 }
