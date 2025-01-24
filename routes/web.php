@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IndexController;
 use App\Http\Middleware\SetDefaultLocaleForUrls;
 use Illuminate\Support\Facades\Route;
@@ -14,4 +15,5 @@ Route::group([
     'middleware' => SetDefaultLocaleForUrls::class,
 ], function () {
     Route::get('/', IndexController::class)->name('index');
+    Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('category.show');
 });
