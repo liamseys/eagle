@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Spatie\Tags\HasTags;
 
 #[ObservedBy([ArticleObserver::class])]
@@ -75,6 +76,16 @@ class Article extends Model
     public function section()
     {
         return $this->belongsTo(Section::class);
+    }
+
+    /**
+     * The category of the article.
+     *
+     * @return HasOneThrough
+     */
+    public function category()
+    {
+        return $this->hasOneThrough(Category::class, Section::class);
     }
 
     /**
