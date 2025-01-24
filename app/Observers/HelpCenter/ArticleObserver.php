@@ -20,8 +20,8 @@ class ArticleObserver
             // Generate the base slug from the name
             $baseSlug = Str::slug($article->title);
 
-            // Prepend a random number to ensure uniqueness
-            $uniqueSlug = rand(1000, 9999).'-'.$baseSlug;
+            // Prepend an unique ID to ensure the slug is unique
+            $uniqueSlug = uniqid().'-'.$baseSlug;
 
             // Assign the generated unique slug to the article
             $article->slug = $uniqueSlug;
