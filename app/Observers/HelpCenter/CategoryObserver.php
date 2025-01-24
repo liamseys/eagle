@@ -16,8 +16,8 @@ class CategoryObserver
             // Generate the base slug from the name
             $baseSlug = Str::slug($category->name);
 
-            // Append a random number to ensure uniqueness
-            $uniqueSlug = $baseSlug.'_'.rand(1000, 9999);
+            // Prepend a random number to ensure uniqueness
+            $uniqueSlug = rand(1000, 9999).'-'.$baseSlug;
 
             // Assign the generated unique slug to the category
             $category->slug = $uniqueSlug;
