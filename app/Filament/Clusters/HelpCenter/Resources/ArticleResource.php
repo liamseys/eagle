@@ -81,8 +81,7 @@ class ArticleResource extends Resource
                                     ->createOptionModalHeading(__('Create section'))
                                     ->createOptionAction(
                                         fn (Action $action) => $action->modalWidth(MaxWidth::Medium),
-                                    )
-                                    ->required(),
+                                    ),
                             ]),
                         Forms\Components\Section::make(__('Status'))
                             ->schema([
