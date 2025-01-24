@@ -3,7 +3,7 @@
 
     <section class="py-12">
         <x-container>
-            //
+            <h2 class="text-xl font-semibold">{{ $category->name }}</h2>
         </x-container>
     </section>
 </x-app-layout>
