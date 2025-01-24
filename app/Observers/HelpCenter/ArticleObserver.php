@@ -16,9 +16,9 @@ class ArticleObserver
             $article->author_id = auth()->id();
         }
 
-        if (isset($article->name)) {
+        if (isset($article->title)) {
             // Generate the base slug from the name
-            $baseSlug = Str::slug($article->name);
+            $baseSlug = Str::slug($article->title);
 
             // Prepend a random number to ensure uniqueness
             $uniqueSlug = rand(1000, 9999).'-'.$baseSlug;
