@@ -86,7 +86,7 @@ class ArticleResource extends Resource
                                     ])
                                     ->createOptionModalHeading(__('Create section'))
                                     ->createOptionAction(
-                                        fn(Action $action) => $action->modalWidth(MaxWidth::Medium),
+                                        fn (Action $action) => $action->modalWidth(MaxWidth::Medium),
                                     )
                                     ->required(),
                             ]),
@@ -106,15 +106,15 @@ class ArticleResource extends Resource
                             ->schema([
                                 Forms\Components\Placeholder::make('created_by')
                                     ->label(__('Created by'))
-                                    ->content(fn(Article $record): ?string => $record->author?->name),
+                                    ->content(fn (Article $record): ?string => $record->author?->name),
 
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label(__('Created at'))
-                                    ->content(fn(Article $record): ?string => $record->created_at?->diffForHumans()),
+                                    ->content(fn (Article $record): ?string => $record->created_at?->diffForHumans()),
 
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label(__('Updated at'))
-                                    ->content(fn(Article $record): ?string => $record->updated_at?->diffForHumans()),
+                                    ->content(fn (Article $record): ?string => $record->updated_at?->diffForHumans()),
                             ])->hiddenOn(['create']),
                     ])->columnSpan(1),
             ])->columns(3);
@@ -126,7 +126,7 @@ class ArticleResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->label(__('Title'))
-                    ->formatStateUsing(fn($record) => new HtmlString(sprintf(
+                    ->formatStateUsing(fn ($record) => new HtmlString(sprintf(
                         '%s<br><span class="text-xs text-gray-500">%s</span>',
                         $record->title,
                         $record->category?->name,
