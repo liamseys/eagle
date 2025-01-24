@@ -18,8 +18,9 @@ return new class extends Migration
                 ->constrained('users')
                 ->cascadeOnDelete();
             $table->foreignUlid('section_id')
+                ->nullable()
                 ->constrained('hc_sections')
-                ->cascadeOnDelete();
+                ->nullOnDelete();
             $table->string('slug')->unique();
             $table->string('title');
             $table->text('description')->nullable();
