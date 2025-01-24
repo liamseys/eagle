@@ -25,7 +25,7 @@
             <x-container>
                 <div class="grid gap-4 grid-cols-1 sm:grid-cols-3">
                     @foreach($categories as $category)
-                        <a href="#">
+                        <a href="{{ route('categories.show', $category) }}">
                             <div class="flex flex-col p-4 space-y-2 border rounded-lg hover:bg-gray-100 hover:cursor-pointer">
                                 <x-dynamic-component :component="$category->icon" class="h-6 w-6"/>
 

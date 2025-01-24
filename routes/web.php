@@ -15,5 +15,5 @@ Route::group([
     'middleware' => SetDefaultLocaleForUrls::class,
 ], function () {
     Route::get('/', IndexController::class)->name('index');
-    Route::get('/categories/{category:slug}', [CategoryController::class, 'show'])->name('category.show');
+    Route::resource('categories', CategoryController::class)->only('show');
 });
