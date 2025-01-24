@@ -37,6 +37,7 @@ class Category extends Model
 
     /**
      * Category has many articles.
+     * Test.
      *
      * @return HasManyThrough
      */
