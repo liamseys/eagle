@@ -9,9 +9,10 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($locale, Category $category)
     {
         return view('categories.show', [
+            'locale' => $locale,
             'category' => $category,
         ]);
     }
