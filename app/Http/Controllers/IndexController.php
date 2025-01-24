@@ -12,7 +12,7 @@ class IndexController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $categories = Category::all();
+        $categories = Category::orderBy('sort')->get();
 
         return view('index', [
             'categories' => $categories,
