@@ -2,6 +2,7 @@
 
 namespace Database\Factories\HelpCenter;
 
+use App\Models\HelpCenter\Section;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,6 +20,7 @@ class ArticleFactory extends Factory
     {
         return [
             'author_id' => User::factory(),
+            'section_id' => Section::factory(),
             'title' => fake()->sentence(),
             'description' => fake()->paragraph(),
             'body' => fake()->paragraph(),

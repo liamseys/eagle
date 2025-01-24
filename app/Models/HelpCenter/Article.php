@@ -34,7 +34,7 @@ class Article extends Model
      */
     protected $fillable = [
         'author_id',
-        'category_id',
+        'section_id',
         'slug',
         'title',
         'description',
@@ -68,13 +68,13 @@ class Article extends Model
     }
 
     /**
-     * The category of the article.
+     * The section of the article.
      *
      * @return BelongsTo
      */
-    public function category()
+    public function section()
     {
-        return $this->belongsTo(Category::class, 'category_id');
+        return $this->belongsTo(Section::class);
     }
 
     /**
