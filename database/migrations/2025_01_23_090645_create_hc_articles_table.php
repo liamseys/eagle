@@ -21,6 +21,7 @@ return new class extends Migration
                 ->nullable()
                 ->constrained('hc_categories')
                 ->nullOnDelete();
+            $table->string('slug')->unique();
             $table->string('title');
             $table->text('description')->nullable();
             $table->text('body');
