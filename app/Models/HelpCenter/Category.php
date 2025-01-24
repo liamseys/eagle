@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 #[ObservedBy([CategoryObserver::class])]
 class Category extends Model
@@ -38,7 +38,7 @@ class Category extends Model
     /**
      * Category has many articles.
      *
-     * @return HasMany
+     * @return HasManyThrough
      */
     public function articles()
     {
