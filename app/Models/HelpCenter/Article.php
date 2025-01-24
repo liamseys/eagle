@@ -59,6 +59,14 @@ class Article extends Model
     }
 
     /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'slug';
+    }
+
+    /**
      * The author of the article.
      *
      * @return BelongsTo
