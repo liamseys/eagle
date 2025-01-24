@@ -6,7 +6,6 @@ use App\Enums\HelpCenter\ArticleStatus;
 use App\Filament\Clusters\HelpCenter;
 use App\Filament\Clusters\HelpCenter\Resources\ArticleResource\Pages;
 use App\Models\HelpCenter\Article;
-use App\Services\Icons;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
@@ -64,28 +63,22 @@ class ArticleResource extends Resource
                     ->schema([
                         Forms\Components\Section::make(__('Associations'))
                             ->schema([
-                                Forms\Components\Select::make('category_id')
-                                    ->label(__('Category'))
-                                    ->relationship('category', 'name')
+                                Forms\Components\Select::make('section_id')
+                                    ->label(__('Section'))
+                                    ->relationship('section', 'name')
                                     ->searchable()
                                     ->preload()
                                     ->createOptionForm([
-                                        Forms\Components\Select::make('icon')
-                                            ->label(__('Icon'))
-                                            ->options(Icons::all())
-                                            ->searchable()
-                                            ->required()
-                                            ->columnSpanFull(),
                                         Forms\Components\TextInput::make('name')
                                             ->required()
                                             ->maxLength(255)
                                             ->columnSpanFull(),
                                         Forms\Components\Textarea::make('description')
                                             ->maxLength(255)
-                                            ->placeholder(__('(Optional) A brief description of the category.'))
+                                            ->placeholder(__('(Optional) A brief description of the section.'))
                                             ->columnSpanFull(),
                                     ])
-                                    ->createOptionModalHeading(__('Create category'))
+                                    ->createOptionModalHeading(__('Create section'))
                                     ->createOptionAction(
                                         fn (Action $action) => $action->modalWidth(MaxWidth::Medium),
                                     )
