@@ -32,6 +32,8 @@ class Section extends Model
     ];
 
     /**
+     * The category that the section belongs to.
+     *
      * @return BelongsTo
      */
     public function category()
