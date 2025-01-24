@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('hc_sections', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignId('category_id')
+            $table->foreignUlid('category_id')
                 ->constrained('hc_categories')
                 ->cascadeOnDelete();
             $table->string('name');
