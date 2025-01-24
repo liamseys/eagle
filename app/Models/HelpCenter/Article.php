@@ -85,7 +85,7 @@ class Article extends Model
      */
     public function category()
     {
-        return $this->hasOneThrough(Category::class, Section::class);
+        return $this->hasOneThrough(Category::class, Section::class, 'id', 'id', 'section_id', 'category_id');
     }
 
     /**
