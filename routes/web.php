@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\IndexController;
 use App\Http\Middleware\SetDefaultLocaleForUrls;
@@ -16,4 +17,5 @@ Route::group([
 ], function () {
     Route::get('/', IndexController::class)->name('index');
     Route::resource('categories', CategoryController::class)->only('show');
+    Route::resource('articles', ArticleController::class)->only('show');
 });
