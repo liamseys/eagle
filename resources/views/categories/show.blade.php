@@ -16,7 +16,7 @@
                             @foreach($section->articles as $article)
                                 <a href="#">
                                     <li class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-100">
-                                        {{ $article->title }}
+                                        <p class="text-sm">{{ $article->title }}</p>
                                         <x-heroicon-s-chevron-right class="h-4 w-4"/>
                                     </li>
                                 </a>
