@@ -25,7 +25,11 @@
                         </x-slot>
 
                         <ul class="-mx-4">
-                            @foreach($article->section->articles as $article)
+                            @foreach($article->section
+                                             ->articles()
+                                             ->public()
+                                             ->published()
+                                             ->get() as $article)
                                 <x-nav-link :href="route('articles.show', $article)">
                                     <p class="text-sm">{{ $article->title }}</p>
                                     <x-heroicon-s-chevron-right class="h-4 w-4"/>
