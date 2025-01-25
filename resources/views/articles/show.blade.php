@@ -18,6 +18,24 @@
                         </div>
                     </x-card>
                 </div>
+                <div class="col-span-1">
+                    <x-card>
+                        <x-slot name="header">
+                            <h3 class="font-semibold">{{ $article->section->name }}</h3>
+                        </x-slot>
+
+                        <ul class="-mx-4">
+                            @foreach($article->section->articles as $article)
+                                <a href="{{ route('articles.show', $article) }}">
+                                    <li class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-100">
+                                        <p class="text-sm">{{ $article->title }}</p>
+                                        <x-heroicon-s-chevron-right class="h-4 w-4"/>
+                                    </li>
+                                </a>
+                            @endforeach
+                        </ul>
+                    </x-card>
+                </div>
             </div>
         </x-container>
     </section>
