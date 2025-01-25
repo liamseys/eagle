@@ -14,7 +14,7 @@
 
                         <ul class="-mx-4">
                             @foreach($section->articles as $article)
-                                <li class="flex items-center justify-between gap-1 p-4 rounded-lg hover:bg-gray-100">
+                                <li class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-100">
                                     {{ $article->title }}
                                     <x-heroicon-s-chevron-right class="h-4 w-4"/>
                                 </li>
