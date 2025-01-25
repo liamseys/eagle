@@ -5,7 +5,7 @@
         <x-container>
             <h2 class="text-xl font-semibold">{{ $category->name }}</h2>
 
-            <div class="grid gap-4 grid-cols-1 sm:grid-cols-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
                 @foreach($category->sections as $section)
                     <x-card>
                         <x-slot name="header">
