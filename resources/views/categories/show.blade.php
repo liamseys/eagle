@@ -14,7 +14,7 @@
 
                         <ul class="-mx-4">
                             @foreach($section->articles as $article)
-                                <a href="#">
+                                <a href="{{ route('articles.show', $article) }}">
                                     <li class="flex items-center justify-between p-4 rounded-lg hover:bg-gray-100">
                                         <p class="text-sm">{{ $article->title }}</p>
                                         <x-heroicon-s-chevron-right class="h-4 w-4"/>
