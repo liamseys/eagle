@@ -4,7 +4,7 @@
 
     <section class="py-12">
         <x-container>
-            <div class="grid gap-4 grid-cols-1 sm:grid-cols-3">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 @foreach($categories as $category)
                     <a href="{{ route('categories.show', $category) }}">
                         <div class="flex flex-col p-4 space-y-2 border rounded-lg hover:bg-gray-100 hover:cursor-pointer">
