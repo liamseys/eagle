@@ -18,6 +18,7 @@ return new class extends Migration
                 ->nullable()
                 ->constrained()
                 ->nullOnDelete();
+            $table->string('slug')->unique();
             $table->string('name');
             $table->text('description')->nullable();
             $table->foreignUlid('default_group_id')

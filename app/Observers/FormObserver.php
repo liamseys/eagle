@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Form;
+use Illuminate\Support\Str;
 
 class FormObserver
 {
@@ -13,6 +14,17 @@ class FormObserver
     {
         if (auth()->check()) {
             $form->user_id = auth()->id();
+        }
+
+        if (isset($form->name)) {
+            // Generate the base slug from the name
+            $baseSlug = Str::slug($form->name);
+
+            // Prepend an unique ID to ensure the slug is unique
+            $uniqueSlug = uniqid().'-'.$baseSlug;
+
+            // Assign the generated unique slug to the form
+            $form->slug = $uniqueSlug;
         }
 
         $form->sort = Form::max('sort') + 1;
