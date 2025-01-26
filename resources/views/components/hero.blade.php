@@ -4,7 +4,7 @@
 ])
 
 <section class="py-12 bg-gradient-to-r from-[#F8CB09] via-[#EB2622] to-[#7506BF]">
-    <x-container>
+    <x-container class="max-w-7xl">
         <div class="flex flex-col gap-2">
             <h1 class="text-3xl font-bold text-white">{{ $title }}</h1>
 

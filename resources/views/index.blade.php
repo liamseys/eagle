@@ -3,7 +3,7 @@
             :description="__('Here you\'ll find answers to many common questions about our services, policies, and features. If you need further assistance, our team is always ready to help you find the information or support you need.')"/>
 
     <section class="py-12">
-        <x-container>
+        <x-container class="max-w-7xl">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 @foreach($categories as $category)
                     <a href="{{ route('categories.show', $category) }}">
