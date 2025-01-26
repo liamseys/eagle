@@ -25,6 +25,7 @@ class Form extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'slug',
         'name',
         'description',
         'default_group_id',
