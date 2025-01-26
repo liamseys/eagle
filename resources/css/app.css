@@ -13,3 +13,10 @@
         @apply text-sm;
     }
 }
+
+.form-description {
+    & p,
+    & ul {
+        @apply text-sm text-gray-500;
+    }
+}
