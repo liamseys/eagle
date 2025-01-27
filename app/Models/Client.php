@@ -24,7 +24,7 @@ class Client extends Model
         'name',
         'email',
         'phone',
-        'language',
+        'locale',
         'timezone',
     ];
 

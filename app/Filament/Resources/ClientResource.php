@@ -12,7 +12,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieTagsColumn;
 use Filament\Tables\Table;
-use Symfony\Component\Intl\Languages;
+use Symfony\Component\Intl\Locales;
 use Symfony\Component\Intl\Timezones;
 
 class ClientResource extends Resource
@@ -52,9 +52,9 @@ class ClientResource extends Resource
                                     ]),
                                 Forms\Components\Grid::make()
                                     ->schema([
-                                        Forms\Components\Select::make('language')
-                                            ->label(__('Language'))
-                                            ->options(Languages::getNames())
+                                        Forms\Components\Select::make('locale')
+                                            ->label(__('Locale'))
+                                            ->options(Locales::getNames())
                                             ->searchable()
                                             ->preload()
                                             ->required()

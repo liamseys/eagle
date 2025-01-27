@@ -20,7 +20,7 @@ class ClientFactory extends Factory
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
             'phone' => fake()->phoneNumber(),
-            'language' => fake()->languageCode(),
+            'locale' => fake()->locale(),
             'timezone' => fake()->timezone(),
         ];
     }
