@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\HelpCenter\ArticleStatus;
+use App\Enums\HelpCenter\Articles\ArticleStatus;
 use App\Models\HelpCenter\Category;
 
 class CategoryController extends Controller

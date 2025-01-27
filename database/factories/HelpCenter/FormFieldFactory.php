@@ -2,7 +2,7 @@
 
 namespace Database\Factories\HelpCenter;
 
-use App\Enums\Forms\FormFieldType;
+use App\Enums\HelpCenter\Forms\FormFieldType;
 use App\Models\HelpCenter\Form;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

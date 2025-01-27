@@ -2,7 +2,7 @@
 
 namespace App\Filament\Clusters\HelpCenter\Resources;
 
-use App\Enums\HelpCenter\ArticleStatus;
+use App\Enums\HelpCenter\Articles\ArticleStatus;
 use App\Filament\Clusters\HelpCenter;
 use App\Filament\Clusters\HelpCenter\Resources\ArticleResource\Pages;
 use App\Models\HelpCenter\Article;

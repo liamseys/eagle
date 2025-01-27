@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\Forms;
+namespace App\Enums\HelpCenter\Forms;
 
 use Filament\Support\Contracts\HasLabel;
 

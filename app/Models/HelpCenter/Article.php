@@ -2,7 +2,7 @@
 
 namespace App\Models\HelpCenter;
 
-use App\Enums\HelpCenter\ArticleStatus;
+use App\Enums\HelpCenter\Articles\ArticleStatus;
 use App\Models\User;
 use App\Observers\HelpCenter\ArticleObserver;
 use App\Traits\HasPublicScope;

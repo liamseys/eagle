@@ -2,7 +2,7 @@
 
 namespace App\Models\HelpCenter;
 
-use App\Enums\Forms\FormFieldType;
+use App\Enums\HelpCenter\Forms\FormFieldType;
 use App\Observers\FormFieldObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;

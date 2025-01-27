@@ -2,7 +2,7 @@
 
 namespace App\Filament\Clusters\HelpCenter\Resources;
 
-use App\Enums\Forms\FormFieldType;
+use App\Enums\HelpCenter\Forms\FormFieldType;
 use App\Enums\Tickets\TicketPriority;
 use App\Filament\Clusters\HelpCenter;
 use App\Models\HelpCenter\Form;

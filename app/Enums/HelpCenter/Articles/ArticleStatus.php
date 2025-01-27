@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums\HelpCenter;
+namespace App\Enums\HelpCenter\Articles;
 
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
