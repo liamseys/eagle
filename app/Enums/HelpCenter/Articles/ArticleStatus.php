@@ -14,7 +14,7 @@ enum ArticleStatus: string implements HasColor, HasLabel
     {
         return match ($this) {
             self::DRAFT => 'gray',
-            self::PUBLISHED => 'green',
+            self::PUBLISHED => 'success',
         };
     }
 
