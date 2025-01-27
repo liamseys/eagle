@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\FormResource\Pages;
+namespace App\Filament\Clusters\HelpCenter\Resources\FormResource\Pages;
 
-use App\Filament\Resources\FormResource;
+use App\Filament\Clusters\HelpCenter\Resources\FormResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateForm extends CreateRecord

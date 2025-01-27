@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\HelpCenter;
 
 use App\Enums\Forms\FormFieldType;
 use App\Observers\FormFieldObserver;
@@ -14,8 +14,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[ObservedBy([FormFieldObserver::class])]
 class FormField extends Model
 {
-    /** @use HasFactory<\Database\Factories\FormFieldFactory> */
+    /** @use HasFactory<\Database\Factories\HelpCenter\FormFieldFactory> */
     use HasFactory, HasUlids;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'hc_form_fields';
 
     /**
      * The attributes that are mass assignable.

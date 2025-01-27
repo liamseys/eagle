@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\HelpCenter;
 
 use App\Enums\Tickets\TicketPriority;
+use App\Models\Group;
+use App\Models\User;
 use App\Observers\FormObserver;
 use App\Traits\HasActiveScope;
 use App\Traits\HasPublicScope;
@@ -16,8 +18,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[ObservedBy([FormObserver::class])]
 class Form extends Model
 {
-    /** @use HasFactory<\Database\Factories\FormFactory> */
+    /** @use HasFactory<\Database\Factories\HelpCenter\FormFactory> */
     use HasActiveScope, HasFactory, HasPublicScope, HasUlids;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'hc_forms';
 
     /**
      * The attributes that are mass assignable.

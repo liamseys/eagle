@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('form_fields', function (Blueprint $table) {
+        Schema::create('hc_form_fields', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUlid('form_id')
-                ->constrained()
+                ->constrained('hc_forms')
                 ->cascadeOnDelete();
             $table->string('type');
             $table->string('name');
@@ -35,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('form_fields');
+        Schema::dropIfExists('hc_form_fields');
     }
 };

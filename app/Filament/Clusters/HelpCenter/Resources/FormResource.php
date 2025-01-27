@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Clusters\HelpCenter\Resources;
 
 use App\Enums\Forms\FormFieldType;
 use App\Enums\Tickets\TicketPriority;
-use App\Filament\Resources\FormResource\Pages;
-use App\Models\Form;
+use App\Filament\Clusters\HelpCenter;
+use App\Models\HelpCenter\Form;
 use Filament\Forms;
 use Filament\Forms\Form as FilamentForm;
 use Filament\Resources\Resource;
@@ -20,6 +20,8 @@ class FormResource extends Resource
     protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
+
+    protected static ?string $cluster = HelpCenter::class;
 
     public static function form(FilamentForm $form): FilamentForm
     {
@@ -215,9 +217,9 @@ class FormResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListForms::route('/'),
-            'create' => Pages\CreateForm::route('/create'),
-            'edit' => Pages\EditForm::route('/{record}/edit'),
+            'index' => \App\Filament\Clusters\HelpCenter\Resources\FormResource\Pages\ListForms::route('/'),
+            'create' => \App\Filament\Clusters\HelpCenter\Resources\FormResource\Pages\CreateForm::route('/create'),
+            'edit' => \App\Filament\Clusters\HelpCenter\Resources\FormResource\Pages\EditForm::route('/{record}/edit'),
         ];
     }
 }

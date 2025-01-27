@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Models\FormField;
+use App\Models\HelpCenter\FormField;
 use Illuminate\Support\Str;
 
 class FormFieldObserver

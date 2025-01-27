@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('forms', function (Blueprint $table) {
+        Schema::create('hc_forms', function (Blueprint $table) {
             $table->ulid('id')->primary();
             $table->foreignUlid('user_id')
                 ->nullable()
@@ -40,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('forms');
+        Schema::dropIfExists('hc_forms');
     }
 };

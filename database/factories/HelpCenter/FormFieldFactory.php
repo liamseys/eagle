@@ -1,13 +1,13 @@
 <?php
 
-namespace Database\Factories;
+namespace Database\Factories\HelpCenter;
 
 use App\Enums\Forms\FormFieldType;
-use App\Models\Form;
+use App\Models\HelpCenter\Form;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\FormField>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\HelpCenter\FormField>
  */
 class FormFieldFactory extends Factory
 {
