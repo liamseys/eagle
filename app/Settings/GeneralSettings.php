@@ -12,11 +12,11 @@ class GeneralSettings extends Settings
 
     public string $branding_primary_color;
 
-    public string $branding_from_color;
+    public string $branding_gradient_from_color;
 
-    public string $branding_via_color;
+    public string $branding_gradient_via_color;
 
-    public string $branding_to_color;
+    public string $branding_gradient_to_color;
 
     public static function group(): string
     {

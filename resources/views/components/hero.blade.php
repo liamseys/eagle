@@ -5,7 +5,14 @@
     'description' => null,
 ])
 
-<section class="py-12 bg-gradient-to-r from-[{{ app(GeneralSettings::class)->branding_from_color }}] via-[{{ app(GeneralSettings::class)->branding_via_color }}] to-[{{ app(GeneralSettings::class)->branding_to_color }}]">
+@php
+    $gradientFromColor = app(GeneralSettings::class)->branding_gradient_from_color;
+    $gradientViaColor = app(GeneralSettings::class)->branding_gradient_via_color;
+    $gradientToColor = app(GeneralSettings::class)->branding_gradient_to_color;
+@endphp
+
+<section class="py-12 bg-gradient-to-r from-[var(--from)] via-[var(--via)] to-[var(--to)]"
+         style="--from: {{ $gradientFromColor }}; --via: {{ $gradientViaColor }}; --to: {{ $gradientToColor }};">
     <x-container class="max-w-7xl">
         <div class="flex flex-col gap-2">
             <h1 class="text-3xl font-bold text-white">{{ $title }}</h1>
