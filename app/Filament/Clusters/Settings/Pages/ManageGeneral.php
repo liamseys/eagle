@@ -4,6 +4,8 @@ namespace App\Filament\Clusters\Settings\Pages;
 
 use App\Filament\Clusters\Settings;
 use App\Settings\GeneralSettings;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
@@ -43,10 +45,18 @@ class ManageGeneral extends SettingsPage
                     ->schema([
                         //
                     ]),
-                Section::make(__('Preferences'))
-                    ->description(__('Customize your experience.'))
+                Section::make(__('Branding'))
+                    ->description(__('Customize your branding settings.'))
                     ->schema([
-                        //
+                        Grid::make()
+                            ->schema([
+                                ColorPicker::make('branding_from_color')
+                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/'),
+                                ColorPicker::make('branding_via_color')
+                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/'),
+                                ColorPicker::make('branding_to_color')
+                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/'),
+                            ])->columns(3),
                     ]),
             ]);
     }
