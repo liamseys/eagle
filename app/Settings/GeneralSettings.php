@@ -10,6 +10,8 @@ class GeneralSettings extends Settings
 
     public bool $app_active;
 
+    public array $allowlisted_domains;
+
     public string $branding_primary_color;
 
     public string $branding_gradient_from_color;
