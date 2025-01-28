@@ -124,6 +124,10 @@ class ArticleResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->query(
+                Article::query()
+                    ->with('category')
+            )
             ->columns([
                 Tables\Columns\TextColumn::make('title')
                     ->label(__('Title'))
