@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Ticket;
+use App\Notifications\TicketCreated;
 
 class TicketObserver
 {
@@ -20,6 +21,10 @@ class TicketObserver
     public function created(Ticket $ticket): void
     {
         $ticket->createSlas();
+
+        if ($ticket->requester) {
+            $ticket->requester->notify(new TicketCreated($ticket));
+        }
     }
 
     /**
