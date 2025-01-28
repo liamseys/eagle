@@ -12,7 +12,6 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
@@ -47,9 +46,6 @@ class AppPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->profile(EditProfile::class)
-            ->colors([
-                'primary' => Color::hex('#000000'),
-            ])
             ->font('Lexend', provider: GoogleFontProvider::class)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->darkMode(false)

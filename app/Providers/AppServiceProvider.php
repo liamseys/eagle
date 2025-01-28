@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Settings\GeneralSettings;
+use Filament\Support\Colors\Color;
+use Filament\Support\Facades\FilamentColor;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\ServiceProvider;
@@ -19,8 +22,12 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
+    public function boot(GeneralSettings $generalSettings): void
     {
+        FilamentColor::register([
+            'primary' => Color::hex($generalSettings->branding_primary_color),
+        ]);
+
         Carbon::macro('inApplicationTimezone', function () {
             return $this->tz(config('app.timezone_display'));
         });
