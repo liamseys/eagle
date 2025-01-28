@@ -18,43 +18,47 @@
                         </x-slot>
 
                         @foreach($form->fields as $formField)
-                            @switch($formField->type)
-                                @case(FormFieldType::TEXTAREA)
-                                    <textarea name="{{ $formField->name }}" id="{{ $formField->name }}"></textarea>
-                                    @break
+                            <div>
+                                <label for="{{ $formField->name }}">{{ $formField->label }}</label>
+                                @switch($formField->type)
+                                    @case(FormFieldType::TEXTAREA)
+                                        <textarea name="{{ $formField->name }}" id="{{ $formField->name }}"></textarea>
+                                        @break
 
-                                @case(FormFieldType::CHECKBOX)
-                                    <input type="checkbox" name="{{ $formField->name }}" id="{{ $formField->name }}">
-                                    @break
+                                    @case(FormFieldType::CHECKBOX)
+                                        <input type="checkbox" name="{{ $formField->name }}"
+                                               id="{{ $formField->name }}">
+                                        @break
 
-                                @case(FormFieldType::RADIO)
-                                    <input type="radio" name="{{ $formField->name }}" id="{{ $formField->name }}">
-                                    @break
+                                    @case(FormFieldType::RADIO)
+                                        <input type="radio" name="{{ $formField->name }}" id="{{ $formField->name }}">
+                                        @break
 
-                                @case(FormFieldType::SELECT)
-                                    <select name="{{ $formField->name }}" id="{{ $formField->name }}">
-                                        @foreach($formField->options as $value => $label)
-                                            <option value="{{ $value }}">{{ $label }}</option>
-                                        @endforeach
-                                    </select>
-                                    @break
+                                    @case(FormFieldType::SELECT)
+                                        <select name="{{ $formField->name }}" id="{{ $formField->name }}">
+                                            @foreach($formField->options as $value => $label)
+                                                <option value="{{ $value }}">{{ $label }}</option>
+                                            @endforeach
+                                        </select>
+                                        @break
 
-                                @case(FormFieldType::EMAIL)
-                                    <input type="email" name="{{ $formField->name }}" id="{{ $formField->name }}">
-                                    @break
+                                    @case(FormFieldType::EMAIL)
+                                        <input type="email" name="{{ $formField->name }}" id="{{ $formField->name }}">
+                                        @break
 
-                                @case(FormFieldType::DATE)
-                                    <input type="date" name="{{ $formField->name }}" id="{{ $formField->name }}">
-                                    @break
+                                    @case(FormFieldType::DATE)
+                                        <input type="date" name="{{ $formField->name }}" id="{{ $formField->name }}">
+                                        @break
 
-                                @case(FormFieldType::DATETIME_LOCAL)
-                                    <input type="datetime-local" name="{{ $formField->name }}"
-                                           id="{{ $formField->name }}">
-                                    @break
+                                    @case(FormFieldType::DATETIME_LOCAL)
+                                        <input type="datetime-local" name="{{ $formField->name }}"
+                                               id="{{ $formField->name }}">
+                                        @break
 
-                                @default
-                                    <input type="text" name="{{ $formField->name }}" id="{{ $formField->name }}">
-                            @endswitch
+                                    @default
+                                        <input type="text" name="{{ $formField->name }}" id="{{ $formField->name }}">
+                                @endswitch
+                            </div>
                         @endforeach
                     </x-card>
                 </div>
