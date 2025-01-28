@@ -11,6 +11,10 @@ class FormController extends Controller
      */
     public function show($locale, Form $form)
     {
+        if (! $form->is_active) {
+            abort(404);
+        }
+
         return view('forms.show', [
             'locale' => $locale,
             'form' => $form,
