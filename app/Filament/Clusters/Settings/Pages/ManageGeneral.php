@@ -6,7 +6,9 @@ use App\Filament\Clusters\Settings;
 use App\Settings\GeneralSettings;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Grid;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
+use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
 
@@ -43,7 +45,22 @@ class ManageGeneral extends SettingsPage
                 Section::make(__('Allowlisted domains'))
                     ->description(__('These domains are allowed to access Eagle.'))
                     ->schema([
-                        //
+                        Repeater::make('allowlisted_domains')
+                            ->label('')
+                            ->schema([
+                                Grid::make()
+                                    ->schema([
+                                        TextInput::make('label')
+                                            ->label(__('Label'))
+                                            ->maxLength(255)
+                                            ->required(),
+                                        TextInput::make('domain')
+                                            ->label(__('Domain'))
+                                            ->suffixIcon('heroicon-m-globe-alt')
+                                            ->required(),
+                                    ]),
+                            ])
+                            ->reorderable(false),
                     ]),
                 Section::make(__('Branding'))
                     ->description(__('Customize your branding settings.'))
