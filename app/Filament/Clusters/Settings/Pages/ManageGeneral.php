@@ -50,11 +50,14 @@ class ManageGeneral extends SettingsPage
                     ->schema([
                         Grid::make()
                             ->schema([
-                                ColorPicker::make('branding_from_color')
+                                ColorPicker::make('branding_gradient_from_color')
+                                    ->label(__('Gradient from color'))
                                     ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/'),
-                                ColorPicker::make('branding_via_color')
+                                ColorPicker::make('branding_gradient_via_color')
+                                    ->label(__('Gradient via color'))
                                     ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/'),
-                                ColorPicker::make('branding_to_color')
+                                ColorPicker::make('branding_gradient_to_color')
+                                    ->label(__('Gradient to color'))
                                     ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/'),
                             ])->columns(3),
                     ]),
