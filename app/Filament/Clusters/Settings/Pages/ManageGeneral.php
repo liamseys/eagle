@@ -74,21 +74,25 @@ class ManageGeneral extends SettingsPage
                                     ->required()
                                     ->helperText(__('This is the primary color that will be applied across the entire application.')),
                             ]),
-                        Grid::make()
+                        Section::make()
+                            ->description(__('These colors are applied in the help center to create the gradient effect in the hero section.'))
                             ->schema([
-                                ColorPicker::make('branding_gradient_from_color')
-                                    ->label(__('Gradient from color'))
-                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
-                                    ->required(),
-                                ColorPicker::make('branding_gradient_via_color')
-                                    ->label(__('Gradient via color'))
-                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
-                                    ->required(),
-                                ColorPicker::make('branding_gradient_to_color')
-                                    ->label(__('Gradient to color'))
-                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
-                                    ->required(),
-                            ])->columns(3),
+                                Grid::make()
+                                    ->schema([
+                                        ColorPicker::make('branding_gradient_from_color')
+                                            ->label(__('Gradient from color'))
+                                            ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
+                                            ->required(),
+                                        ColorPicker::make('branding_gradient_via_color')
+                                            ->label(__('Gradient via color'))
+                                            ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
+                                            ->required(),
+                                        ColorPicker::make('branding_gradient_to_color')
+                                            ->label(__('Gradient to color'))
+                                            ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
+                                            ->required(),
+                                    ])->columns(3),
+                            ]),
                     ]),
             ]);
     }
