@@ -71,7 +71,8 @@ class ManageGeneral extends SettingsPage
                                 ColorPicker::make('branding_primary_color')
                                     ->label(__('Primary color'))
                                     ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
-                                    ->required(),
+                                    ->required()
+                                    ->helperText(__('This is the primary color that will be applied across the entire application.')),
                             ]),
                         Grid::make()
                             ->schema([
