@@ -29,7 +29,7 @@
         @endforeach
     @else
         <div class="text-center flex flex-col gap-6">
-            <img src="{{ asset('img/empty_state.svg') }}" alt="Empty" class="h-24 mx-auto">
+            <img src="{{ asset('img/no_messages.svg') }}" alt="Empty" class="h-24 mx-auto">
             <p class="text-gray-500">{{ __('No comments found.') }}</p>
         </div>
     @endif
