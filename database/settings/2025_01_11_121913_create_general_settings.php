@@ -10,8 +10,8 @@ return new class extends SettingsMigration
         $this->migrator->add('general.app_active', true);
 
         $this->migrator->add('general.branding_primary_color', '#000000');
-        $this->migrator->add('general.branding_from_color', '#F8CB09');
-        $this->migrator->add('general.branding_via_color', '#EB2622');
-        $this->migrator->add('general.branding_to_color', '#7506BF');
+        $this->migrator->add('general.branding_from_color', '#f8cb09');
+        $this->migrator->add('general.branding_via_color', '#eb2622');
+        $this->migrator->add('general.branding_to_color', '#7506bf');
     }
 };
