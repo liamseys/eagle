@@ -57,6 +57,7 @@ class ManageGeneral extends SettingsPage
                                         TextInput::make('domain')
                                             ->label(__('Domain'))
                                             ->suffixIcon('heroicon-m-globe-alt')
+                                            ->maxLength(255)
                                             ->required(),
                                     ]),
                             ])
