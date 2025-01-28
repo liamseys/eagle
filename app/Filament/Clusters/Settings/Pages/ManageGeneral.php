@@ -52,13 +52,16 @@ class ManageGeneral extends SettingsPage
                             ->schema([
                                 ColorPicker::make('branding_gradient_from_color')
                                     ->label(__('Gradient from color'))
-                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/'),
+                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
+                                    ->required(),
                                 ColorPicker::make('branding_gradient_via_color')
                                     ->label(__('Gradient via color'))
-                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/'),
+                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
+                                    ->required(),
                                 ColorPicker::make('branding_gradient_to_color')
                                     ->label(__('Gradient to color'))
-                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/'),
+                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
+                                    ->required(),
                             ])->columns(3),
                     ]),
             ]);
