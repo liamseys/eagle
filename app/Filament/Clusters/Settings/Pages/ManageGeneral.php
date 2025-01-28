@@ -68,6 +68,13 @@ class ManageGeneral extends SettingsPage
                     ->schema([
                         Grid::make()
                             ->schema([
+                                ColorPicker::make('branding_primary_color')
+                                    ->label(__('Primary color'))
+                                    ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
+                                    ->required(),
+                            ]),
+                        Grid::make()
+                            ->schema([
                                 ColorPicker::make('branding_gradient_from_color')
                                     ->label(__('Gradient from color'))
                                     ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
