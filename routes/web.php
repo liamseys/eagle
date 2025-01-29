@@ -19,5 +19,6 @@ Route::group([
     Route::get('/', IndexController::class)->name('index');
     Route::resource('categories', CategoryController::class)->only('show');
     Route::resource('articles', ArticleController::class)->only('show');
+    Route::post('forms/submit', [FormController::class, 'submit'])->name('forms.submit');
     Route::resource('forms', FormController::class)->only('show');
 });

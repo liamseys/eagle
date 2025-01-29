@@ -20,4 +20,9 @@ class FormController extends Controller
             'form' => $form,
         ]);
     }
+
+    public function submit()
+    {
+        dd(request()->all());
+    }
 }
