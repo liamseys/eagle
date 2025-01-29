@@ -24,12 +24,12 @@
                             <h3 class="font-semibold">{{ $article->section->name }}</h3>
                         </x-slot>
 
-                        <ul class="-mx-4">
+                        <ul class="-mx-4 flex flex-col space-y-2">
                             @foreach($article->section
-                                             ->articles()
-                                             ->public()
-                                             ->published()
-                                             ->get() as $article)
+                                                 ->articles()
+                                                 ->public()
+                                                 ->published()
+                                                 ->get() as $article)
                                 <x-nav-link :href="route('articles.show', $article)"
                                             :active="request()->routeIs('articles.show') && request()->route('article')?->is($article)">
                                     <p class="text-sm">{{ $article->title }}</p>
