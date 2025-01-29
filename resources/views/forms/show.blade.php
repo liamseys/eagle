@@ -18,7 +18,7 @@
                         </x-slot>
 
                         @foreach($form->fields as $formField)
-                            <div>
+                            <div class="flex flex-col gap-1">
                                 <x-label for="{{ $formField->name }}">{{ $formField->label }}</x-label>
                                 @switch($formField->type)
                                     @case(FormFieldType::TEXTAREA)
