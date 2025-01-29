@@ -70,6 +70,8 @@
                                         @endswitch
                                     </div>
                                 @endforeach
+
+                                <button type="submit">{{ __('Submit') }}</button>
                             </div>
                         </form>
                     </x-card>

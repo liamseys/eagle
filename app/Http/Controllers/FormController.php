@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\HelpCenter\Form;
+use Illuminate\Http\Request;
 
 class FormController extends Controller
 {
@@ -21,8 +22,17 @@ class FormController extends Controller
         ]);
     }
 
-    public function submit()
+    public function submit(Request $request)
     {
-        dd(request()->all());
+        $form = Form::findOrFail($request->get('form_id'));
+
+        $validationRules = [];
+        foreach ($form->formFields as $formField) {
+            $validationRules[$formField->name] = $formField->validation_rules;
+        }
+
+        $validatedData = $request->validate($validationRules);
+
+        dd($validatedData);
     }
 }
