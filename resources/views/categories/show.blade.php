@@ -1,6 +1,8 @@
 <x-app-layout>
     <x-hero :title="__('Help Center')"/>
 
+    {{ Breadcrumbs::render('category', $category) }}
+
     <section class="py-12">
         <x-container class="max-w-7xl">
             <h2 class="text-xl font-semibold">{{ $category->name }}</h2>
