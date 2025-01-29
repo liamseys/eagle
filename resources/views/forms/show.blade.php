@@ -19,7 +19,7 @@
 
                         @foreach($form->fields as $formField)
                             <div>
-                                <label for="{{ $formField->name }}">{{ $formField->label }}</label>
+                                <x-label for="{{ $formField->name }}">{{ $formField->label }}</x-label>
                                 @switch($formField->type)
                                     @case(FormFieldType::TEXTAREA)
                                         <textarea name="{{ $formField->name }}" id="{{ $formField->name }}"></textarea>
