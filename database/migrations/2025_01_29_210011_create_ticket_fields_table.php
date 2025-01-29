@@ -13,11 +13,11 @@ return new class extends Migration
     {
         Schema::create('ticket_fields', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignId('ticket_id')
+            $table->foreignUlid('ticket_id')
                 ->constrained()
                 ->cascadeOnDelete();
-            $table->foreignId('form_field_id')
-                ->constrained()
+            $table->foreignUlid('form_field_id')
+                ->constrained('hc_form_fields')
                 ->cascadeOnDelete();
             $table->text('value')->nullable();
             $table->timestamps();
