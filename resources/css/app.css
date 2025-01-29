@@ -12,6 +12,10 @@
     & ul {
         @apply text-sm;
     }
+
+    & ul {
+        @apply list-disc list-inside;
+    }
 }
 
 .form-description {
