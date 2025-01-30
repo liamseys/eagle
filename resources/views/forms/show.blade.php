@@ -22,6 +22,12 @@
                             <input type="hidden" name="form_id" value="{{ $form->id }}">
 
                             <div class="flex flex-col space-y-4">
+                                @if (session('status'))
+                                    <div>
+                                        <p class="text-sm text-green-500">{{ session('status') }}</p>
+                                    </div>
+                                @endif
+
                                 @foreach($form->fields()
                                               ->orderBy('sort')
                                               ->get() as $formField)

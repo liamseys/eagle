@@ -39,6 +39,6 @@ class FormController extends Controller
 
         $request->validate($validationRules);
 
-        dd($validatedData);
+        return redirect()->back()->with('status', __('Form was successfully submitted.'));
     }
 }
