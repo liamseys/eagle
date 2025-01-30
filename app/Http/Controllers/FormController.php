@@ -37,7 +37,7 @@ class FormController extends Controller
                 ->toArray();
         }
 
-        $validatedData = $request->validate($validationRules);
+        $request->validate($validationRules);
 
         dd($validatedData);
     }
