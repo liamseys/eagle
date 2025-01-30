@@ -6,6 +6,7 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\IndexController;
 use App\Http\Middleware\SetDefaultLocaleForUrls;
 use Illuminate\Support\Facades\Route;
+use Spatie\Honeypot\ProtectAgainstSpam;
 
 Route::get('/', function () {
     return redirect()->route('index');
@@ -19,6 +20,8 @@ Route::group([
     Route::get('/', IndexController::class)->name('index');
     Route::resource('categories', CategoryController::class)->only('show');
     Route::resource('articles', ArticleController::class)->only('show');
-    Route::post('forms/submit', [FormController::class, 'submit'])->name('forms.submit');
+    Route::post('forms/submit', [FormController::class, 'submit'])
+        ->middleware(ProtectAgainstSpam::class)
+        ->name('forms.submit');
     Route::resource('forms', FormController::class)->only('show');
 });
