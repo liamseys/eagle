@@ -67,7 +67,7 @@ class FormResource extends Resource
                         Livewire::make(FieldsRelationManager::class, fn (Form $record, EditForm $livewire): array => [
                             'ownerRecord' => $record,
                             'pageClass' => $livewire::class,
-                        ]),
+                        ])->hiddenOn(['create']),
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
