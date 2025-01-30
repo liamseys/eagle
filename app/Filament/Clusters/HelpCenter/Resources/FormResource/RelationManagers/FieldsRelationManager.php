@@ -94,7 +94,9 @@ class FieldsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                Tables\Actions\CreateAction::make()
+                    ->label(__('New field'))
+                    ->modalHeading(__('Create field')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
