@@ -38,6 +38,7 @@ class FormField extends Model
         'options',
         'validation_rules',
         'sort',
+        'is_required',
         'is_visible',
     ];
 

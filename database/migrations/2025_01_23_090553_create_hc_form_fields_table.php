@@ -23,6 +23,7 @@ return new class extends Migration
             $table->json('options')->nullable();
             $table->json('validation_rules')->nullable();
             $table->unsignedSmallInteger('sort')->default(1);
+            $table->boolean('is_required')->default(true);
             $table->boolean('is_visible')->default(true);
             $table->timestamps();
 

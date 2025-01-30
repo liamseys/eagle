@@ -24,6 +24,7 @@ class FormFieldFactory extends Factory
             'name' => fake()->unique()->word(),
             'label' => fake()->sentence(3),
             'description' => fake()->sentence(),
+            'is_required' => fake()->boolean(),
             'is_visible' => fake()->boolean(),
         ];
     }
