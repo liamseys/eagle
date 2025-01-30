@@ -42,7 +42,8 @@
                                                 @break
 
                                             @case(FormFieldType::SELECT)
-                                                <select name="{{ $formField->name }}" id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
+                                                <select name="{{ $formField->name }}"
+                                                        id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
                                                     @foreach($formField->options as $value => $label)
                                                         <option value="{{ $value }}">{{ $label }}</option>
                                                     @endforeach
@@ -68,6 +69,10 @@
                                                 <input type="text" name="{{ $formField->name }}"
                                                        id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
                                         @endswitch
+
+                                        @isset($formField->description)
+                                            <p class="break-words text-sm text-gray-500">{{ $formField->description }}</p>
+                                        @endisset
                                     </div>
                                 @endforeach
 
