@@ -2,11 +2,13 @@
 
 namespace App\Filament\Clusters\HelpCenter\Resources;
 
-use App\Enums\HelpCenter\Forms\FormFieldType;
 use App\Enums\Tickets\TicketPriority;
 use App\Filament\Clusters\HelpCenter;
+use App\Filament\Clusters\HelpCenter\Resources\FormResource\Pages\EditForm;
+use App\Filament\Clusters\HelpCenter\Resources\FormResource\RelationManagers\FieldsRelationManager;
 use App\Models\HelpCenter\Form;
 use Filament\Forms;
+use Filament\Forms\Components\Livewire;
 use Filament\Forms\Form as FilamentForm;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -62,50 +64,10 @@ class FormResource extends Resource
                                         '</div>'
                                     )),
                             ]),
-                        Forms\Components\Section::make(__('Fields'))
-                            ->schema([
-                                Forms\Components\Repeater::make('fields')
-                                    ->label('')
-                                    ->relationship()
-                                    ->schema([
-                                        Forms\Components\Select::make('type')
-                                            ->label(__('Type'))
-                                            ->options(FormFieldType::class)
-                                            ->searchable()
-                                            ->preload()
-                                            ->required()
-                                            ->live(),
-                                        Forms\Components\TextInput::make('label')
-                                            ->label(__('Label'))
-                                            ->required()
-                                            ->maxLength(255),
-                                        Forms\Components\KeyValue::make('options')
-                                            ->addActionLabel(__('Add option'))
-                                            ->requiredIf('type', [
-                                                FormFieldType::CHECKBOX->value,
-                                                FormFieldType::RADIO->value,
-                                                FormFieldType::SELECT->value,
-                                            ])
-                                            ->visible(fn ($get) => in_array($get('type'), [
-                                                FormFieldType::CHECKBOX->value,
-                                                FormFieldType::RADIO->value,
-                                                FormFieldType::SELECT->value,
-                                            ]))
-                                            ->columnSpanFull(),
-                                        Forms\Components\TextInput::make('description')
-                                            ->label(__('Description'))
-                                            ->columnSpanFull(),
-                                        Forms\Components\Toggle::make('is_visible')
-                                            ->label(__('Visible'))
-                                            ->default(true)
-                                            ->required()
-                                            ->helperText(__('Visible fields appear on the form, while hidden fields are only accessible to agents.')),
-                                    ])
-                                    ->addActionLabel(__('Add Field'))
-                                    ->orderColumn('sort')
-                                    ->columns(2),
-                            ])
-                            ->hiddenOn(['create']),
+                        Livewire::make(FieldsRelationManager::class, fn (Form $record, EditForm $livewire): array => [
+                            'ownerRecord' => $record,
+                            'pageClass' => $livewire::class,
+                        ]),
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
