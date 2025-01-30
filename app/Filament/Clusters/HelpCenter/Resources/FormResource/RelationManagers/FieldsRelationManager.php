@@ -91,6 +91,8 @@ class FieldsRelationManager extends RelationManager
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('sort', 'ASC')
+            ->reorderable('sort');
     }
 }
