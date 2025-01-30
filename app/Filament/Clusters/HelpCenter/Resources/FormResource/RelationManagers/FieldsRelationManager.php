@@ -74,7 +74,8 @@ class FieldsRelationManager extends RelationManager
                         Tabs\Tab::make(__('Extra validation'))
                             ->icon('heroicon-o-variable')
                             ->schema([
-                                // ...
+                                Forms\Components\Repeater::make('validation_rules')
+                                    ->addActionLabel(__('Add rule')),
                             ]),
                     ])->columnSpanFull(),
             ]);
