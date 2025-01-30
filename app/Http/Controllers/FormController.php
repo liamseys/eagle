@@ -27,8 +27,14 @@ class FormController extends Controller
         $form = Form::findOrFail($request->get('form_id'));
 
         $validationRules = [];
-        foreach ($form->formFields as $formField) {
-            $validationRules[$formField->name] = $formField->validation_rules;
+
+        foreach ($form->fields()->whereNotNull('validation_rules')->get() as $formField) {
+            $validationRules[$formField->name] = collect($formField->validation_rules)
+                ->map(fn ($ruleSet) => isset($ruleSet['value'])
+                    ? "{$ruleSet['rule']}:{$ruleSet['value']}"
+                    : $ruleSet['rule']
+                )
+                ->toArray();
         }
 
         $validatedData = $request->validate($validationRules);

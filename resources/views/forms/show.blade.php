@@ -22,7 +22,9 @@
                             <input type="hidden" name="form_id" value="{{ $form->id }}">
 
                             <div class="flex flex-col space-y-4">
-                                @foreach($form->fields as $formField)
+                                @foreach($form->fields()
+                                              ->orderBy('sort')
+                                              ->get() as $formField)
                                     <div class="flex flex-col gap-1">
                                         <x-label for="{{ $formField->name }}">{{ $formField->label }}</x-label>
                                         @switch($formField->type)
