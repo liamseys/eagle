@@ -16,4 +16,11 @@ class EditForm extends EditRecord
             Actions\DeleteAction::make(),
         ];
     }
+
+    protected function getSaveFormAction(): Actions\Action
+    {
+        return parent::getSaveFormAction()
+            ->submit(null)
+            ->action('save');
+    }
 }

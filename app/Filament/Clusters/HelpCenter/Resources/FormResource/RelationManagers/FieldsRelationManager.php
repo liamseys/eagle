@@ -27,6 +27,8 @@ class FieldsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('label')
             ->columns([
+                Tables\Columns\TextColumn::make('type')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('label'),
             ])
             ->filters([
