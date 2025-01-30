@@ -39,19 +39,11 @@ class FieldsRelationManager extends RelationManager
                                         Forms\Components\TextInput::make('description')
                                             ->label(__('Description'))
                                             ->columnSpanFull(),
-                                        Forms\Components\Grid::make()
-                                            ->schema([
-                                                Forms\Components\Toggle::make('is_required')
-                                                    ->label(__('Required'))
-                                                    ->default(true)
-                                                    ->required()
-                                                    ->helperText(__('Indicates if this field is required and must be filled out before the form can be submitted.')),
-                                                Forms\Components\Toggle::make('is_visible')
-                                                    ->label(__('Visible'))
-                                                    ->default(true)
-                                                    ->required()
-                                                    ->helperText(__('Visible fields appear on the form, while hidden fields are only accessible to agents.')),
-                                            ]),
+                                        Forms\Components\Toggle::make('is_visible')
+                                            ->label(__('Visible'))
+                                            ->default(true)
+                                            ->required()
+                                            ->helperText(__('Visible fields appear on the form, while hidden fields are only accessible to agents.')),
                                     ]),
                             ]),
                         Tabs\Tab::make(__('Options'))
@@ -74,6 +66,14 @@ class FieldsRelationManager extends RelationManager
                         Tabs\Tab::make(__('Extra validation'))
                             ->icon('heroicon-o-variable')
                             ->schema([
+                                Forms\Components\Grid::make()
+                                    ->schema([
+                                        Forms\Components\Toggle::make('is_required')
+                                            ->label(__('Required'))
+                                            ->default(true)
+                                            ->required()
+                                            ->helperText(__('Indicates if this field is required and must be filled out before the form can be submitted.')),
+                                    ]),
                                 Forms\Components\Repeater::make('validation_rules')
                                     ->addActionLabel(__('Add rule')),
                             ]),
