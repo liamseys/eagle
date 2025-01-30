@@ -76,7 +76,32 @@ class FieldsRelationManager extends RelationManager
                                     ]),
                                 Forms\Components\Repeater::make('validation_rules')
                                     ->addActionLabel(__('Add rule'))
-                                    ->schema([]),
+                                    ->schema([
+                                        Forms\Components\Grid::make()
+                                            ->schema([
+                                                Forms\Components\Select::make('rule')
+                                                    ->label(__('Rule'))
+                                                    ->options([
+                                                        'string' => 'String',
+                                                        'max' => 'Maximum length',
+                                                        'min' => 'Minimum length',
+                                                        'email' => 'Email address',
+                                                        'integer' => 'Integer',
+                                                        'boolean' => 'Boolean',
+                                                        'url' => 'Valid URL',
+                                                        'in' => 'In list (comma-separated)',
+                                                        'regex' => 'Regex pattern',
+                                                    ])
+                                                    ->live()
+                                                    ->required(),
+
+                                                Forms\Components\TextInput::make('value')
+                                                    ->label(__('Value'))
+                                                    ->maxLength(255)
+                                                    ->disabled(fn ($get) => ! in_array($get('rule'), ['max', 'min', 'in', 'regex']))
+                                                    ->required(fn ($get) => in_array($get('rule'), ['max', 'min', 'in', 'regex'])),
+                                            ]),
+                                    ]),
                             ]),
                     ])->columnSpanFull(),
             ]);
