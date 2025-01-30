@@ -75,7 +75,8 @@ class FieldsRelationManager extends RelationManager
                                             ->helperText(__('Indicates if this field is required and must be filled out before the form can be submitted.')),
                                     ]),
                                 Forms\Components\Repeater::make('validation_rules')
-                                    ->addActionLabel(__('Add rule')),
+                                    ->addActionLabel(__('Add rule'))
+                                    ->schema([]),
                             ]),
                     ])->columnSpanFull(),
             ]);
