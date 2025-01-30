@@ -127,7 +127,8 @@ class FieldsRelationManager extends RelationManager
             ->actions([
                 Tables\Actions\EditAction::make()
                     ->recordTitle('field'),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->recordTitle('field'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
