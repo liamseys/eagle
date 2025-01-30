@@ -10,8 +10,6 @@ class EditForm extends EditRecord
 {
     protected static string $resource = FormResource::class;
 
-    protected static string $view = 'filament.clusters.help-center.resources.forms.pages.edit-form';
-
     protected function getHeaderActions(): array
     {
         return [
