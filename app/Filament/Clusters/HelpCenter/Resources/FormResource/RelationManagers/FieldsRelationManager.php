@@ -99,7 +99,8 @@ class FieldsRelationManager extends RelationManager
                     ->modalHeading(__('Create field')),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->recordTitle('field'),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
