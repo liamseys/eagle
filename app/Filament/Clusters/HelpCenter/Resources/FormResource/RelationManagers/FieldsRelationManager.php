@@ -57,8 +57,20 @@ class FieldsRelationManager extends RelationManager
                         Tabs\Tab::make(__('Options'))
                             ->icon('heroicon-o-list-bullet')
                             ->schema([
-                                // ...
-                            ]),
+                                Forms\Components\KeyValue::make('options')
+                                    ->addActionLabel(__('Add option'))
+                                    ->requiredIf('type', [
+                                        FormFieldType::CHECKBOX->value,
+                                        FormFieldType::RADIO->value,
+                                        FormFieldType::SELECT->value,
+                                    ])
+                                    ->columnSpanFull(),
+                            ])
+                            ->visible(fn ($get) => in_array($get('type'), [
+                                FormFieldType::CHECKBOX->value,
+                                FormFieldType::RADIO->value,
+                                FormFieldType::SELECT->value,
+                            ])),
                         Tabs\Tab::make(__('Extra validation'))
                             ->icon('heroicon-o-variable')
                             ->schema([
