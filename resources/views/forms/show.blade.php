@@ -28,21 +28,21 @@
                                         @switch($formField->type)
                                             @case(FormFieldType::TEXTAREA)
                                                 <textarea name="{{ $formField->name }}"
-                                                          id="{{ $formField->name }}"></textarea>
+                                                          id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}></textarea>
                                                 @break
 
                                             @case(FormFieldType::CHECKBOX)
                                                 <input type="checkbox" name="{{ $formField->name }}"
-                                                       id="{{ $formField->name }}">
+                                                       id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
                                                 @break
 
                                             @case(FormFieldType::RADIO)
                                                 <input type="radio" name="{{ $formField->name }}"
-                                                       id="{{ $formField->name }}">
+                                                       id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
                                                 @break
 
                                             @case(FormFieldType::SELECT)
-                                                <select name="{{ $formField->name }}" id="{{ $formField->name }}">
+                                                <select name="{{ $formField->name }}" id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
                                                     @foreach($formField->options as $value => $label)
                                                         <option value="{{ $value }}">{{ $label }}</option>
                                                     @endforeach
@@ -51,22 +51,22 @@
 
                                             @case(FormFieldType::EMAIL)
                                                 <input type="email" name="{{ $formField->name }}"
-                                                       id="{{ $formField->name }}">
+                                                       id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
                                                 @break
 
                                             @case(FormFieldType::DATE)
                                                 <input type="date" name="{{ $formField->name }}"
-                                                       id="{{ $formField->name }}">
+                                                       id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
                                                 @break
 
                                             @case(FormFieldType::DATETIME_LOCAL)
                                                 <input type="datetime-local" name="{{ $formField->name }}"
-                                                       id="{{ $formField->name }}">
+                                                       id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
                                                 @break
 
                                             @default
                                                 <input type="text" name="{{ $formField->name }}"
-                                                       id="{{ $formField->name }}">
+                                                       id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
                                         @endswitch
                                     </div>
                                 @endforeach
