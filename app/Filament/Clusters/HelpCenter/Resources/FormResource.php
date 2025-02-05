@@ -80,12 +80,20 @@ class FormResource extends Resource
                                     ->schema([
                                         Forms\Components\Select::make('settings.client_name_field')
                                             ->label(__('Client name field'))
-                                            ->relationship('fields', 'label')
+                                            ->options(function ($livewire) {
+                                                return $livewire->record?->fields()
+                                                    ->pluck('label', 'name')
+                                                    ->toArray();
+                                            })
                                             ->requiredIf('settings.create_client', true)
                                             ->helperText(__('Select the field to use as the client name.')),
                                         Forms\Components\Select::make('settings.client_email_field')
                                             ->label(__('Client email field'))
-                                            ->relationship('fields', 'label')
+                                            ->options(function ($livewire) {
+                                                return $livewire->record?->fields()
+                                                    ->pluck('label', 'name')
+                                                    ->toArray();
+                                            })
                                             ->requiredIf('settings.create_client', true)
                                             ->helperText(__('Select the field to use as the client email.')),
                                     ])
