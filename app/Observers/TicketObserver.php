@@ -2,7 +2,7 @@
 
 namespace App\Observers;
 
-use App\Actions\Tickets\CreateTicketSla;
+use App\Actions\Tickets\CreateTicketSlas;
 use App\Models\Ticket;
 use App\Notifications\TicketCreated;
 
@@ -19,9 +19,9 @@ class TicketObserver
     /**
      * Handle the Ticket "created" event.
      */
-    public function created(Ticket $ticket, CreateTicketSla $createTicketSla): void
+    public function created(Ticket $ticket): void
     {
-        $createTicketSla->handle($ticket);
+        app(CreateTicketSlas::class)->handle($ticket);
 
         if ($ticket->requester) {
             $ticket->requester->notify(new TicketCreated($ticket));
@@ -31,10 +31,10 @@ class TicketObserver
     /**
      * Handle the Ticket "updated" event.
      */
-    public function updated(Ticket $ticket, CreateTicketSla $createTicketSla): void
+    public function updated(Ticket $ticket): void
     {
         if ($ticket->isDirty('group_id')) {
-            $createTicketSla->handle($ticket);
+            app(CreateTicketSlas::class)->handle($ticket);
         }
     }
 

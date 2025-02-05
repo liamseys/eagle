@@ -8,7 +8,7 @@ use App\Models\Ticket;
 use App\Settings\WorkflowSettings;
 use Illuminate\Support\Facades\DB;
 
-final class CreateTicketSla
+final class CreateTicketSlas
 {
     public function handle(Ticket $ticket): void
     {
