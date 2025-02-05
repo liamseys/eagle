@@ -12,8 +12,10 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class TicketResource extends Resource
 {
@@ -139,6 +141,9 @@ class TicketResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
+                Filter::make('is_assigned_to_me')
+                    ->label(__('Assigned to me'))
+                    ->query(fn (Builder $query): Builder => $query->where('assignee_id', auth()->id())),
                 SelectFilter::make('priority')
                     ->label(__('Priority'))
                     ->options(TicketPriority::class)

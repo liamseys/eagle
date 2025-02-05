@@ -63,6 +63,10 @@ class CreateTicketComment extends Component implements HasForms
             'is_public' => $this->form->getState()['is_public'],
         ]);
 
+        $this->ticket->update([
+            'assignee_id' => auth()->id(),
+        ]);
+
         $this->reset('data');
         $this->form->fill();
 
