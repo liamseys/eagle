@@ -20,7 +20,7 @@
                         <form method="POST" action="{{ route('forms.submit') }}">
                             @csrf
 
-                            <x-honeypot />
+                            <x-honeypot/>
                             <input type="hidden" name="form_id" value="{{ $form->id }}">
 
                             <div class="flex flex-col space-y-4">
@@ -61,23 +61,23 @@
                                                 @break
 
                                             @case(FormFieldType::EMAIL)
-                                                <input type="email" name="{{ $formField->name }}"
-                                                       id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
+                                                <x-input type="email" name="{{ $formField->name }}"
+                                                         id="{{ $formField->name }}" :required="$formField->is_required"/>
                                                 @break
 
                                             @case(FormFieldType::DATE)
-                                                <input type="date" name="{{ $formField->name }}"
-                                                       id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
+                                                <x-input type="date" name="{{ $formField->name }}"
+                                                         id="{{ $formField->name }}" :required="$formField->is_required"/>
                                                 @break
 
                                             @case(FormFieldType::DATETIME_LOCAL)
-                                                <input type="datetime-local" name="{{ $formField->name }}"
-                                                       id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
+                                                <x-input type="datetime-local" name="{{ $formField->name }}"
+                                                         id="{{ $formField->name }}" :required="$formField->is_required"/>
                                                 @break
 
                                             @default
-                                                <input type="text" name="{{ $formField->name }}"
-                                                       id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
+                                                <x-input type="text" name="{{ $formField->name }}"
+                                                         id="{{ $formField->name }}" :required="$formField->is_required"/>
                                         @endswitch
 
                                         @isset($formField->description)
