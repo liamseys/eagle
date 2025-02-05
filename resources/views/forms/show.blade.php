@@ -52,12 +52,13 @@
                                                 @break
 
                                             @case(FormFieldType::SELECT)
-                                                <select name="{{ $formField->name }}"
-                                                        id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
+                                                <x-select name="{{ $formField->name }}"
+                                                          id="{{ $formField->name }}" :required="$formField->is_required">
+                                                    <option value="">{{ __('Select an option') }}</option>
                                                     @foreach($formField->options as $value => $label)
                                                         <option value="{{ $value }}">{{ $label }}</option>
                                                     @endforeach
-                                                </select>
+                                                </x-select>
                                                 @break
 
                                             @case(FormFieldType::EMAIL)
