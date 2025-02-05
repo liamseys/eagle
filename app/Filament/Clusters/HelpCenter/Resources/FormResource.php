@@ -99,6 +99,10 @@ class FormResource extends Resource
                                             ->helperText(__('Select the field to use as the client email.')),
                                     ])
                                     ->hidden(fn (Get $get) => ! $get('settings.create_client')),
+                                Forms\Components\Toggle::make('settings.require_escalation')
+                                    ->label(__('Require escalation'))
+                                    ->helperText(__('Clients must work with an Account Manager to process this form.'))
+                                    ->default(false),
                             ]),
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
