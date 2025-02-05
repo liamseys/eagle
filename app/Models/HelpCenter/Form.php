@@ -3,6 +3,7 @@
 namespace App\Models\HelpCenter;
 
 use App\Enums\Tickets\TicketPriority;
+use App\Enums\Tickets\TicketType;
 use App\Models\Group;
 use App\Models\User;
 use App\Observers\FormObserver;
@@ -39,6 +40,7 @@ class Form extends Model
         'description',
         'default_group_id',
         'default_ticket_priority',
+        'default_ticket_type',
         'settings',
         'sort',
         'is_embeddable',
@@ -55,6 +57,7 @@ class Form extends Model
     {
         return [
             'default_ticket_priority' => TicketPriority::class,
+            'default_ticket_type' => TicketType::class,
             'settings' => 'array',
             'is_embeddable' => 'boolean',
             'is_public' => 'boolean',

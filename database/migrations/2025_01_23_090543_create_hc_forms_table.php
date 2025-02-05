@@ -1,6 +1,7 @@
 <?php
 
 use App\Enums\Tickets\TicketPriority;
+use App\Enums\Tickets\TicketType;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -27,6 +28,8 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->string('default_ticket_priority')
                 ->default(TicketPriority::NORMAL);
+            $table->string('default_ticket_type')
+                ->default(TicketType::TASK);
             $table->unsignedSmallInteger('sort')->default(1);
             $table->boolean('is_embeddable')->default(false);
             $table->boolean('is_public')->default(false);

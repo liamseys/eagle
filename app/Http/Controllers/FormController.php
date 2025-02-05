@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\Tickets\TicketType;
 use App\Models\Client;
 use App\Models\HelpCenter\Form;
 use App\Models\Ticket;
@@ -46,7 +45,10 @@ class FormController extends Controller
         $nameFieldKey = $form->settings['client_name_field'] ?? null;
         $emailFieldKey = $form->settings['client_email_field'] ?? null;
 
-        if ($createClient && ($nameFieldKey || $emailFieldKey)) {
+        $nameFieldExists = $nameFieldKey && $form->fields()->where('name', $nameFieldKey)->exists();
+        $emailFieldExists = $emailFieldKey && $form->fields()->where('name', $emailFieldKey)->exists();
+
+        if ($createClient && $nameFieldExists && $emailFieldExists) {
             $client = Client::firstOrCreate(
                 ['email' => $request->get($emailFieldKey)],
                 ['name' => $request->get($nameFieldKey)]
@@ -56,14 +58,14 @@ class FormController extends Controller
                 'group_id' => $form->default_group_id,
                 'subject' => 'Testing',
                 'priority' => $form->default_ticket_priority,
-                'type' => TicketType::TASK,
+                'type' => $form->default_ticket_type,
             ]);
         } else {
             Ticket::create([
                 'group_id' => $form->default_group_id,
                 'subject' => 'Testing',
                 'priority' => $form->default_ticket_priority,
-                'type' => TicketType::TASK,
+                'type' => $form->default_ticket_type,
             ]);
         }
 
