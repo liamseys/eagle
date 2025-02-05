@@ -70,7 +70,7 @@ final class SubmitForm
 
             return $client->tickets()->create([
                 'group_id' => $form->default_group_id,
-                'subject' => 'Testing',
+                'subject' => $form->name,
                 'priority' => $form->default_ticket_priority,
                 'type' => $form->default_ticket_type,
             ]);
@@ -78,7 +78,7 @@ final class SubmitForm
 
         return Ticket::create([
             'group_id' => $form->default_group_id,
-            'subject' => 'Testing',
+            'subject' => $form->name,
             'priority' => $form->default_ticket_priority,
             'type' => $form->default_ticket_type,
         ]);
