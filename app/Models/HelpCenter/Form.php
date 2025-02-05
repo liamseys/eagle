@@ -39,6 +39,7 @@ class Form extends Model
         'description',
         'default_group_id',
         'default_ticket_priority',
+        'settings',
         'sort',
         'is_embeddable',
         'is_public',
@@ -54,6 +55,7 @@ class Form extends Model
     {
         return [
             'default_ticket_priority' => TicketPriority::class,
+            'settings' => 'array',
             'is_embeddable' => 'boolean',
             'is_public' => 'boolean',
             'is_active' => 'boolean',

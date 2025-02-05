@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Client;
 use App\Models\HelpCenter\Form;
+use App\Models\Ticket;
 use Illuminate\Http\Request;
 
 class FormController extends Controller
@@ -38,6 +40,15 @@ class FormController extends Controller
         }
 
         $request->validate($validationRules);
+
+        $client = Client::firstOrCreate(
+            ['email' => $request->get('email')],
+            ['name' => $request->get('name')]
+        );
+
+        $ticket = Ticket::create([
+            'requester_id' => '',
+        ]);
 
         return redirect()->back()->with('status', __('Form was successfully submitted.'));
     }

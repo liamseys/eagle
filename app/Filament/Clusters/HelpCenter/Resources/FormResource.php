@@ -10,6 +10,7 @@ use App\Models\HelpCenter\Form;
 use Filament\Forms;
 use Filament\Forms\Components\Livewire;
 use Filament\Forms\Form as FilamentForm;
+use Filament\Forms\Get;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -68,6 +69,28 @@ class FormResource extends Resource
                             'ownerRecord' => $record,
                             'pageClass' => $livewire::class,
                         ])->hiddenOn(['create']),
+                        Forms\Components\Section::make(__('Other settings'))
+                            ->schema([
+                                Forms\Components\Toggle::make('settings.create_client')
+                                    ->label(__('Create client on form submission'))
+                                    ->helperText(__('Enable this to create a client when the form is submitted.'))
+                                    ->default(false)
+                                    ->live(),
+                                Forms\Components\Grid::make()
+                                    ->schema([
+                                        Forms\Components\Select::make('settings.client_name_field')
+                                            ->label(__('Client name field'))
+                                            ->relationship('fields', 'label')
+                                            ->requiredIf('settings.create_client', true)
+                                            ->helperText(__('Select the field to use as the client name.')),
+                                        Forms\Components\Select::make('settings.client_email_field')
+                                            ->label(__('Client email field'))
+                                            ->relationship('fields', 'label')
+                                            ->requiredIf('settings.create_client', true)
+                                            ->helperText(__('Select the field to use as the client email.')),
+                                    ])
+                                    ->hidden(fn (Get $get) => ! $get('settings.create_client')),
+                            ]),
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
