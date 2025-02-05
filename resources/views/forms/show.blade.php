@@ -37,8 +37,8 @@
                                         <x-label for="{{ $formField->name }}">{{ $formField->label }}</x-label>
                                         @switch($formField->type)
                                             @case(FormFieldType::TEXTAREA)
-                                                <textarea name="{{ $formField->name }}"
-                                                          id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}></textarea>
+                                                <x-textarea name="{{ $formField->name }}"
+                                                          id="{{ $formField->name }}" :required="$formField->is_required"></x-textarea>
                                                 @break
 
                                             @case(FormFieldType::CHECKBOX)
