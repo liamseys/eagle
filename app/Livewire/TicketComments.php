@@ -18,7 +18,10 @@ class TicketComments extends Component
     #[On('comment-created')]
     public function render()
     {
-        $comments = $this->ticket->comments;
+        $comments = $this->ticket
+            ->comments()
+            ->with(['ticket', 'authorable'])
+            ->get();
 
         return view('livewire.ticket-comments', [
             'comments' => $comments,
