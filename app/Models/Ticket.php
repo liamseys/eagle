@@ -3,12 +3,9 @@
 namespace App\Models;
 
 use App\Enums\Tickets\TicketPriority;
-use App\Enums\Tickets\TicketSlaStatus;
-use App\Enums\Tickets\TicketSlaType;
 use App\Enums\Tickets\TicketStatus;
 use App\Enums\Tickets\TicketType;
 use App\Observers\TicketObserver;
-use App\Settings\WorkflowSettings;
 use App\Traits\HasNotes;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -102,52 +99,5 @@ class Ticket extends Model
     public function slas()
     {
         return $this->hasMany(TicketSla::class);
-    }
-
-    /**
-     * Create SLAs for the ticket.
-     *
-     * @return void
-     */
-    public function createSlas()
-    {
-        $workflowSettings = app(WorkflowSettings::class);
-
-        $slaPolicies = collect($workflowSettings->sla_policies);
-
-        $slaPolicy = $slaPolicies->firstWhere('priority', $this->priority);
-
-        $this->slas()->createMany([[
-            'group_id' => $this->group_id,
-            'type' => TicketSlaType::INITIAL_RESPONSE,
-            'started_at' => now(),
-            'expires_at' => now()->addMinutes($slaPolicy['first_response_time']),
-        ], [
-            'group_id' => $this->group_id,
-            'type' => TicketSlaType::NEXT_RESPONSE,
-            'started_at' => now(),
-            'expires_at' => now()->addMinutes($slaPolicy['every_response_time']),
-        ], [
-            'group_id' => $this->group_id,
-            'type' => TicketSlaType::RESOLUTION,
-            'started_at' => now(),
-            'expires_at' => now()->addMinutes($slaPolicy['resolution_time']),
-        ]]);
-    }
-
-    /**
-     * Close the SLAs for the ticket.
-     *
-     * @return void
-     */
-    public function closeSlas()
-    {
-        $ticketSlas = $this->slas;
-
-        foreach ($ticketSlas as $ticketSla) {
-            $ticketSla->update([
-                'status' => TicketSlaStatus::CLOSED,
-            ]);
-        }
     }
 }
