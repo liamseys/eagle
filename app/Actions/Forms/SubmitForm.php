@@ -29,7 +29,7 @@ final class SubmitForm
                 if ($ticket->requester) {
                     $notificationDelay = now()->addMinutes(10);
 
-                    $ticket->requester->notify(new TicketEscalationRequired($ticket))->delay($notificationDelay);
+                    $ticket->requester->notify((new TicketEscalationRequired($ticket))->delay($notificationDelay));
                 }
             }
 
