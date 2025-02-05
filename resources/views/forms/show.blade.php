@@ -38,12 +38,14 @@
                                         @switch($formField->type)
                                             @case(FormFieldType::TEXTAREA)
                                                 <x-textarea name="{{ $formField->name }}"
-                                                          id="{{ $formField->name }}" :required="$formField->is_required"></x-textarea>
+                                                            id="{{ $formField->name }}"
+                                                            :required="$formField->is_required"></x-textarea>
                                                 @break
 
                                             @case(FormFieldType::CHECKBOX)
-                                                <input type="checkbox" name="{{ $formField->name }}"
-                                                       id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
+                                                <x-checkbox name="{{ $formField->name }}"
+                                                            id="{{ $formField->name }}"
+                                                            :required="$formField->is_required"/>
                                                 @break
 
                                             @case(FormFieldType::RADIO)
@@ -53,7 +55,8 @@
 
                                             @case(FormFieldType::SELECT)
                                                 <x-select name="{{ $formField->name }}"
-                                                          id="{{ $formField->name }}" :required="$formField->is_required">
+                                                          id="{{ $formField->name }}"
+                                                          :required="$formField->is_required">
                                                     <option value="">{{ __('Select an option') }}</option>
                                                     @foreach($formField->options as $value => $label)
                                                         <option value="{{ $value }}">{{ $label }}</option>
@@ -63,22 +66,26 @@
 
                                             @case(FormFieldType::EMAIL)
                                                 <x-input type="email" name="{{ $formField->name }}"
-                                                         id="{{ $formField->name }}" :required="$formField->is_required"/>
+                                                         id="{{ $formField->name }}"
+                                                         :required="$formField->is_required"/>
                                                 @break
 
                                             @case(FormFieldType::DATE)
                                                 <x-input type="date" name="{{ $formField->name }}"
-                                                         id="{{ $formField->name }}" :required="$formField->is_required"/>
+                                                         id="{{ $formField->name }}"
+                                                         :required="$formField->is_required"/>
                                                 @break
 
                                             @case(FormFieldType::DATETIME_LOCAL)
                                                 <x-input type="datetime-local" name="{{ $formField->name }}"
-                                                         id="{{ $formField->name }}" :required="$formField->is_required"/>
+                                                         id="{{ $formField->name }}"
+                                                         :required="$formField->is_required"/>
                                                 @break
 
                                             @default
                                                 <x-input type="text" name="{{ $formField->name }}"
-                                                         id="{{ $formField->name }}" :required="$formField->is_required"/>
+                                                         id="{{ $formField->name }}"
+                                                         :required="$formField->is_required"/>
                                         @endswitch
 
                                         @isset($formField->description)
