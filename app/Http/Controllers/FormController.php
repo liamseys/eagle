@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Actions\Forms\SubmitForm;
 use App\Models\HelpCenter\Form;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class FormController extends Controller
@@ -23,6 +24,11 @@ class FormController extends Controller
         ]);
     }
 
+    /**
+     * Submit the form.
+     *
+     * @return RedirectResponse
+     */
     public function submit(Request $request, SubmitForm $submitForm)
     {
         $submitForm->handle($request);
