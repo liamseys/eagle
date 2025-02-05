@@ -100,4 +100,14 @@ class Ticket extends Model
     {
         return $this->hasMany(TicketSla::class);
     }
+
+    /**
+     * A ticket has many fields.
+     *
+     * @return HasMany
+     */
+    public function fields()
+    {
+        return $this->hasMany(TicketField::class);
+    }
 }

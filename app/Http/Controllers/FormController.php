@@ -54,20 +54,29 @@ class FormController extends Controller
                 ['name' => $request->get($nameFieldKey)]
             );
 
-            $client->tickets()->create([
+            $ticket = $client->tickets()->create([
                 'group_id' => $form->default_group_id,
                 'subject' => 'Testing',
                 'priority' => $form->default_ticket_priority,
                 'type' => $form->default_ticket_type,
             ]);
         } else {
-            Ticket::create([
+            $ticket = Ticket::create([
                 'group_id' => $form->default_group_id,
                 'subject' => 'Testing',
                 'priority' => $form->default_ticket_priority,
                 'type' => $form->default_ticket_type,
             ]);
         }
+
+        $ticket->fields()->createMany(
+            $form->fields->map(function ($field) use ($request) {
+                return [
+                    'form_field_id' => $field->id,
+                    'value' => $request->get($field->name),
+                ];
+            })->toArray()
+        );
 
         return redirect()->back()->with('status', __('Form was successfully submitted.'));
     }
