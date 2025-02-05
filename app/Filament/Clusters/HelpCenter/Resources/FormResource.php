@@ -3,6 +3,7 @@
 namespace App\Filament\Clusters\HelpCenter\Resources;
 
 use App\Enums\Tickets\TicketPriority;
+use App\Enums\Tickets\TicketType;
 use App\Filament\Clusters\HelpCenter;
 use App\Filament\Clusters\HelpCenter\Resources\FormResource\Pages\EditForm;
 use App\Filament\Clusters\HelpCenter\Resources\FormResource\RelationManagers\FieldsRelationManager;
@@ -56,16 +57,16 @@ class FormResource extends Resource
                                     ])
                                     ->maxLength(500)
                                     ->live()
-                                    ->helperText(fn ($state, $component) => new HtmlString(
-                                        '<div class="flex flex-row justify-between gap-4">'.
-                                        '<span>'.__('(Optional) A brief description of the form. This will be displayed on the form\'s page.').'</span>'.
-                                        '<span class="'.((strlen($state) > $component->getMaxLength()) ? 'text-red-600' : 'text-gray-500').'">'.
-                                        (strlen($state)).'/'.$component->getMaxLength().
-                                        '</span>'.
+                                    ->helperText(fn($state, $component) => new HtmlString(
+                                        '<div class="flex flex-row justify-between gap-4">' .
+                                        '<span>' . __('(Optional) A brief description of the form. This will be displayed on the form\'s page.') . '</span>' .
+                                        '<span class="' . ((strlen($state) > $component->getMaxLength()) ? 'text-red-600' : 'text-gray-500') . '">' .
+                                        (strlen($state)) . '/' . $component->getMaxLength() .
+                                        '</span>' .
                                         '</div>'
                                     )),
                             ]),
-                        Livewire::make(FieldsRelationManager::class, fn (Form $record, EditForm $livewire): array => [
+                        Livewire::make(FieldsRelationManager::class, fn(Form $record, EditForm $livewire): array => [
                             'ownerRecord' => $record,
                             'pageClass' => $livewire::class,
                         ])->hiddenOn(['create']),
@@ -97,7 +98,7 @@ class FormResource extends Resource
                                             ->requiredIf('settings.create_client', true)
                                             ->helperText(__('Select the field to use as the client email.')),
                                     ])
-                                    ->hidden(fn (Get $get) => ! $get('settings.create_client')),
+                                    ->hidden(fn(Get $get) => !$get('settings.create_client')),
                             ]),
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
@@ -118,6 +119,14 @@ class FormResource extends Resource
                                     ->preload()
                                     ->required()
                                     ->helperText(__('The default priority assigned to tickets created from this form.')),
+                                Forms\Components\Select::make('default_ticket_type')
+                                    ->label(__('Default ticket type'))
+                                    ->options(TicketType::class)
+                                    ->default(TicketType::TASK)
+                                    ->searchable()
+                                    ->preload()
+                                    ->required()
+                                    ->helperText(__('The default type assigned to tickets created from this form.')),
                             ]),
                         Forms\Components\Section::make(__('Status'))
                             ->schema([
@@ -134,15 +143,15 @@ class FormResource extends Resource
                             ->schema([
                                 Forms\Components\Placeholder::make('created_by')
                                     ->label(__('Created by'))
-                                    ->content(fn (Form $record): ?string => $record->user?->name),
+                                    ->content(fn(Form $record): ?string => $record->user?->name),
 
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label(__('Created at'))
-                                    ->content(fn (Form $record): ?string => $record->created_at?->diffForHumans()),
+                                    ->content(fn(Form $record): ?string => $record->created_at?->diffForHumans()),
 
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label(__('Updated at'))
-                                    ->content(fn (Form $record): ?string => $record->updated_at?->diffForHumans()),
+                                    ->content(fn(Form $record): ?string => $record->updated_at?->diffForHumans()),
                             ])->hiddenOn(['create']),
                         Forms\Components\Section::make(__('Embed'))
                             ->schema([
@@ -155,7 +164,7 @@ class FormResource extends Resource
                                     ->label(__('Embed code'))
                                     ->autosize()
                                     ->helperText(__('Copy and paste this code into your website to embed the form.'))
-                                    ->visible(fn ($get) => $get('is_embeddable')),
+                                    ->visible(fn($get) => $get('is_embeddable')),
                             ])->hiddenOn(['create']),
                     ])->columnSpan(1),
             ])->columns(3);
