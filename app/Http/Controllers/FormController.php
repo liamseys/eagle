@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Client;
+use App\Actions\Forms\SubmitForm;
 use App\Models\HelpCenter\Form;
-use App\Models\Ticket;
 use Illuminate\Http\Request;
 
 class FormController extends Controller
@@ -24,59 +23,9 @@ class FormController extends Controller
         ]);
     }
 
-    public function submit(Request $request)
+    public function submit(Request $request, SubmitForm $submitForm)
     {
-        $form = Form::findOrFail($request->get('form_id'));
-
-        $validationRules = [];
-
-        foreach ($form->fields()->whereNotNull('validation_rules')->get() as $formField) {
-            $validationRules[$formField->name] = collect($formField->validation_rules)
-                ->map(fn ($ruleSet) => isset($ruleSet['value'])
-                    ? "{$ruleSet['rule']}:{$ruleSet['value']}"
-                    : $ruleSet['rule']
-                )
-                ->toArray();
-        }
-
-        $request->validate($validationRules);
-
-        $createClient = $form->settings['create_client'] ?? false;
-        $nameFieldKey = $form->settings['client_name_field'] ?? null;
-        $emailFieldKey = $form->settings['client_email_field'] ?? null;
-
-        $nameFieldExists = $nameFieldKey && $form->fields()->where('name', $nameFieldKey)->exists();
-        $emailFieldExists = $emailFieldKey && $form->fields()->where('name', $emailFieldKey)->exists();
-
-        if ($createClient && $nameFieldExists && $emailFieldExists) {
-            $client = Client::firstOrCreate(
-                ['email' => $request->get($emailFieldKey)],
-                ['name' => $request->get($nameFieldKey)]
-            );
-
-            $ticket = $client->tickets()->create([
-                'group_id' => $form->default_group_id,
-                'subject' => 'Testing',
-                'priority' => $form->default_ticket_priority,
-                'type' => $form->default_ticket_type,
-            ]);
-        } else {
-            $ticket = Ticket::create([
-                'group_id' => $form->default_group_id,
-                'subject' => 'Testing',
-                'priority' => $form->default_ticket_priority,
-                'type' => $form->default_ticket_type,
-            ]);
-        }
-
-        $ticket->fields()->createMany(
-            $form->fields->map(function ($field) use ($request) {
-                return [
-                    'form_field_id' => $field->id,
-                    'value' => $request->get($field->name),
-                ];
-            })->toArray()
-        );
+        $submitForm->handle($request);
 
         return redirect()->back()->with('status', __('Form was successfully submitted.'));
     }
