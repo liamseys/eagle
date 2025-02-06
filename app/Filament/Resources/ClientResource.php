@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Forms\Components\Notes;
 use App\Filament\Resources\ClientResource\Pages;
 use App\Filament\Resources\ClientResource\RelationManagers\TicketsRelationManager;
 use App\Models\Client;
@@ -82,6 +83,8 @@ class ClientResource extends Resource
                                     ->label(__('Updated at'))
                                     ->content(fn (Client $record): ?string => $record->updated_at?->diffForHumans()),
                             ])->hiddenOn(['create']),
+                        Notes::make()
+                            ->hiddenOn(['create']),
                     ])->columnSpan(1),
             ])->columns(3);
     }
