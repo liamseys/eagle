@@ -19,9 +19,7 @@ class EditClient extends EditRecord
                 ->label('Add note')
                 ->color('gray')
                 ->modalWidth('md')
-                ->modalHeading(__('Add note'))
                 ->modalDescription(__('Notes can be viewed by other agents but will remain hidden from the client.'))
-                ->modalSubmitActionLabel(__('Add note'))
                 ->form([
                     Textarea::make('note')
                         ->label(__('Note'))
