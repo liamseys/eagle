@@ -4,6 +4,7 @@ namespace App\Filament\Clusters\Settings\Resources;
 
 use App\Filament\Clusters\Settings;
 use App\Filament\Clusters\Settings\Resources\UserResource\Pages;
+use App\Models\Permission;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
@@ -23,6 +24,10 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
+        $permissions = Permission::query()
+            ->orderBy('sort')
+            ->get();
+
         return $form
             ->schema([
                 Forms\Components\Group::make()->schema([
@@ -59,7 +64,13 @@ class UserResource extends Resource
 
                     Forms\Components\Section::make(__('Permissions'))
                         ->schema([
-                            //
+                            Forms\Components\CheckboxList::make('permissions')
+                                ->label('')
+                                ->relationship()
+                                ->options($permissions->pluck('display_name', 'id'))
+                                ->descriptions($permissions->pluck('description', 'id'))
+                                ->bulkToggleable()
+                                ->columns(2),
                         ]),
                 ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
