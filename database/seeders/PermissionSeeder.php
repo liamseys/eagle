@@ -23,6 +23,21 @@ class PermissionSeeder extends Seeder
                 'display_name' => 'Tickets',
                 'description' => 'Full management of tickets',
             ],
+            [
+                'name' => 'hc-articles',
+                'display_name' => '(Help Center) Articles',
+                'description' => 'Full management of help center articles',
+            ],
+            [
+                'name' => 'hc-categories',
+                'display_name' => '(Help Center) Categories',
+                'description' => 'Full management of help center categories',
+            ],
+            [
+                'name' => 'hc-forms',
+                'display_name' => '(Help Center) Forms',
+                'description' => 'Full management of help center forms',
+            ],
         ];
 
         $i = 0;

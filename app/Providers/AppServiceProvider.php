@@ -7,6 +7,7 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -48,5 +49,9 @@ class AppServiceProvider extends ServiceProvider
         }
 
         Model::preventAccessingMissingAttributes();
+
+        // Gate::policy(Article::class, ArticlePolicy::class);
+        // Gate::policy(Category::class, CategoryPolicy::class);
+        // Gate::policy(Form::class, FormPolicy::class);
     }
 }
