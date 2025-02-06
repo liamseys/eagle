@@ -18,6 +18,11 @@ class PermissionSeeder extends Seeder
                 'display_name' => 'Clients',
                 'description' => 'Full management of clients',
             ],
+            [
+                'name' => 'tickets',
+                'display_name' => 'Tickets',
+                'description' => 'Full management of tickets',
+            ],
         ];
 
         $i = 0;

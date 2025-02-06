@@ -11,6 +11,18 @@ class Permission extends Model
     use HasUlids;
 
     /**
+     * The attributes that are mass assignable.
+     *
+     * @var list<string>
+     */
+    protected $fillable = [
+        'name',
+        'display_name',
+        'description',
+        'sort',
+    ];
+
+    /**
      * Permission belongs to many users.
      *
      * @return BelongsToMany
