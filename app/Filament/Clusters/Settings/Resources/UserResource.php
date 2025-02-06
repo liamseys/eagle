@@ -71,7 +71,7 @@ class UserResource extends Resource
                                 ->descriptions($permissions->pluck('description', 'id'))
                                 ->bulkToggleable()
                                 ->columns(2)
-                                ->disabled(fn ($record) => $record->id === auth()->id()),
+                                ->disabled(fn ($record) => $record?->id === auth()->id()),
                         ]),
                 ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
