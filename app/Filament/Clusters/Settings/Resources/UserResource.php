@@ -28,18 +28,38 @@ class UserResource extends Resource
                 Forms\Components\Group::make()->schema([
                     Forms\Components\Section::make()
                         ->schema([
-                            Forms\Components\TextInput::make('name')
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\TextInput::make('email')
-                                ->email()
-                                ->required()
-                                ->maxLength(255),
-                            Forms\Components\DateTimePicker::make('email_verified_at'),
-                            Forms\Components\TextInput::make('password')
-                                ->password()
-                                ->required()
-                                ->maxLength(255),
+                            Forms\Components\Grid::make()
+                                ->schema([
+                                    Forms\Components\TextInput::make('name')
+                                        ->required()
+                                        ->maxLength(255),
+                                    Forms\Components\TextInput::make('email')
+                                        ->email()
+                                        ->required()
+                                        ->maxLength(255),
+                                ]),
+                            Forms\Components\Grid::make()
+                                ->schema([
+                                    Forms\Components\TextInput::make('password')
+                                        ->label(__('Password'))
+                                        ->password()
+                                        ->revealable()
+                                        ->confirmed()
+                                        ->required()
+                                        ->maxLength(255),
+                                    Forms\Components\TextInput::make('password_confirmation')
+                                        ->label(__('Confirm password'))
+                                        ->password()
+                                        ->revealable()
+                                        ->required()
+                                        ->maxLength(255)
+                                        ->dehydrated(false),
+                                ])->hiddenOn(['edit']),
+                        ]),
+
+                    Forms\Components\Section::make(__('Permissions'))
+                        ->schema([
+                            //
                         ]),
                 ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()

@@ -27,5 +27,9 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $user->groups()->attach($group);
+
+        $this->call([
+            PermissionSeeder::class,
+        ]);
     }
 }
