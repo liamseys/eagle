@@ -4,9 +4,11 @@ use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\WelcomeController;
 use App\Http\Middleware\SetDefaultLocaleForUrls;
 use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
+use Spatie\WelcomeNotification\WelcomesNewUsers;
 
 Route::get('/', function () {
     return redirect()->route('index');
@@ -24,4 +26,9 @@ Route::group([
         ->middleware(ProtectAgainstSpam::class)
         ->name('forms.submit');
     Route::resource('forms', FormController::class)->only('show');
+});
+
+Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function () {
+    Route::get('eagle/welcome/{user}', [WelcomeController::class, 'showWelcomeForm'])->name('welcome');
+    Route::post('eagle/welcome/{user}', [WelcomeController::class, 'savePassword']);
 });
