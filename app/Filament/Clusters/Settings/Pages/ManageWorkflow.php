@@ -30,6 +30,11 @@ class ManageWorkflow extends SettingsPage
 
     protected static ?string $cluster = Settings::class;
 
+    public static function canAccess(): bool
+    {
+        return auth()->user()->hasPermissionTo('settings');
+    }
+
     public function form(Form $form): Form
     {
         return $form

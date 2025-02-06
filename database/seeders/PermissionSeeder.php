@@ -38,6 +38,11 @@ class PermissionSeeder extends Seeder
                 'display_name' => '(Help Center) Forms',
                 'description' => 'Full management of help center forms',
             ],
+            [
+                'name' => 'settings',
+                'display_name' => 'Settings',
+                'description' => 'Manage all settings, users, and groups',
+            ],
         ];
 
         $i = 0;
