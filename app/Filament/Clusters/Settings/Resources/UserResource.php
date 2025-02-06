@@ -97,6 +97,14 @@ class UserResource extends Resource
                                         fn (Action $action) => $action->modalWidth(MaxWidth::Large),
                                     ),
                             ]),
+                        Forms\Components\Section::make(__('Status'))
+                            ->schema([
+                                Forms\Components\Toggle::make('is_active')
+                                    ->label(__('Active'))
+                                    ->default(true)
+                                    ->required()
+                                    ->helperText(__('Toggle this option to enable or disable the user\'s login access to Eagle.')),
+                            ]),
                         Forms\Components\Section::make(__('Metadata'))
                             ->schema([
                                 Forms\Components\Placeholder::make('created_at')
