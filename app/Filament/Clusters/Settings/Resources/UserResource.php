@@ -130,6 +130,9 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('groups_count')
                     ->counts('groups')
                     ->label(__('Groups')),
+                Tables\Columns\IconColumn::make('is_active')
+                    ->label(__('Active'))
+                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

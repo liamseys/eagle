@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\AvatarProviders\GravatarProvider;
 use App\Filament\Pages\Auth\EditProfile;
+use App\Http\Middleware\EnsureUserIsActive;
 use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -78,6 +79,7 @@ class AppPanelProvider extends PanelProvider
             ])
             ->authMiddleware([
                 Authenticate::class,
+                EnsureUserIsActive::class,
             ])
             ->databaseNotifications();
     }
