@@ -8,6 +8,8 @@ class GeneralSettings extends Settings
 {
     public string $app_name;
 
+    public int $app_ticket_id_start;
+
     public bool $app_active;
 
     public array $allowlisted_domains;
