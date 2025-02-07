@@ -4,12 +4,14 @@ namespace App\Filament\Clusters\Settings\Pages;
 
 use App\Filament\Clusters\Settings;
 use App\Settings\GeneralSettings;
+use Closure;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Pages\SettingsPage;
 
 class ManageGeneral extends SettingsPage
@@ -40,7 +42,27 @@ class ManageGeneral extends SettingsPage
                 Section::make(__('Basics'))
                     ->description(__('This information will appear on your public pages.'))
                     ->schema([
-                        //
+                        TextInput::make('ticket_id_start')
+                            ->label(__('Ticket IDs'))
+                            ->numeric()
+                            ->required()
+                            ->minValue(fn (Get $get) => $get('ticket_id_start') ?? 1)
+                            ->maxValue(999999999)
+                            ->rules([
+                                fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) {
+                                    $generalSettings = app(GeneralSettings::class);
+                                    $currentMaxTicketId = $generalSettings->ticket_id_start ?? 1;
+
+                                    if ($value < $currentMaxTicketId) {
+                                        $fail(__('The Ticket ID must be greater than or equal to the current value of :max.', ['max' => $currentMaxTicketId]));
+                                    }
+
+                                    if ($value > 999999999) {
+                                        $fail(__('The Ticket ID must not exceed 9 digits.'));
+                                    }
+                                },
+                            ])
+                            ->helperText(__('Set the Ticket ID counter to start tickets at a chosen number. This applies to future tickets only and must be greater than or equal to the current value (e.g., ≥ 56). Limit to nine digits.')),
                     ]),
                 Section::make(__('Notifications'))
                     ->description(__('Select which notifications you would like to receive.'))
