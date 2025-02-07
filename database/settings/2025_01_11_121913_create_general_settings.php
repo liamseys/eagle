@@ -6,9 +6,9 @@ return new class extends SettingsMigration
 {
     public function up(): void
     {
-        $this->migrator->add('general.app_name', 'Eagle');
+        $this->migrator->add('general.name', 'Eagle');
         $this->migrator->add('general.ticket_id_start', 1);
-        $this->migrator->add('general.app_active', true);
+        $this->migrator->add('general.is_active', true);
 
         $this->migrator->add('general.allowlisted_domains', []);
 

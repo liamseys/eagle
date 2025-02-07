@@ -6,7 +6,11 @@ use Spatie\LaravelSettings\Settings;
 
 class GeneralSettings extends Settings
 {
+    public string $name;
+
     public int $ticket_id_start;
+
+    public bool $is_active;
 
     public array $allowlisted_domains;
 
