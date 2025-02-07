@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\AvatarProviders\GravatarProvider;
 use App\Filament\Pages\Auth\EditProfile;
+use App\Filament\Widgets\StatsOverview;
 use App\Http\Middleware\EnsureUserIsActive;
 use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
@@ -63,7 +64,7 @@ class AppPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
             ->widgets([
-                //
+                StatsOverview::class,
             ])
             ->middleware([
                 EncryptCookies::class,
