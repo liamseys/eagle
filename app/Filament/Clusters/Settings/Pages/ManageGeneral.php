@@ -40,7 +40,7 @@ class ManageGeneral extends SettingsPage
         return $form
             ->schema([
                 Section::make(__('Basics'))
-                    ->description(__('This information will appear on your public pages.'))
+                    ->description(__('Manage your basic settings.'))
                     ->schema([
                         Grid::make()
                             ->schema([
@@ -78,6 +78,8 @@ class ManageGeneral extends SettingsPage
                     ->schema([
                         Repeater::make('allowlisted_domains')
                             ->label('')
+                            ->addActionLabel(__('Add domain'))
+                            ->reorderable(false)
                             ->schema([
                                 Grid::make()
                                     ->schema([
@@ -91,8 +93,7 @@ class ManageGeneral extends SettingsPage
                                             ->maxLength(255)
                                             ->required(),
                                     ]),
-                            ])
-                            ->reorderable(false),
+                            ]),
                     ]),
                 Section::make(__('Branding'))
                     ->description(__('Customize your branding settings.'))
