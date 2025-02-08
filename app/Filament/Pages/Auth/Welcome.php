@@ -8,6 +8,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\SimplePage;
 
 class Welcome extends SimplePage implements HasForms
@@ -58,8 +59,23 @@ class Welcome extends SimplePage implements HasForms
             ->statePath('data');
     }
 
-    public function savePassword(): void
+    public function savePassword()
     {
-        dd($this->form->getState());
+        $data = $this->form->getState();
+
+        $this->user->update([
+            'password' => bcrypt($data['password']),
+            'welcome_valid_until' => null,
+        ]);
+
+        auth()->login($this->user);
+
+        Notification::make()
+            ->title(__('Success'))
+            ->body(__('Welcome! You are now logged in!'))
+            ->success()
+            ->send();
+
+        return redirect()->route('filament.app.pages.dashboard');
     }
 }
