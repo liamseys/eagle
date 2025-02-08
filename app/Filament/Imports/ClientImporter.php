@@ -22,7 +22,7 @@ class ClientImporter extends Importer
                 ->rules(['required', 'email', 'max:255']),
             ImportColumn::make('phone')
                 ->rules(['max:255']),
-            ImportColumn::make('language')
+            ImportColumn::make('locale')
                 ->requiredMapping()
                 ->rules(['required', 'max:255']),
             ImportColumn::make('timezone')
