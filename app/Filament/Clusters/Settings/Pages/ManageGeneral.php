@@ -64,7 +64,9 @@ class ManageGeneral extends SettingsPage
                                             }
                                         },
                                     ])
-                                    ->helperText(__('Set the Ticket ID counter to start tickets at a chosen number. This applies to future tickets only and must be greater than or equal to the current value (e.g., ≥ 56). Limit to nine digits.'))
+                                    ->helperText(fn () => __('Set the Ticket ID counter to start tickets at a chosen number. This applies to future tickets only and must be greater than or equal to the current value (e.g., ≥ :current). Limit to nine digits.', [
+                                        'current' => app(GeneralSettings::class)->ticket_id_start ?? 1,
+                                    ]))
                                     ->columnSpan(2),
                             ])->columns(3),
                     ]),
