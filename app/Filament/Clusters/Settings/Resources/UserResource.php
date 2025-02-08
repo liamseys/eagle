@@ -43,6 +43,10 @@ class UserResource extends Resource
                                         ->required()
                                         ->maxLength(255),
                                 ]),
+                            Forms\Components\Toggle::make('generate_password')
+                                ->label('Generate password')
+                                ->default(true)
+                                ->live(),
                             Forms\Components\Grid::make()
                                 ->schema([
                                     Forms\Components\TextInput::make('password')
@@ -50,16 +54,18 @@ class UserResource extends Resource
                                         ->password()
                                         ->revealable()
                                         ->confirmed()
-                                        ->required()
+                                        ->requiredIf('generate_password', false)
                                         ->maxLength(255),
                                     Forms\Components\TextInput::make('password_confirmation')
                                         ->label(__('Confirm password'))
                                         ->password()
                                         ->revealable()
-                                        ->required()
+                                        ->requiredIf('generate_password', false)
                                         ->maxLength(255)
                                         ->dehydrated(false),
-                                ])->hiddenOn(['edit']),
+                                ])
+                                ->visible(fn ($get) => $get('generate_password') === false)
+                                ->hiddenOn(['edit']),
                         ]),
 
                     Forms\Components\Section::make(__('Permissions'))
