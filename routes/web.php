@@ -1,10 +1,10 @@
 <?php
 
+use App\Filament\Pages\Auth\Welcome;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\IndexController;
-use App\Http\Controllers\WelcomeController;
 use App\Http\Middleware\SetDefaultLocaleForUrls;
 use Illuminate\Support\Facades\Route;
 use Spatie\Honeypot\ProtectAgainstSpam;
@@ -29,6 +29,5 @@ Route::group([
 });
 
 Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function () {
-    Route::get('eagle/welcome/{user}', [WelcomeController::class, 'showWelcomeForm'])->name('welcome');
-    Route::post('eagle/welcome/{user}', [WelcomeController::class, 'savePassword']);
+    Route::get('eagle/welcome/{user}', Welcome::class)->name('welcome');
 });
