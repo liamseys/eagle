@@ -43,10 +43,11 @@ class UserResource extends Resource
                                         ->required()
                                         ->maxLength(255),
                                 ]),
-                            Forms\Components\Toggle::make('generate_password')
-                                ->label('Generate password')
+                            Forms\Components\Toggle::make('send_welcome_email')
+                                ->label('Send welcome email')
                                 ->default(true)
-                                ->live(),
+                                ->live()
+                                ->helperText(__('By default, we\'ll send a welcome email for the user to set their password. If unchecked, you can set the password manually, and no email will be sent.')),
                             Forms\Components\Grid::make()
                                 ->schema([
                                     Forms\Components\TextInput::make('password')
@@ -54,17 +55,17 @@ class UserResource extends Resource
                                         ->password()
                                         ->revealable()
                                         ->confirmed()
-                                        ->requiredIf('generate_password', false)
+                                        ->requiredIf('send_welcome_email', false)
                                         ->maxLength(255),
                                     Forms\Components\TextInput::make('password_confirmation')
                                         ->label(__('Confirm password'))
                                         ->password()
                                         ->revealable()
-                                        ->requiredIf('generate_password', false)
+                                        ->requiredIf('send_welcome_email', false)
                                         ->maxLength(255)
                                         ->dehydrated(false),
                                 ])
-                                ->visible(fn ($get) => $get('generate_password') === false)
+                                ->visible(fn ($get) => $get('send_welcome_email') === false)
                                 ->hiddenOn(['edit']),
                         ]),
 
