@@ -47,7 +47,8 @@ class UserResource extends Resource
                                 ->label('Send welcome email')
                                 ->default(true)
                                 ->live()
-                                ->helperText(__('By default, we\'ll send a welcome email for the user to set their password. If unchecked, you can set the password manually, and no email will be sent.')),
+                                ->helperText(__('By default, we\'ll send a welcome email for the user to set their password. If unchecked, you can set the password manually, and no email will be sent.'))
+                                ->hiddenOn(['edit']),
                             Forms\Components\Grid::make()
                                 ->schema([
                                     Forms\Components\TextInput::make('password')
