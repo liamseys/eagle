@@ -8,6 +8,7 @@ use App\Enums\Tickets\TicketType;
 use App\Observers\TicketObserver;
 use App\Traits\HasNotes;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -109,5 +110,21 @@ class Ticket extends Model
     public function fields()
     {
         return $this->hasMany(TicketField::class);
+    }
+
+    /**
+     * Limit the query to solved tickets.
+     */
+    public function scopeSolved(Builder $query): void
+    {
+        $query->whereIn('status', [TicketStatus::RESOLVED->value, TicketStatus::CLOSED->value]);
+    }
+
+    /**
+     * Limit the query to unsolved tickets.
+     */
+    public function scopeUnsolved(Builder $query): void
+    {
+        $query->whereIn('status', [TicketStatus::OPEN->value, TicketStatus::PENDING->value, TicketStatus::ON_HOLD->value]);
     }
 }
