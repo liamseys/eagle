@@ -2,11 +2,11 @@
 
 namespace App\Actions\Forms;
 
+use App\Actions\Tickets\UpdateTicketStatus;
 use App\Enums\Tickets\TicketStatus;
 use App\Models\Client;
 use App\Models\HelpCenter\Form;
 use App\Models\Ticket;
-use App\Notifications\TicketEscalationRequired;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -24,13 +24,8 @@ final class SubmitForm
             $this->attachTicketFields($ticket, $form, $request);
 
             if (array_key_exists('require_escalation', $form->settings) && $form->settings['require_escalation'] === true) {
-                $ticket->update(['status' => TicketStatus::ON_HOLD]);
-
-                if ($ticket->requester) {
-                    $notificationDelay = now()->addMinutes(10);
-
-                    $ticket->requester->notify((new TicketEscalationRequired($ticket))->delay($notificationDelay));
-                }
+                $updateTicketStatus = app(UpdateTicketStatus::class);
+                $updateTicketStatus->handle($ticket, TicketStatus::ON_HOLD, [], true);
             }
 
             return $ticket;
