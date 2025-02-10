@@ -15,7 +15,7 @@ final class UpdateTicketStatus
      */
     public function handle(Ticket $ticket, TicketStatus $ticketStatus, array $attributes = [], bool $requireEscalation = false): void
     {
-        DB::transaction(function () use ($ticket, $ticketStatus, $requireEscalation) {
+        DB::transaction(function () use ($ticket, $ticketStatus, $attributes, $requireEscalation) {
             $ticket->update([
                 'status' => $ticketStatus,
             ]);
@@ -24,6 +24,7 @@ final class UpdateTicketStatus
                 'user_id' => auth()->id(),
                 'column' => TicketActivityColumn::STATUS,
                 'value' => $ticketStatus->value,
+                'reason' => $attributes['reason'] ?? null,
             ]);
 
             if ($requireEscalation && $ticket->requester) {

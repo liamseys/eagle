@@ -22,6 +22,7 @@ return new class extends Migration
                 ->nullOnDelete();
             $table->string('column');
             $table->string('value');
+            $table->text('reason')->nullable();
             $table->timestamps();
         });
     }

@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources\TicketResource\Pages;
 
+use App\Actions\Tickets\UpdateTicketPriority;
+use App\Actions\Tickets\UpdateTicketStatus;
 use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketStatus;
 use App\Filament\Resources\TicketResource;
@@ -54,8 +56,20 @@ class ListTickets extends ListRecords
                 ->action(function (array $data) {
                     $ticket = Ticket::where('ticket_id', $data['ticket_id'])->first();
 
+                    $updateTicketStatus = app(UpdateTicketStatus::class);
+                    $updateTicketStatus->handle(
+                        $ticket,
+                        TicketStatus::PENDING,
+                        ['reason' => $data['reason']],
+                    );
+
+                    $updateTicketPriority = app(UpdateTicketPriority::class);
+                    $updateTicketPriority->handle(
+                        $ticket,
+                        TicketPriority::URGENT,
+                    );
+
                     $ticket->update([
-                        'priority' => TicketPriority::URGENT,
                         'is_escalated' => true,
                     ]);
 

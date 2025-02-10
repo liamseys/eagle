@@ -28,6 +28,7 @@ class TicketActivity extends Model
         'user_id',
         'column',
         'value',
+        'reason',
     ];
 
     /**
