@@ -31,6 +31,7 @@ class TicketFactory extends Factory
             'type' => fake()->randomElement(TicketType::cases()),
             'status' => fake()->randomElement(TicketStatus::cases()),
             'is_escalated' => fake()->boolean(),
+            'created_at' => fake()->dateTimeBetween('-3 months', 'now'),
         ];
     }
 }
