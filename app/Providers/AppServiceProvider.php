@@ -6,6 +6,7 @@ use App\Settings\GeneralSettings;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -25,9 +26,13 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(GeneralSettings $generalSettings): void
     {
-        FilamentColor::register([
-            'primary' => Color::hex($generalSettings->branding_primary_color),
-        ]);
+        try {
+            $color = Color::hex($generalSettings->branding_primary_color);
+        } catch (QueryException $e) {
+            $color = Color::hex('#000000');
+        }
+
+        FilamentColor::register(['primary' => $color]);
 
         Carbon::macro('inApplicationTimezone', function () {
             return $this->tz(config('app.timezone_display'));
