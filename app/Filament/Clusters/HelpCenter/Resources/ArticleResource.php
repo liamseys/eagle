@@ -24,6 +24,8 @@ class ArticleResource extends Resource
 
     protected static ?string $cluster = HelpCenter::class;
 
+    protected static ?string $recordTitleAttribute = 'title';
+
     public static function form(Form $form): Form
     {
         return $form

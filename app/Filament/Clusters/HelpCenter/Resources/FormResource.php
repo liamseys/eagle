@@ -27,6 +27,8 @@ class FormResource extends Resource
 
     protected static ?string $cluster = HelpCenter::class;
 
+    protected static ?string $recordTitleAttribute = 'name';
+
     public static function form(FilamentForm $form): FilamentForm
     {
         return $form
