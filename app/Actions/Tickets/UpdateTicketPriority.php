@@ -21,7 +21,7 @@ final class UpdateTicketPriority
 
             $ticket->activity()->create([
                 'user_id' => auth()->id(),
-                'column' => TicketActivityColumn::STATUS,
+                'column' => TicketActivityColumn::PRIORITY,
                 'value' => $ticketPriority->value,
             ]);
         });

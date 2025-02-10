@@ -21,7 +21,7 @@ final class UpdateTicketType
 
             $ticket->activity()->create([
                 'user_id' => auth()->id(),
-                'column' => TicketActivityColumn::STATUS,
+                'column' => TicketActivityColumn::TYPE,
                 'value' => $ticketType->value,
             ]);
         });
