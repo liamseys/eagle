@@ -113,6 +113,14 @@ class Ticket extends Model
     }
 
     /**
+     * A ticket has many ticket activity.
+     */
+    public function activity(): HasMany
+    {
+        return $this->hasMany(TicketActivity::class);
+    }
+
+    /**
      * Limit the query to solved tickets.
      */
     public function scopeSolved(Builder $query): void
