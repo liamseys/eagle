@@ -76,7 +76,8 @@ class FormResource extends Resource
                                     ->label(__('Create client on form submission'))
                                     ->helperText(__('Enable this to create a client when the form is submitted.'))
                                     ->default(false)
-                                    ->live(),
+                                    ->live()
+                                    ->hiddenOn(['create']),
                                 Forms\Components\Grid::make()
                                     ->schema([
                                         Forms\Components\Select::make('settings.client_name_field')
