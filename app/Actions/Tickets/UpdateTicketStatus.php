@@ -5,7 +5,9 @@ namespace App\Actions\Tickets;
 use App\Enums\Tickets\TicketActivityColumn;
 use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket;
+use App\Notifications\TicketClosed;
 use App\Notifications\TicketEscalationRequired;
+use App\Notifications\TicketResolved;
 use Illuminate\Support\Facades\DB;
 
 final class UpdateTicketStatus
@@ -27,6 +29,20 @@ final class UpdateTicketStatus
                 'reason' => $attributes['reason'] ?? null,
             ]);
 
+            if ($ticket->requester) {
+                $notificationDelay = now()->addMinutes(10);
+                match ($ticketStatus) {
+                    TicketStatus::RESOLVED => $ticket->requester->notify(
+                        (new TicketResolved($ticket))->delay($notificationDelay)
+                    ),
+                    TicketStatus::CLOSED => $ticket->requester->notify(
+                        (new TicketClosed($ticket))->delay($notificationDelay)
+                    ),
+                    default => null,
+                };
+            }
+
+            // If escalation is required and the ticket has a requester, send the escalation notification.
             if ($requireEscalation && $ticket->requester) {
                 $notificationDelay = now()->addMinutes(10);
 

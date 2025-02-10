@@ -59,7 +59,7 @@ class ListTickets extends ListRecords
                     $updateTicketStatus = app(UpdateTicketStatus::class);
                     $updateTicketStatus->handle(
                         $ticket,
-                        TicketStatus::PENDING,
+                        TicketStatus::OPEN,
                         ['reason' => $data['reason']],
                     );
 
