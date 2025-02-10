@@ -9,7 +9,7 @@ use App\Models\Ticket;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
-class CloseResolvedTickets extends Command
+class CloseResolvedTicketsCommand extends Command
 {
     /**
      * The name and signature of the console command.
