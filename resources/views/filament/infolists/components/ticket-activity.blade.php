@@ -41,7 +41,8 @@
                         </x-filament::badge>
                     </div>
 
-                    <p class="text-sm text-gray-500">{{ $ticketActivity->reason }}</p>
+                    <p class="text-sm text-gray-500">{{ $ticketActivity->created_at->format('d/m/Y h:i A') }}</p>
+                    <p class="text-sm text-gray-500 font-bold">{{ $ticketActivity->reason }}</p>
                 </li>
             @endforeach
         </ul>
