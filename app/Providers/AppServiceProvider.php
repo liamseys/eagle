@@ -16,6 +16,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -38,6 +39,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureMacros();
         $this->configureFilamentColor($generalSettings);
         $this->configureGatePolicies();
+        $this->configureUrl();
     }
 
     /**
@@ -45,9 +47,7 @@ class AppServiceProvider extends ServiceProvider
      */
     private function configureCommands(): void
     {
-        DB::prohibitDestructiveCommands(
-            $this->app->isProduction()
-        );
+        DB::prohibitDestructiveCommands($this->app->isProduction());
     }
 
     /**
@@ -103,5 +103,15 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Article::class, ArticlePolicy::class);
         Gate::policy(Category::class, CategoryPolicy::class);
         Gate::policy(Form::class, FormPolicy::class);
+    }
+
+    /**
+     * Configure the application's URL settings.
+     */
+    private function configureUrl(): void
+    {
+        if ($this->app->isProduction()) {
+            URL::forceScheme('https');
+        }
     }
 }
