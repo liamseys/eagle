@@ -18,7 +18,7 @@
 <x-dynamic-component :component="$getEntryWrapperView()" :entry="$entry">
     <div>
         <ul class="flex flex-col space-y-4">
-            @foreach($activities as $ticketActivity)
+            @forelse($activities as $ticketActivity)
                 @php
                     $enumClass = $enumMap[$ticketActivity->column->value];
                     $enumInstance = $enumClass::from($ticketActivity->value);
@@ -41,10 +41,14 @@
                         </x-filament::badge>
                     </div>
 
-                    <p class="text-sm text-gray-500">{{ $ticketActivity->created_at->format('d/m/Y h:i A') }}</p>
+                    <p class="c">{{ $ticketActivity->created_at->format('d/m/Y h:i A') }}</p>
                     <p class="text-sm text-gray-500 font-bold">{{ $ticketActivity->reason }}</p>
                 </li>
-            @endforeach
+            @empty
+                <li>
+                    <p class="text-sm text-gray-500">{{ __('No activity yet.') }}</p>
+                </li>
+            @endforelse
         </ul>
     </div>
 </x-dynamic-component>
