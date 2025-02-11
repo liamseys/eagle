@@ -8,9 +8,11 @@ use App\Actions\Tickets\UpdateTicketType;
 use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketStatus;
 use App\Enums\Tickets\TicketType;
+use App\Filament\Infolists\Components\TicketActivity;
 use App\Filament\Resources\TicketResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Enums\MaxWidth;
 use Illuminate\Database\Eloquent\Model;
 
 class EditTicket extends EditRecord
@@ -20,6 +22,16 @@ class EditTicket extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\ViewAction::make('viewActivity')
+                ->label('View activity')
+                ->color('gray')
+                ->modalHeading(__('View activity'))
+                ->modalDescription(__('Track all updates related to the ticket, including changes in priority, type, or status, and see who made them.'))
+                ->modalWidth(MaxWidth::Large)
+                ->slideOver()
+                ->infolist([
+                    TicketActivity::make('ticketActivity')->label(''),
+                ]),
             Actions\DeleteAction::make(),
         ];
     }
