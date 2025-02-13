@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Actions\Tickets\UpdateTicketStatus;
+use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket;
 use App\Notifications\TicketCommentByAgent;
 use Filament\Forms\Components\RichEditor;
@@ -69,15 +71,35 @@ class CreateTicketComment extends Component implements HasForms
 
         $this->ticket->update(['assignee_id' => $user->id]);
 
+        // Update the ticket status
+        app(UpdateTicketStatus::class)->handle($this->ticket, TicketStatus::PENDING);
+
+        // Notify the requester if the comment is public
         if ($formData['is_public'] && $this->ticket->requester) {
             $this->ticket->requester->notify(new TicketCommentByAgent($ticketComment));
         }
 
-        $this->reset('data');
-        $this->form->fill();
+        $this->resetForm();
 
         $this->dispatch('comment-created');
 
+        $this->sendSuccessNotification();
+    }
+
+    /**
+     * Reset form data.
+     */
+    private function resetForm(): void
+    {
+        $this->reset('data');
+        $this->form->fill();
+    }
+
+    /**
+     * Send success notification.
+     */
+    private function sendSuccessNotification(): void
+    {
         Notification::make()
             ->title(__('Success'))
             ->body(__('Your comment has been added to the ticket. The requester will be notified.'))
