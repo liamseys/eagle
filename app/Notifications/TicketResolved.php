@@ -37,6 +37,7 @@ class TicketResolved extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+            ->from($this->ticket->getSupportEmailWithTicketId())
             ->line('An agent has marked your ticket as resolved.')
             ->line('To reopen the ticket, simply reply to this email. Otherwise, it will be automatically closed after 48 hours.');
     }

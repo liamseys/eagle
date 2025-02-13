@@ -5,19 +5,32 @@ namespace App\Mailboxes;
 use App\Enums\Tickets\TicketType;
 use App\Models\Client;
 use App\Models\Ticket;
+use App\Settings\GeneralSettings;
 use BeyondCode\Mailbox\InboundEmail;
 
 class TicketMailbox
 {
     public function __invoke(InboundEmail $email, $ticketId = null)
     {
-        if ($ticketId) {
-            $this->addCommentToExistingTicket($ticketId, $email);
+        $generalSettings = app(GeneralSettings::class);
 
-            return;
+        $supportEmailAddresses = array_map(
+            fn ($item) => $item['email'],
+            array_merge(
+                [['label' => 'Default', 'email' => config('mail.from.address')]],
+                $generalSettings->support_email_addresses
+            )
+        );
+
+        if (! in_array($email->from(), $supportEmailAddresses)) {
+            if ($ticketId) {
+                $this->addCommentToExistingTicket($ticketId, $email);
+
+                return;
+            }
+
+            $this->createNewTicketWithComment($email);
         }
-
-        $this->createNewTicketWithComment($email);
     }
 
     private function addCommentToExistingTicket($ticketId, InboundEmail $email): void

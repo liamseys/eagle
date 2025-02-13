@@ -37,6 +37,7 @@ class TicketEscalationRequired extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
+            ->from($this->ticket->getSupportEmailWithTicketId())
             ->subject('We need some information from you')
             ->line('We need a few things to move forward:')
             ->line('1. Ask your Account Manager to escalate the case (#'.$this->ticket->ticket_id.') if they have not already.')

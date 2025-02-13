@@ -121,6 +121,21 @@ class Ticket extends Model
     }
 
     /**
+     * Get the support email address including the ticket ID.
+     *
+     * This method appends the ticket ID to the default support email address
+     * in the format: support+{ticket_id}@example.com.
+     */
+    public function getSupportEmailWithTicketId(): ?string
+    {
+        if (! $this->ticket_id || ! config('mail.from.address')) {
+            return config('mail.from.address');
+        }
+
+        return preg_replace('/^(.*)@/', "support+{$this->ticket_id}@", config('mail.from.address'));
+    }
+
+    /**
      * Limit the query to solved tickets.
      */
     public function scopeSolved(Builder $query): void
