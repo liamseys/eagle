@@ -86,6 +86,7 @@ class FormResource extends Resource
                                             ->label(__('Client name field'))
                                             ->options(function ($livewire) {
                                                 return $livewire->record?->fields()
+                                                    ->orderBy('sort')
                                                     ->pluck('label', 'name')
                                                     ->toArray();
                                             })
@@ -95,6 +96,7 @@ class FormResource extends Resource
                                             ->label(__('Client email field'))
                                             ->options(function ($livewire) {
                                                 return $livewire->record?->fields()
+                                                    ->orderBy('sort')
                                                     ->pluck('label', 'name')
                                                     ->toArray();
                                             })
