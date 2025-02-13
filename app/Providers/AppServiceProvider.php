@@ -123,7 +123,10 @@ class AppServiceProvider extends ServiceProvider
      */
     private function configureMailbox(GeneralSettings $generalSettings)
     {
-        $supportEmailAddresses = $generalSettings->support_email_addresses;
+        $supportEmailAddresses = array_merge(
+            [['label' => 'Default', 'email' => config('mail.from.address')]],
+            $generalSettings->support_email_addresses
+        );
 
         foreach ($supportEmailAddresses as $supportEmailAddress) {
             $email = $supportEmailAddress['email'];
