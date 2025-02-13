@@ -58,7 +58,6 @@ class AppServiceProvider extends ServiceProvider
      */
     private function configureModels(): void
     {
-        Model::shouldBeStrict();
         Model::preventAccessingMissingAttributes();
         Model::preventLazyLoading();
 
