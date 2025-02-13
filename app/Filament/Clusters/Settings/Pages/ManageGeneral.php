@@ -71,7 +71,7 @@ class ManageGeneral extends SettingsPage
                             ])->columns(3),
                     ]),
                 Section::make(__('Support addresses'))
-                    ->description(__('Any email for support tickets must be added to your Eagle account as a support address.'))
+                    ->description(__('Emails to these addresses will create tickets.'))
                     ->schema([
                         Repeater::make('support_email_addresses')
                             ->label('')
