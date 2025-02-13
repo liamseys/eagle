@@ -126,7 +126,14 @@ class AppServiceProvider extends ServiceProvider
         $supportEmailAddresses = $generalSettings->support_email_addresses;
 
         foreach ($supportEmailAddresses as $supportEmailAddress) {
-            Mailbox::to($supportEmailAddress['email'], TicketMailbox::class);
+            $email = $supportEmailAddress['email'];
+
+            if (str_contains($email, '@')) {
+                [$localPart, $domain] = explode('@', $email);
+
+                Mailbox::to($localPart.'@'.$domain, TicketMailbox::class);
+                Mailbox::to($localPart.'+{ticketId}@'.$domain, TicketMailbox::class);
+            }
         }
     }
 }
