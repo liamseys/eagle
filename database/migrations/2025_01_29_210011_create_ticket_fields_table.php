@@ -20,6 +20,7 @@ return new class extends Migration
                 ->constrained('hc_form_fields')
                 ->cascadeOnDelete();
             $table->text('value')->nullable();
+            $table->unsignedSmallInteger('sort')->default(1);
             $table->timestamps();
         });
     }
