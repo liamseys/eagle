@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Ticket;
+use App\Notifications\TicketCommentByAgent;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
@@ -56,16 +57,21 @@ class CreateTicketComment extends Component implements HasForms
 
     public function create(): void
     {
-        $this->ticket->comments()->create([
-            'authorable_type' => auth()->user()::class,
-            'authorable_id' => auth()->id(),
-            'body' => $this->form->getState()['comment'],
-            'is_public' => $this->form->getState()['is_public'],
+        $user = auth()->user();
+        $formData = $this->form->getState();
+
+        $ticketComment = $this->ticket->comments()->create([
+            'authorable_type' => get_class($user),
+            'authorable_id' => $user->id,
+            'body' => $formData['comment'],
+            'is_public' => $formData['is_public'],
         ]);
 
-        $this->ticket->update([
-            'assignee_id' => auth()->id(),
-        ]);
+        $this->ticket->update(['assignee_id' => $user->id]);
+
+        if ($formData['is_public'] && $this->ticket->requester) {
+            $this->ticket->requester->notify(new TicketCommentByAgent($ticketComment));
+        }
 
         $this->reset('data');
         $this->form->fill();
