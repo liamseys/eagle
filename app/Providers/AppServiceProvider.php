@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Mailboxes\TicketMailbox;
 use App\Models\HelpCenter\Article;
 use App\Models\HelpCenter\Category;
 use App\Models\HelpCenter\Form;
@@ -9,6 +10,7 @@ use App\Policies\ArticlePolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\FormPolicy;
 use App\Settings\GeneralSettings;
+use BeyondCode\Mailbox\Facades\Mailbox;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
 use Illuminate\Database\Eloquent\Model;
@@ -40,6 +42,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureFilamentColor($generalSettings);
         $this->configureGatePolicies();
         $this->configureUrl();
+        $this->configureMailbox($generalSettings);
     }
 
     /**
@@ -112,6 +115,18 @@ class AppServiceProvider extends ServiceProvider
     {
         if ($this->app->isProduction()) {
             URL::forceScheme('https');
+        }
+    }
+
+    /**
+     * Configure the application's mailbox.
+     */
+    private function configureMailbox(GeneralSettings $generalSettings)
+    {
+        $supportEmailAddresses = $generalSettings->support_email_addresses;
+
+        foreach ($supportEmailAddresses as $supportEmailAddress) {
+            Mailbox::to($supportEmailAddress['email'], TicketMailbox::class);
         }
     }
 }

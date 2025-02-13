@@ -12,6 +12,8 @@ class GeneralSettings extends Settings
 
     public bool $is_active;
 
+    public array $support_email_addresses;
+
     public array $allowlisted_domains;
 
     public string $branding_primary_color;

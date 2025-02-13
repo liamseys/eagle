@@ -70,10 +70,28 @@ class ManageGeneral extends SettingsPage
                                     ->columnSpan(2),
                             ])->columns(3),
                     ]),
-                Section::make(__('Notifications'))
-                    ->description(__('Select which notifications you would like to receive.'))
+                Section::make(__('Support addresses'))
+                    ->description(__('Any email for support tickets must be added to your Eagle account as a support address.'))
                     ->schema([
-                        //
+                        Repeater::make('support_email_addresses')
+                            ->label('')
+                            ->addActionLabel(__('Add email'))
+                            ->reorderable(false)
+                            ->schema([
+                                Grid::make()
+                                    ->schema([
+                                        TextInput::make('label')
+                                            ->label(__('Label'))
+                                            ->maxLength(255)
+                                            ->required(),
+                                        TextInput::make('email')
+                                            ->label(__('Email'))
+                                            ->email()
+                                            ->suffixIcon('heroicon-m-envelope')
+                                            ->maxLength(255)
+                                            ->required(),
+                                    ]),
+                            ]),
                     ]),
                 Section::make(__('Allowlisted domains'))
                     ->description(__('These domains are allowed to access Eagle.'))
