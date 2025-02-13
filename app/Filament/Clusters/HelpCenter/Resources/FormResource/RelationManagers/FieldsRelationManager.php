@@ -101,7 +101,8 @@ class FieldsRelationManager extends RelationManager
                                                     ->disabled(fn ($get) => ! in_array($get('rule'), ['max', 'min', 'in', 'regex']))
                                                     ->required(fn ($get) => in_array($get('rule'), ['max', 'min', 'in', 'regex'])),
                                             ]),
-                                    ]),
+                                    ])
+                                    ->defaultItems(0),
                             ]),
                     ])->columnSpanFull(),
             ]);
