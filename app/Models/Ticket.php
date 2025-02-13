@@ -5,9 +5,11 @@ namespace App\Models;
 use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketStatus;
 use App\Enums\Tickets\TicketType;
+use App\Models\Scopes\GroupScope;
 use App\Observers\TicketObserver;
 use App\Traits\HasNotes;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -16,6 +18,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 #[ObservedBy([TicketObserver::class])]
+#[ScopedBy([GroupScope::class])]
 class Ticket extends Model
 {
     /** @use HasFactory<\Database\Factories\TicketFactory> */
