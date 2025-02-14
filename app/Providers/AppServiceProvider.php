@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureFilamentColor($generalSettings);
         $this->configureGatePolicies();
         $this->configureUrl();
-        $this->configureMailbox($generalSettings);
+        $this->configureMailbox();
     }
 
     /**
