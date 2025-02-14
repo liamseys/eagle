@@ -14,7 +14,7 @@
         </x-container>
     </header>
 
-    <main>
+    <main class="min-h-screen">
         {{ $slot }}
     </main>
 
