@@ -64,14 +64,31 @@
                                                 @break
 
                                             @case(FormFieldType::CHECKBOX)
-                                                <x-checkbox name="{{ $formField->name }}"
-                                                            id="{{ $formField->name }}"
-                                                            :required="$formField->is_required"/>
+                                                <fieldset class="flex flex-col space-y-1">
+                                                    @foreach($formField->options as $value => $label)
+                                                        <div class="flex flex-row items-center gap-2">
+                                                            <x-checkbox name="{{ $formField->name }}[]"
+                                                                        value="{{ $value }}"
+                                                                        id="{{ $formField->name . '_' . $value }}"
+                                                                        :required="$formField->is_required"/>
+                                                            <x-label for="{{ $formField->name . '_' . $value }}">{{ $label }}</x-label>
+                                                        </div>
+                                                    @endforeach
+                                                </fieldset>
                                                 @break
 
                                             @case(FormFieldType::RADIO)
-                                                <input type="radio" name="{{ $formField->name }}"
-                                                       id="{{ $formField->name }}" {{ $formField->is_required ? 'required' : '' }}>
+                                                <fieldset class="flex flex-col space-y-1">
+                                                    @foreach($formField->options as $value => $label)
+                                                        <div class="flex flex-row items-center gap-2">
+                                                            <input type="radio" name="{{ $formField->name }}"
+                                                                   id="{{ $formField->name . '_' . $value }}"
+                                                                   value="{{ $value }}"
+                                                                {{ $formField->is_required ? 'required' : '' }}>
+                                                            <x-label for="{{ $formField->name . '_' . $value }}">{{ $label }}</x-label>
+                                                        </div>
+                                                    @endforeach
+                                                </fieldset>
                                                 @break
 
                                             @case(FormFieldType::SELECT)
