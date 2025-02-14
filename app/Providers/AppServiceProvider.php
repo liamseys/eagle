@@ -122,11 +122,18 @@ class AppServiceProvider extends ServiceProvider
     /**
      * Configure the application's mailbox.
      */
-    private function configureMailbox(GeneralSettings $generalSettings)
+    private function configureMailbox()
     {
+        try {
+            $generalSettings = app(GeneralSettings::class);
+            $supportEmailAddresses = $generalSettings->support_email_addresses;
+        } catch (QueryException $e) {
+            $supportEmailAddresses = [];
+        }
+
         $supportEmailAddresses = array_merge(
             [['label' => 'Default', 'email' => config('mail.from.address')]],
-            $generalSettings->support_email_addresses
+            $supportEmailAddresses
         );
 
         foreach ($supportEmailAddresses as $supportEmailAddress) {
