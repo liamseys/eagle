@@ -15,6 +15,8 @@ use Illuminate\Support\HtmlString;
 
 class GroupResource extends Resource
 {
+    protected static ?int $navigationSort = 4;
+
     protected static ?string $model = Group::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';

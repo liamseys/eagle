@@ -1,7 +1,7 @@
 <?php
 
+use App\Settings\AdvancedSettings;
 use App\Settings\GeneralSettings;
-use App\Settings\WorkflowSettings;
 
 return [
 
@@ -11,7 +11,8 @@ return [
      */
     'settings' => [
         GeneralSettings::class,
-        WorkflowSettings::class,
+        GeneralSettings::class,
+        AdvancedSettings::class,
     ],
 
     /*

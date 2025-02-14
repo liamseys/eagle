@@ -5,7 +5,7 @@ namespace App\Observers;
 use App\Actions\Tickets\CreateTicketSlas;
 use App\Models\Ticket;
 use App\Notifications\TicketCreated;
-use App\Settings\GeneralSettings;
+use App\Settings\AdvancedSettings;
 use Illuminate\Support\Facades\DB;
 
 class TicketObserver
@@ -16,13 +16,13 @@ class TicketObserver
     public function creating(Ticket $ticket): void
     {
         DB::transaction(function () use ($ticket) {
-            $generalSettings = app(GeneralSettings::class);
+            $advancedSettings = app(AdvancedSettings::class);
 
             $baseTicketId = 10000000;
-            $ticket->ticket_id = $baseTicketId + $generalSettings->ticket_id_start;
+            $ticket->ticket_id = $baseTicketId + $advancedSettings->ticket_id_start;
 
-            $generalSettings->ticket_id_start++;
-            $generalSettings->save();
+            $advancedSettings->ticket_id_start++;
+            $advancedSettings->save();
         });
     }
 

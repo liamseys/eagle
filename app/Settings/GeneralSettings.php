@@ -8,8 +8,6 @@ class GeneralSettings extends Settings
 {
     public string $name;
 
-    public int $ticket_id_start;
-
     public bool $is_active;
 
     public array $support_email_addresses;

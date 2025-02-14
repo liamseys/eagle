@@ -22,6 +22,7 @@ use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
+use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
@@ -44,6 +45,12 @@ class AppPanelProvider extends PanelProvider
     {
         $generalSettings = app(GeneralSettings::class);
 
+        try {
+            $font = $generalSettings->branding_primary_font;
+        } catch (QueryException $e) {
+            $font = 'Lexend';
+        }
+
         return $panel
             ->default()
             ->id('app')
@@ -52,7 +59,7 @@ class AppPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->profile(EditProfile::class)
-            ->font($generalSettings->branding_primary_font, provider: GoogleFontProvider::class)
+            ->font($font, provider: GoogleFontProvider::class)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->darkMode(false)
             ->brandLogo(fn () => Auth::guest()

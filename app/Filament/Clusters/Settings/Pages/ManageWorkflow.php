@@ -16,6 +16,8 @@ use Filament\Pages\SettingsPage;
 
 class ManageWorkflow extends SettingsPage
 {
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $navigationIcon = 'heroicon-o-arrows-right-left';
 
     protected static ?string $navigationLabel = 'Workflows';
