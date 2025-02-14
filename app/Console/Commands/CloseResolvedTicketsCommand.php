@@ -39,7 +39,7 @@ class CloseResolvedTicketsCommand extends Command
 
         foreach ($tickets as $ticket) {
             if ($ticket->activity->last()->created_at <= Carbon::now()->subHours(48)) {
-                CloseResolvedTicketJob::dispatch($ticket, TicketStatus::RESOLVED);
+                CloseResolvedTicketJob::dispatch($ticket, TicketStatus::CLOSED);
             }
         }
     }
