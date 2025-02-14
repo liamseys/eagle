@@ -3,14 +3,22 @@
 @tailwind utilities;
 
 .article-content {
+    & p,
+    & ul {
+        @apply text-sm;
+    }
+
     & p:not(:last-child),
     & ul:not(:last-child) {
         @apply mb-4;
     }
 
-    & p,
-    & ul {
-        @apply text-sm;
+    & h2 {
+        @apply text-xl;
+    }
+
+    & h3 {
+        @apply text-2xl;
     }
 
     & ul {
