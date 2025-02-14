@@ -45,8 +45,18 @@ class ManageGeneral extends SettingsPage
                     ->schema([
                         Grid::make()
                             ->schema([
-                                //
-                            ])->columns(3),
+                                TextInput::make('app_name')
+                                    ->label(__('Name'))
+                                    ->maxLength(255)
+                                    ->required()
+                                    ->helperText(__('This name will appear on public pages and in emails.')),
+                                TextInput::make('app_path')
+                                    ->label(__('Path'))
+                                    ->prefix(config('app.url').'/')
+                                    ->maxLength(255)
+                                    ->required()
+                                    ->helperText(__('Define the URL path for your application.')),
+                            ]),
                     ]),
                 Section::make(__('Support addresses'))
                     ->description(__('Emails to these addresses will create tickets.'))

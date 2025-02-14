@@ -6,9 +6,9 @@ use Spatie\LaravelSettings\Settings;
 
 class GeneralSettings extends Settings
 {
-    public string $name;
+    public string $app_name;
 
-    public bool $is_active;
+    public string $app_path;
 
     public array $support_email_addresses;
 

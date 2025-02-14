@@ -46,15 +46,17 @@ class AppPanelProvider extends PanelProvider
         $generalSettings = app(GeneralSettings::class);
 
         try {
+            $path = $generalSettings->app_path;
             $font = $generalSettings->branding_primary_font;
         } catch (QueryException $e) {
+            $path = 'eagle';
             $font = 'Lexend';
         }
 
         return $panel
             ->default()
             ->id('app')
-            ->path('eagle')
+            ->path($path)
             ->login()
             ->passwordReset()
             ->emailVerification()
