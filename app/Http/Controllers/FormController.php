@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Forms\SubmitForm;
+use App\Enums\HelpCenter\Articles\ArticleStatus;
+use App\Models\HelpCenter\Category;
 use App\Models\HelpCenter\Form;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -18,9 +20,15 @@ class FormController extends Controller
             abort(404);
         }
 
+        $categories = Category::whereHas('articles', function ($query) {
+            $query->where('status', ArticleStatus::PUBLISHED)
+                ->where('is_public', '=', true);
+        })->orderBy('sort')->get();
+
         return view('forms.show', [
             'locale' => $locale,
             'form' => $form,
+            'categories' => $categories,
         ]);
     }
 

@@ -6,9 +6,11 @@
 ])
 
 @php
-    $gradientFromColor = app(GeneralSettings::class)->branding_gradient_from_color;
-    $gradientViaColor = app(GeneralSettings::class)->branding_gradient_via_color;
-    $gradientToColor = app(GeneralSettings::class)->branding_gradient_to_color;
+    $generalSettings = app(GeneralSettings::class);
+
+    $gradientFromColor = $generalSettings->branding_gradient_from_color;
+    $gradientViaColor = $generalSettings->branding_gradient_via_color;
+    $gradientToColor = $generalSettings->branding_gradient_to_color;
 @endphp
 
 <section class="py-12 bg-gradient-to-r from-[var(--from)] via-[var(--via)] to-[var(--to)]"

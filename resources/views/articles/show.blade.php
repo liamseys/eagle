@@ -6,6 +6,27 @@
     <section class="py-12">
         <x-container class="max-w-7xl">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="col-span-1">
+                    <x-card>
+                        <x-slot name="header">
+                            <h3 class="font-semibold">{{ $article->section->name }}</h3>
+                        </x-slot>
+
+                        <ul class="-mx-4 flex flex-col space-y-2 -my-4">
+                            @foreach($article->section
+                                                 ->articles()
+                                                 ->public()
+                                                 ->published()
+                                                 ->get() as $navArticle)
+                                <x-nav-link :href="route('articles.show', $navArticle)"
+                                            :active="request()->routeIs('articles.show') && request()->route('article')?->is($navArticle)">
+                                    <p class="text-sm">{{ $navArticle->title }}</p>
+                                    <x-heroicon-s-chevron-right class="h-4 w-4"/>
+                                </x-nav-link>
+                            @endforeach
+                        </ul>
+                    </x-card>
+                </div>
                 <div class="col-span-2">
                     <x-card>
                         <x-slot name="header">
@@ -18,27 +39,6 @@
                         <div class="article-content">
                             {!! $article->body !!}
                         </div>
-                    </x-card>
-                </div>
-                <div class="col-span-1">
-                    <x-card>
-                        <x-slot name="header">
-                            <h3 class="font-semibold">{{ $article->section->name }}</h3>
-                        </x-slot>
-
-                        <ul class="-mx-4 flex flex-col space-y-2">
-                            @foreach($article->section
-                                                 ->articles()
-                                                 ->public()
-                                                 ->published()
-                                                 ->get() as $article)
-                                <x-nav-link :href="route('articles.show', $article)"
-                                            :active="request()->routeIs('articles.show') && request()->route('article')?->is($article)">
-                                    <p class="text-sm">{{ $article->title }}</p>
-                                    <x-heroicon-s-chevron-right class="h-4 w-4"/>
-                                </x-nav-link>
-                            @endforeach
-                        </ul>
                     </x-card>
                 </div>
             </div>

@@ -15,7 +15,7 @@
                                 <h3 class="font-semibold">{{ $section->name }}</h3>
                             </x-slot>
 
-                            <ul class="-mx-4 flex flex-col space-y-2">
+                            <ul class="-mx-4 flex flex-col space-y-2 -my-4">
                                 @foreach($section->articles()
                                                  ->published()
                                                  ->public()

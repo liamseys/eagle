@@ -6,6 +6,22 @@
     <section class="py-12">
         <x-container class="max-w-7xl">
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="col-span-1">
+                    <x-card>
+                        <x-slot name="header">
+                            <h3 class="font-semibold">{{ __('Other categories') }}</h3>
+                        </x-slot>
+
+                        <ul class="-mx-4 flex flex-col space-y-2 -my-4">
+                            @foreach($categories as $category)
+                                <x-nav-link :href="route('categories.show', $category)">
+                                    <p class="text-sm">{{ $category->name }}</p>
+                                    <x-heroicon-s-chevron-right class="h-4 w-4"/>
+                                </x-nav-link>
+                            @endforeach
+                        </ul>
+                    </x-card>
+                </div>
                 <div class="col-span-2">
                     <x-card>
                         <x-slot name="header">
@@ -33,8 +49,13 @@
                                 @foreach($form->fields()
                                               ->orderBy('sort')
                                               ->get() as $formField)
-                                    <div class="flex flex-col gap-1">
-                                        <x-label for="{{ $formField->name }}">{{ $formField->label }}</x-label>
+                                    <div class="w-full sm:w-3/5 flex flex-col gap-1">
+                                        <x-label for="{{ $formField->name }}">
+                                            {{ $formField->label }}
+                                            @if($formField->is_required)
+                                                <span class="text-red-500">*</span>
+                                            @endif
+                                        </x-label>
                                         @switch($formField->type)
                                             @case(FormFieldType::TEXTAREA)
                                                 <x-textarea name="{{ $formField->name }}"
@@ -94,13 +115,21 @@
                                     </div>
                                 @endforeach
 
-                                <button type="submit">{{ __('Submit') }}</button>
+                                <p class="text-xs text-gray-500">{{ __('* This field is required') }}</p>
+                                <p class="w-full sm:w-3/5 text-xs text-gray-500">
+                                    {!! __('Some system info is sent to :name. It helps improve support, fix issues, and make products better, in line with the <a href=":privacy_policy" class="underline">Privacy Policy</a> and <a href=":terms_of_service" class="underline">Terms of Service</a>.', [
+                                        'name' => config('app.name'),
+                                        'privacy_policy' => '#',
+                                        'terms_of_service' => '#',
+                                    ]) !!}
+                                </p>
+
+                                <div class="flex items-start">
+                                    <x-button type="submit">{{ __('Submit') }}</x-button>
+                                </div>
                             </div>
                         </form>
                     </x-card>
-                </div>
-                <div class="col-span-1">
-                    //
                 </div>
             </div>
         </x-container>
