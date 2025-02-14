@@ -1,3 +1,5 @@
+![Eagle](https://raw.githubusercontent.com/liamseys/eagle/main/.github/banner.jpg)
+
 # Eagle 🦅
 
 A self-hosted support ticket management system built with Laravel.
