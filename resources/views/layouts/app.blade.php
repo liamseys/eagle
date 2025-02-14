@@ -3,8 +3,8 @@
         <x-container>
             <div class="relative flex h-16 items-center justify-between">
                 <a href="{{ route('index') }}" class="flex items-center gap-2">
-                    <img src="{{ asset('img/logo/logo-white.svg') }}"
-                         alt="{{ config('app.name') }}"
+                    <img src="{{ !empty($generalSettings->branding_logo_white) ? Storage::url($generalSettings->branding_logo_white) : asset('img/logo/logo-white.svg') }}"
+                         alt="{{ !empty($generalSettings->app_name) ? $generalSettings->app_name : config('app.name') }}"
                          class="h-8">
                     <span class="px-2 py-1 text-xs font-bold bg-white rounded-lg">
                         {{ __('Help Center') }}
@@ -22,7 +22,7 @@
         <x-container>
             <div class="flex flex-col items-center justify-between sm:flex-row">
                 <p class="text-sm text-gray-500">
-                    {{ __('© :year :name.', ['year' => date('Y'), 'name' => config('app.name')]) }}
+                    {{ __('© :year :name.', ['year' => date('Y'), 'name' => !empty($generalSettings->app_name) ? $generalSettings->app_name : config('app.name')]) }}
                 </p>
 
                 <ul class="mt-2 flex space-x-4 sm:mt-0">

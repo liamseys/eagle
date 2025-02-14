@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Settings\GeneralSettings;
 use Illuminate\View\Component;
 use Illuminate\View\View;
 
@@ -12,6 +13,10 @@ class AppLayout extends Component
      */
     public function render(): View
     {
-        return view('layouts.app');
+        $generalSettings = app(GeneralSettings::class);
+
+        return view('layouts.app', [
+            'generalSettings' => $generalSettings,
+        ]);
     }
 }
