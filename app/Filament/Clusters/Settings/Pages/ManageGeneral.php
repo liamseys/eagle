@@ -56,7 +56,7 @@ class ManageGeneral extends SettingsPage
                                     ->prefix(config('app.url').'/')
                                     ->maxLength(255)
                                     ->required()
-                                    ->helperText(__('It may take a few minutes to take effect.')),
+                                    ->helperText(__('The path where the application is accessible.')),
                             ]),
                     ]),
                 Section::make(__('Support addresses'))
@@ -109,12 +109,14 @@ class ManageGeneral extends SettingsPage
                     ->schema([
                         Grid::make()
                             ->schema([
-                                /* FileUpload::make('branding_logo_black')
-                                     ->image()
-                                     ->label(__('Logo black')),
-                                 FileUpload::make('branding_logo_white')
-                                     ->image()
-                                     ->label(__('Logo white')),*/
+                                FileUpload::make('branding_logo_black')
+                                    ->image()
+                                    ->directory('branding/logo')
+                                    ->label(__('Logo black')),
+                                FileUpload::make('branding_logo_white')
+                                    ->image()
+                                    ->directory('branding/logo')
+                                    ->label(__('Logo white')),
                                 ColorPicker::make('branding_primary_color')
                                     ->label(__('Primary color'))
                                     ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
