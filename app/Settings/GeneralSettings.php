@@ -14,6 +14,10 @@ class GeneralSettings extends Settings
 
     public array $allowlisted_domains;
 
+    public string $branding_logo_black;
+
+    public string $branding_logo_white;
+
     public string $branding_primary_color;
 
     public string $branding_primary_font;

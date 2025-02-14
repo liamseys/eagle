@@ -5,6 +5,7 @@ namespace App\Filament\Clusters\Settings\Pages;
 use App\Filament\Clusters\Settings;
 use App\Settings\GeneralSettings;
 use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Section;
@@ -55,7 +56,7 @@ class ManageGeneral extends SettingsPage
                                     ->prefix(config('app.url').'/')
                                     ->maxLength(255)
                                     ->required()
-                                    ->helperText(__('Define the URL path for your application.')),
+                                    ->helperText(__('It may take a few minutes to take effect.')),
                             ]),
                     ]),
                 Section::make(__('Support addresses'))
@@ -108,6 +109,12 @@ class ManageGeneral extends SettingsPage
                     ->schema([
                         Grid::make()
                             ->schema([
+                                /* FileUpload::make('branding_logo_black')
+                                     ->image()
+                                     ->label(__('Logo black')),
+                                 FileUpload::make('branding_logo_white')
+                                     ->image()
+                                     ->label(__('Logo white')),*/
                                 ColorPicker::make('branding_primary_color')
                                     ->label(__('Primary color'))
                                     ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
@@ -140,5 +147,12 @@ class ManageGeneral extends SettingsPage
                             ]),
                     ]),
             ]);
+    }
+
+    public function getRedirectUrl(): ?string
+    {
+        $generalSettings = app(GeneralSettings::class);
+
+        return config('app.url').'/'.trim($generalSettings->app_path, '/').'/settings/general';
     }
 }
