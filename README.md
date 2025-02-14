@@ -62,7 +62,7 @@ php artisan queue:work
 
 ## License
 
-Eagle is released under the Creative Commons Attribution-NonCommercial 4.0 International license. See the [LICENSE](LICENSE) file for more details. A human-friendly summary is available at [creativecommons.org](https://creativecommons.org/licenses/by-nc/4.0/). Additional clarification on non-commercial use is outlined in [NON-COMMERCIAL.md](NON-COMMERCIAL.md).
+Eagle is released under the Creative Commons Attribution-NonCommercial 4.0 International license. See the [LICENSE](LICENSE) file for more details. A human-friendly summary is available at [creativecommons.org](https://creativecommons.org/licenses/by-nc/4.0/).
 
 Dependencies may be subject to their own licenses.
 
