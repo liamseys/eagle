@@ -18,7 +18,22 @@
         {{ $slot }}
     </main>
 
-    <footer>
-        //
+    <footer class="relative bottom-0 w-full bg-gray-100 py-4">
+        <x-container>
+            <div class="flex flex-col items-center justify-between sm:flex-row">
+                <p class="text-sm text-gray-500">
+                    {{ __('© :year :name.', ['year' => date('Y'), 'name' => config('app.name')]) }}
+                </p>
+
+                <ul class="mt-2 flex space-x-4 sm:mt-0">
+                    <li>
+                        <a href="{{ route('filament.app.auth.login') }}"
+                           class="text-sm text-gray-500 transition hover:underline hover:text-gray-700">
+                            {{ __('Agent login') }}
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </x-container>
     </footer>
 </x-master-layout>
