@@ -13,7 +13,7 @@
                             <div class="flex flex-col p-4 space-y-2 border rounded-lg hover:bg-gray-100 hover:cursor-pointer">
                                 <x-dynamic-component :component="$category->icon" class="h-6 w-6"/>
 
-                                <p class="font-bold text-[#F8CB09]">{{ $category->name }}</p>
+                                <p class="font-bold text-black">{{ $category->name }}</p>
 
                                 @if($category->description)
                                     <p class="text-sm text-gray-500">{{ $category->description }}</p>
