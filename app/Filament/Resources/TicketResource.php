@@ -7,8 +7,11 @@ use App\Enums\Tickets\TicketStatus;
 use App\Enums\Tickets\TicketType;
 use App\Filament\Forms\Components\TicketComments;
 use App\Filament\Resources\TicketResource\Pages;
+use App\Filament\Resources\TicketResource\Pages\EditTicket;
+use App\Filament\Resources\TicketResource\RelationManagers\FieldsRelationManager;
 use App\Models\Ticket;
 use Filament\Forms;
+use Filament\Forms\Components\Livewire;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -66,6 +69,17 @@ class TicketResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                             ]),
+                        Livewire::make(FieldsRelationManager::class, fn (Ticket $record, EditTicket $livewire): array => [
+                            'ownerRecord' => $record,
+                            'pageClass' => $livewire::class,
+                        ])->hidden(function (?Ticket $record) {
+                            // If no record exists, it's the create page
+                            if (! $record) {
+                                return true;
+                            }
+
+                            return $record->fields->isEmpty();
+                        }),
                         TicketComments::make()
                             ->hiddenOn(['create']),
                     ])->columnSpan(['lg' => 2]),
