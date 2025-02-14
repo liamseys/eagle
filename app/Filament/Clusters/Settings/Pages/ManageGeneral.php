@@ -13,6 +13,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Forms\Get;
 use Filament\Pages\SettingsPage;
+use Illuminate\Support\HtmlString;
 
 class ManageGeneral extends SettingsPage
 {
@@ -125,6 +126,11 @@ class ManageGeneral extends SettingsPage
                                     ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')
                                     ->required()
                                     ->helperText(__('This is the primary color that will be applied across the entire application.')),
+                                TextInput::make('branding_primary_font')
+                                    ->label(__('Primary font'))
+                                    ->required()
+                                    ->hint(new HtmlString('<a href="https://fonts.google.com/" target="_blank">Google Fonts</a>'))
+                                    ->helperText(__('This is the primary font that will be applied across the entire application.')),
                             ]),
                         Section::make()
                             ->description(__('These colors are applied in the help center to create the gradient effect in the hero section.'))

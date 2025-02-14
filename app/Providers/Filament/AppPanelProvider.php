@@ -8,6 +8,7 @@ use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TicketPriorityChart;
 use App\Filament\Widgets\TicketTypeChart;
 use App\Http\Middleware\EnsureUserIsActive;
+use App\Settings\GeneralSettings;
 use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -41,6 +42,8 @@ class AppPanelProvider extends PanelProvider
 
     public function panel(Panel $panel): Panel
     {
+        $generalSettings = app(GeneralSettings::class);
+
         return $panel
             ->default()
             ->id('app')
@@ -49,7 +52,7 @@ class AppPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->profile(EditProfile::class)
-            ->font('Lexend', provider: GoogleFontProvider::class)
+            ->font($generalSettings->branding_primary_font, provider: GoogleFontProvider::class)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->darkMode(false)
             ->brandLogo(fn () => Auth::guest()

@@ -18,6 +18,8 @@ class GeneralSettings extends Settings
 
     public string $branding_primary_color;
 
+    public string $branding_primary_font;
+
     public string $branding_gradient_from_color;
 
     public string $branding_gradient_via_color;
