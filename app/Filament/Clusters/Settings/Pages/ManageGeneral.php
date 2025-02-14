@@ -129,8 +129,8 @@ class ManageGeneral extends SettingsPage
                                 TextInput::make('branding_primary_font')
                                     ->label(__('Primary font'))
                                     ->required()
-                                    ->hint(new HtmlString('<a href="https://fonts.google.com/" target="_blank">Google Fonts</a>'))
-                                    ->helperText(__('This is the primary font that will be applied across the entire application.')),
+                                    ->hint(new HtmlString('<a href="https://fonts.google.com/" target="_blank">➜ Google Fonts</a>'))
+                                    ->helperText(__('This is the primary font that will be applied across the entire application. This must be a Google Font.')),
                             ]),
                         Section::make()
                             ->description(__('These colors are applied in the help center to create the gradient effect in the hero section.'))
