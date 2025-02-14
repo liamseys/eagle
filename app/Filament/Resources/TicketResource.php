@@ -71,6 +71,8 @@ class TicketResource extends Resource
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
+                        Forms\Components\View::make('filament.infolists.components.requester')
+                            ->hidden(fn (?Ticket $record) => ! $record || ! $record->requester()->exists()),
                         Forms\Components\Section::make(__('Associations'))
                             ->schema([
                                 Forms\Components\Select::make('requester_id')
