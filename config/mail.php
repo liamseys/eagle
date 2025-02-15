@@ -128,6 +128,7 @@ return [
 
         'host' => env('MAIL_IMAP_HOST'),
         'port' => env('MAIL_IMAP_PORT', '993'),
+        'encryption' => env('MAIL_IMAP_ENCRYPTION', 'ssl'),
         'username' => env('MAIL_IMAP_USERNAME'),
         'password' => env('MAIL_IMAP_PASSWORD'),
         'folder' => env('MAIL_IMAP_FOLDER', 'INBOX'),

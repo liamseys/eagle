@@ -30,6 +30,7 @@ class ImportImapEmailsCommand extends Command
             config('mail.imap.username'),
             config('mail.imap.password'),
             config('mail.imap.port'),
+            config('mail.imap.encryption'),
             config('mail.imap.folder', 'INBOX'),
             config('mail.imap.processed_folder', 'EagleProcessed')
         );
