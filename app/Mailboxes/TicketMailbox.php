@@ -2,6 +2,7 @@
 
 namespace App\Mailboxes;
 
+use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketType;
 use App\Models\Client;
 use App\Models\Ticket;
@@ -53,6 +54,7 @@ class TicketMailbox
 
         $ticket = $client->tickets()->create([
             'subject' => $email->subject(),
+            'priority' => TicketPriority::NORMAL,
             'type' => TicketType::QUESTION,
         ]);
 
