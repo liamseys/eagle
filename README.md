@@ -1,4 +1,4 @@
-us![Eagle](https://raw.githubusercontent.com/liamseys/eagle/main/.github/banner.jpg)
+![Eagle](https://raw.githubusercontent.com/liamseys/eagle/main/.github/banner.jpg)
 
 # Eagle 🦅
 
