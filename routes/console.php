@@ -1,6 +1,7 @@
 <?php
 
 use App\Console\Commands\CloseResolvedTicketsCommand;
+use App\Console\Commands\ImportImapEmailsCommand;
 use BeyondCode\Mailbox\Console\CleanEmails;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -12,3 +13,4 @@ Artisan::command('inspire', function () {
 
 Schedule::command(CleanEmails::class)->daily();
 Schedule::command(CloseResolvedTicketsCommand::class)->daily();
+Schedule::command(ImportImapEmailsCommand::class)->everyMinute();
