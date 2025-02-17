@@ -113,4 +113,26 @@ return [
         'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | IMAP Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Here you may configure your IMAP settings for importing emails via the
+    | IMAP strategy.
+    |
+    */
+
+    'imap' => [
+        'enabled' => env('MAIL_IMAP_ENABLED', false),
+
+        'host' => env('MAIL_IMAP_HOST'),
+        'port' => env('MAIL_IMAP_PORT', '993'),
+        'encryption' => env('MAIL_IMAP_ENCRYPTION', 'ssl'),
+        'username' => env('MAIL_IMAP_USERNAME'),
+        'password' => env('MAIL_IMAP_PASSWORD'),
+        'folder' => env('MAIL_IMAP_FOLDER', 'INBOX'),
+        'processed_folder' => env('MAIL_IMAP_PROCESSED_FOLDER', 'EagleProcessed'),
+    ],
+
 ];

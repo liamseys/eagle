@@ -58,7 +58,9 @@
                 </div>
                 <p class="text-sm">
                     {{ now()->tz($getRecord()->requester->timezone)->format('H:i') }}
-                    <span>|</span> {{ Timezones::getName($getRecord()->requester->timezone) }}
+                    @if($getRecord()->requester->timezone !== 'UTC')
+                        <span>|</span> {{ Timezones::getName(timezone: $getRecord()->requester->timezone) }}
+                    @endif  
                 </p>
             </div>
         </div>
