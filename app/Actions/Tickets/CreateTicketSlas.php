@@ -33,17 +33,17 @@ final class CreateTicketSlas
             'group_id' => $ticket->group_id,
             'type' => TicketSlaType::INITIAL_RESPONSE,
             'started_at' => now(),
-            'expires_at' => now()->addMinutes((int)$slaPolicy['first_response_time']),
+            'expires_at' => now()->addMinutes((int) $slaPolicy['first_response_time']),
         ], [
             'group_id' => $ticket->group_id,
             'type' => TicketSlaType::NEXT_RESPONSE,
             'started_at' => now(),
-            'expires_at' => now()->addMinutes((int)$slaPolicy['every_response_time']),
+            'expires_at' => now()->addMinutes((int) $slaPolicy['every_response_time']),
         ], [
             'group_id' => $ticket->group_id,
             'type' => TicketSlaType::RESOLUTION,
             'started_at' => now(),
-            'expires_at' => now()->addMinutes((int)$slaPolicy['resolution_time']),
+            'expires_at' => now()->addMinutes((int) $slaPolicy['resolution_time']),
         ]]);
     }
 

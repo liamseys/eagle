@@ -9,10 +9,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Webklex\PHPIMAP\Client;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
-use Webklex\PHPIMAP\Folder;
 
 class ImportImapEmails implements ShouldQueue
 {
@@ -23,16 +21,16 @@ class ImportImapEmails implements ShouldQueue
         public string $username,
         public string $password,
         public int $port,
-        public string|null $encryption,
+        public ?string $encryption,
         public string $folder,
         public string $processedFolder
     ) {
-        $this->processedFolder = 'INBOX.' . $this->processedFolder;
+        $this->processedFolder = 'INBOX.'.$this->processedFolder;
     }
 
     public function handle(): void
     {
-        $cm = new ClientManager();
+        $cm = new ClientManager;
 
         $client = $cm->make([
             'host' => $this->host,
@@ -41,7 +39,7 @@ class ImportImapEmails implements ShouldQueue
             'validate_cert' => true,
             'username' => $this->username,
             'password' => $this->password,
-            'protocol' => 'imap'
+            'protocol' => 'imap',
         ]);
 
         try {
@@ -56,8 +54,8 @@ class ImportImapEmails implements ShouldQueue
                     "To: {$message->getTo()[0]->mail}",
                     "Subject: {$message->getSubject()}",
                     "Date: {$message->getDate()}",
-                    "",
-                    $message->getTextBody()
+                    '',
+                    $message->getTextBody(),
                 ]);
 
                 $inboundEmail = InboundEmail::fromMessage($headers);
@@ -66,11 +64,11 @@ class ImportImapEmails implements ShouldQueue
             }
 
         } catch (ConnectionFailedException $e) {
-            throw new \RuntimeException('Could not connect to IMAP server: ' . $e->getMessage());
+            throw new \RuntimeException('Could not connect to IMAP server: '.$e->getMessage());
         } finally {
             if (isset($client)) {
                 $client->disconnect();
             }
         }
     }
-} 
+}

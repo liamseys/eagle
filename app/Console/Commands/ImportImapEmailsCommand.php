@@ -13,13 +13,15 @@ class ImportImapEmailsCommand extends Command
 
     public function handle(): void
     {
-        if (!config('mail.imap.enabled')) {
+        if (! config('mail.imap.enabled')) {
             $this->info('IMAP is not enabled. Skipping email import.');
+
             return;
         }
 
-        if (!config('mail.imap.host') || !config('mail.imap.username') || !config('mail.imap.password') || !config('mail.imap.port') || !config('mail.imap.folder') || !config('mail.imap.processed_folder')) {
+        if (! config('mail.imap.host') || ! config('mail.imap.username') || ! config('mail.imap.password') || ! config('mail.imap.port') || ! config('mail.imap.folder') || ! config('mail.imap.processed_folder')) {
             $this->error('IMAP configuration is missing. Please check your mail.imap configuration.');
+
             return;
         }
 
@@ -37,4 +39,4 @@ class ImportImapEmailsCommand extends Command
 
         $this->info('IMAP email import job has been dispatched.');
     }
-} 
+}
