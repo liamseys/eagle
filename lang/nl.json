@@ -21,6 +21,7 @@
     "Internal only": "Alleen intern",
     "No comments found.": "Geen reacties gevonden.",
     "Send": "Verstuur",
+    "Submit": "Verzenden",
     "We noticed that there was no response regarding your ticket, so it has been automatically closed.": "We hebben gemerkt dat er geen reactie was op uw ticket, dus het is automatisch gesloten.",
     "If you still need help, feel free to open a new ticket about this issue.": "Als u nog steeds hulp nodig heeft, kunt u gerust een nieuw ticket openen voor dit probleem.",
     "We've received your message": "We hebben uw bericht ontvangen",
@@ -36,5 +37,7 @@
     "Form was successfully submitted.": "Het formulier is succesvol verzonden.",
     "New response to your ticket": "Nieuwe reactie op uw ticket",
     "Hello!": "Hallo!",
-    "Regards": "Met vriendelijke groeten"
+    "Regards": "Met vriendelijke groeten",
+    "Ticket closed": "We hebben uw ticket gesloten",
+    "Ticket resolved": "We hebben uw ticket als opgelost gemarkeerd"
 } 
