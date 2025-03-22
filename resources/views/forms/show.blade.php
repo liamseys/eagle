@@ -136,8 +136,8 @@
                                 <p class="w-full sm:w-3/5 text-xs text-gray-500">
                                     {!! __('Some system info is sent to :name. It helps improve support, fix issues, and make products better, in line with the <a href=":privacy_policy" class="underline">Privacy Policy</a> and <a href=":terms_of_service" class="underline">Terms of Service</a>.', [
                                         'name' => config('app.name'),
-                                        'privacy_policy' => '#',
-                                        'terms_of_service' => '#',
+                                        'privacy_policy' => config('app.privacy_policy'),
+                                        'terms_of_service' => config('app.terms_of_service'),
                                     ]) !!}
                                 </p>
 
