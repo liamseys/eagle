@@ -1,8 +1,8 @@
 <x-mail::message>
-# Hello!
+# {{ __('Hello!') }}
 
 {!! $ticketComment->body !!}
 
-Regards,<br>
+{{ __('Regards') }},<br>
 {{ config('app.name') }}
 </x-mail::message>
