@@ -38,6 +38,7 @@ class TicketCommentByAgent extends Notification
     {
         return (new MailMessage)
             ->from($this->ticketComment->ticket->getSupportEmailWithTicketId())
+            ->subject(__('New response to your ticket'))
             ->markdown(
                 'mail.ticket.comment', ['ticketComment' => $this->ticketComment]
             );
