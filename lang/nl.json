@@ -32,5 +32,7 @@
     "1. Ask your Account Manager to escalate the case (#:ticket_id) if they have not already.": "Vraag uw Account Manager om case (#:ticket_id) te escaleren als dat nog niet is gebeurd.",
     "2. Provide the business need or purpose behind your request.": "Geef de reden of doel achter uw aanvraag.",
     "An agent has marked your ticket as resolved.": "Een agent heeft uw ticket als opgelost gemarkeerd.",
-    "To reopen the ticket, simply reply to this email. Otherwise, it will be automatically closed after 48 hours.": "Om het ticket te heropenen, antwoordt u simpelweg op deze e-mail. Anders wordt het na 48 uur automatisch gesloten."
+    "To reopen the ticket, simply reply to this email. Otherwise, it will be automatically closed after 48 hours.": "Om het ticket te heropenen, antwoordt u simpelweg op deze e-mail. Anders wordt het na 48 uur automatisch gesloten.",
+    "Form was successfully submitted.": "Het formulier is succesvol verzonden.",
+    "New response to your ticket": "Nieuwe reactie op uw ticket"
 } 
