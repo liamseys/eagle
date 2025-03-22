@@ -26,13 +26,14 @@
     "We've received your message": "We hebben uw bericht ontvangen",
     "Thank you for reaching out!": "Bedankt voor uw bericht!",
     "We've received your message and are reviewing it as quickly as possible.": "We hebben uw bericht ontvangen en bekijken het zo snel mogelijk.",
-    "In the meantime, please visit :url for helpful resources and self-serve support options.": "In de tussentijd kunt u :url bezoeken voor nuttige bronnen en zelfhulp-opties.",
+    "In the meantime, please visit :url for helpful resources and self-serve support options.": "In de tussentijd vindt u op :url nuttige informatie en overige ondersteuning.",
     "We need some information from you": "We hebben wat informatie van u nodig",
     "We need a few things to move forward:": "We hebben een paar dingen nodig om verder te gaan:",
-    "1. Ask your Account Manager to escalate the case (#:ticket_id) if they have not already.": "Vraag uw Account Manager om case (#:ticket_id) te escaleren als dat nog niet is gebeurd.",
-    "2. Provide the business need or purpose behind your request.": "Geef de reden of doel achter uw aanvraag.",
+    "1. Ask your Account Manager to escalate the case (#:ticket_id) if they have not already.": "1. Voordat het ticket in behandeling wordt genomen, dient het ticket te worden escaleerd. Neem hiervoor contact op met uw Account Manager en verstrek deze het ticketnummer (#:ticket_id).",
+    "2. Provide the business need or purpose behind your request.": "2. Om uw verzoek snel te verwerken, is het belangrijk dat u de reden of het doel van uw verzoek aangeeft. Dit helpt ons om uw verzoek correct te verwerken.",
     "An agent has marked your ticket as resolved.": "Een agent heeft uw ticket als opgelost gemarkeerd.",
     "To reopen the ticket, simply reply to this email. Otherwise, it will be automatically closed after 48 hours.": "Om het ticket te heropenen, antwoordt u simpelweg op deze e-mail. Anders wordt het na 48 uur automatisch gesloten.",
     "Form was successfully submitted.": "Het formulier is succesvol verzonden.",
-    "New response to your ticket": "Nieuwe reactie op uw ticket"
+    "New response to your ticket": "Nieuwe reactie op uw ticket",
+    "Regards": "Met vriendelijke groeten",
 } 
