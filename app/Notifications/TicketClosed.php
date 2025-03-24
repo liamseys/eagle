@@ -38,8 +38,9 @@ class TicketClosed extends Notification
     {
         return (new MailMessage)
             ->from($this->ticket->getSupportEmailWithTicketId())
-            ->line('We noticed that there was no response regarding your ticket, so it has been automatically closed.')
-            ->line('If you still need help, feel free to open a new ticket about this issue.');
+            ->subject(__('Ticket closed'))
+            ->line(__('We noticed that there was no response regarding your ticket, so it has been automatically closed.'))
+            ->line(__('If you still need help, feel free to open a new ticket about this issue.'));
     }
 
     /**

@@ -38,11 +38,11 @@ class TicketEscalationRequired extends Notification
     {
         return (new MailMessage)
             ->from($this->ticket->getSupportEmailWithTicketId())
-            ->subject('We need some information from you')
-            ->line('We need a few things to move forward:')
-            ->line('1. Ask your Account Manager to escalate the case (#'.$this->ticket->ticket_id.') if they have not already.')
-            ->line('2. Provide the business need or purpose behind your request.')
-            ->line('In the meantime, please visit '.config('app.url').' for helpful resources and self-serve support options.');
+            ->subject(__('We need some information from you'))
+            ->line(__('We need a few things to move forward:'))
+            ->line(__('1. Ask your Account Manager to escalate the case (#:ticket_id) if they have not already.', ['ticket_id' => $this->ticket->ticket_id]))
+            ->line(__('2. Provide the business need or purpose behind your request.'))
+            ->line(__('In the meantime, please visit :url for helpful resources and self-serve support options.', ['url' => config('app.url')]));
     }
 
     /**

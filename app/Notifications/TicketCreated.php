@@ -38,10 +38,10 @@ class TicketCreated extends Notification
     {
         return (new MailMessage)
             ->from($this->ticket->getSupportEmailWithTicketId())
-            ->subject('We\'ve received your message')
-            ->line('Thank you for reaching out!')
-            ->line('We\'ve received your message and are reviewing it as quickly as possible.')
-            ->line('In the meantime, please visit '.config('app.url').' for helpful resources and self-serve support options.');
+            ->subject(__("We've received your message"))
+            ->line(__('Thank you for reaching out!'))
+            ->line(__('We\'ve received your message and are reviewing it as quickly as possible.'))
+            ->line(__('In the meantime, please visit :url for helpful resources and self-serve support options.', ['url' => config('app.url')]));
     }
 
     /**

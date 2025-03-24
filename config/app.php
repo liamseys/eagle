@@ -53,6 +53,8 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
+    'privacy_policy' => env('APP_PRIVACY_POLICY'),
+    'terms_of_service' => env('APP_TERMS_OF_SERVICE'),
 
     /*
     |--------------------------------------------------------------------------

@@ -38,8 +38,9 @@ class TicketResolved extends Notification
     {
         return (new MailMessage)
             ->from($this->ticket->getSupportEmailWithTicketId())
-            ->line('An agent has marked your ticket as resolved.')
-            ->line('To reopen the ticket, simply reply to this email. Otherwise, it will be automatically closed after 48 hours.');
+            ->subject(__('Ticket resolved'))
+            ->line(__('An agent has marked your ticket as resolved.'))
+            ->line(__('To reopen the ticket, simply reply to this email. Otherwise, it will be automatically closed after 48 hours.'));
     }
 
     /**
