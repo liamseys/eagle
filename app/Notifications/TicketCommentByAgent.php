@@ -37,7 +37,7 @@ class TicketCommentByAgent extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->from($this->ticketComment->ticket->getSupportEmailWithTicketId())
+            ->replyTo($this->ticketComment->ticket->getSupportEmailWithTicketId())
             ->subject(__('New response to your ticket'))
             ->markdown(
                 'mail.ticket.comment', ['ticketComment' => $this->ticketComment]
