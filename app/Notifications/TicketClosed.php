@@ -37,7 +37,7 @@ class TicketClosed extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->from($this->ticket->getSupportEmailWithTicketId())
+            ->replyTo($this->ticket->getSupportEmailWithTicketId())
             ->subject(__('Ticket closed'))
             ->line(__('We noticed that there was no response regarding your ticket, so it has been automatically closed.'))
             ->line(__('If you still need help, feel free to open a new ticket about this issue.'));

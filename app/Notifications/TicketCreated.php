@@ -37,7 +37,7 @@ class TicketCreated extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         return (new MailMessage)
-            ->from($this->ticket->getSupportEmailWithTicketId())
+            ->replyTo($this->ticket->getSupportEmailWithTicketId())
             ->subject(__("We've received your message"))
             ->line(__('Thank you for reaching out!'))
             ->line(__('We\'ve received your message and are reviewing it as quickly as possible.'))
