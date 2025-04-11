@@ -13,6 +13,12 @@ class EditArticle extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('navigateToArticle')
+                ->color('gray')
+                ->url(fn($record) => route('articles.show', [
+                    'locale' => config('app.locale'),
+                    'article' => $record->slug
+                ])),
             Actions\DeleteAction::make(),
         ];
     }
