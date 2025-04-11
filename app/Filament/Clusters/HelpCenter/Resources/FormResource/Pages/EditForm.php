@@ -13,6 +13,12 @@ class EditForm extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Action::make('viewForm')
+                ->color('gray')
+                ->url(fn($record) => route('forms.show', [
+                    'locale' => config('app.locale'),
+                    'form' => $record->slug
+                ]), true),
             Actions\DeleteAction::make(),
         ];
     }
