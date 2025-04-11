@@ -24,6 +24,10 @@
     & ul {
         @apply list-disc list-inside;
     }
+
+    & p a {
+        @apply underline font-semibold;
+    }
 }
 
 .form-description {
