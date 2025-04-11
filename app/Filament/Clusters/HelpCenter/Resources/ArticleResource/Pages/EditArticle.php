@@ -18,7 +18,7 @@ class EditArticle extends EditRecord
                 ->url(fn($record) => route('articles.show', [
                     'locale' => config('app.locale'),
                     'article' => $record->slug
-                ])),
+                ]), true),
             Actions\DeleteAction::make(),
         ];
     }
