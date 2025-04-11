@@ -38,6 +38,7 @@ class FieldsRelationManager extends RelationManager
                                             ->maxLength(255),
                                         Forms\Components\TextInput::make('description')
                                             ->label(__('Description'))
+                                            ->maxLength(255)
                                             ->columnSpanFull(),
                                         Forms\Components\Toggle::make('is_visible')
                                             ->label(__('Visible'))
