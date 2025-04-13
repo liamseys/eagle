@@ -16,7 +16,7 @@ class FormController extends Controller
      */
     public function show($locale, Form $form)
     {
-        if (! $form->is_active) {
+        if (! auth()->check() && ! $form->is_active) {
             abort(404);
         }
 

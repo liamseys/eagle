@@ -1,3 +1,5 @@
+@use('App\Enums\HelpCenter\Articles\ArticleStatus')
+
 <x-app-layout>
     <x-hero :title="__('Help Center')"/>
 
@@ -27,7 +29,13 @@
                         </ul>
                     </x-card>
                 </div>
-                <div class="col-span-2">
+                <div class="col-span-2 flex flex-col space-y-4">
+                    @if($article->status !== ArticleStatus::PUBLISHED)
+                        <x-alert>
+                            {{ __('This article is in draft. You can see it because you\'re logged in as an agent.') }}
+                        </x-alert>
+                    @endif
+
                     <x-card>
                         <x-slot name="header">
                             <div class="flex flex-col gap-2">
@@ -40,6 +48,23 @@
                             {!! $article->body !!}
                         </div>
                     </x-card>
+
+                    <div class="flex items-center space-x-4">
+                        <a href="#" class="flex items-center gap-1 text-sm hover:underline">
+                            <x-heroicon-s-share class="w-4 h-4"/>
+                            Share Article
+                        </a>
+                        <a href="{{ route('filament.app.help-center.resources.articles.edit', $article) }}"
+                           target="_blank"
+                           class="flex items-center gap-1 text-sm hover:underline">
+                            <x-heroicon-s-pencil-square class="w-4 h-4"/>
+                            Edit Article
+                        </a>
+                        <a href="#" class="flex items-center gap-1 text-sm hover:underline">
+                            <x-heroicon-s-eye-slash class="w-4 h-4"/>
+                            Unpublish Article
+                        </a>
+                    </div>
                 </div>
             </div>
         </x-container>

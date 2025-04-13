@@ -12,7 +12,7 @@ class ArticleController extends Controller
      */
     public function show($locale, Article $article)
     {
-        if ($article->status !== ArticleStatus::PUBLISHED) {
+        if (! auth()->check() && $article->status !== ArticleStatus::PUBLISHED) {
             abort(404);
         }
 
