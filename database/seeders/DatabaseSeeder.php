@@ -33,6 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             PermissionSeeder::class,
             HelpCenterSeeder::class,
+            ClientSeeder::class,
         ]);
 
         $permissions = Permission::all();
