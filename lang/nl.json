@@ -30,7 +30,7 @@
     "In the meantime, please visit :url for helpful resources and self-serve support options.": "In de tussentijd vindt u op :url nuttige informatie en overige ondersteuning.",
     "We need some information from you": "We hebben wat informatie van u nodig",
     "We need a few things to move forward:": "We hebben een paar dingen nodig om verder te gaan:",
-    "1. Ask your Account Manager to escalate the case (#:ticket_id) if they have not already.": "1. Voordat het ticket in behandeling wordt genomen, dient het ticket te worden escaleerd. Neem hiervoor contact op met uw Account Manager en verstrek deze het ticketnummer (#:ticket_id).",
+    "1. Ask your Account Manager to escalate the case (#:ticket_id) if they have not already.": "1. Voordat het ticket in behandeling wordt genomen, dient het ticket te worden geëscaleerd. Neem hiervoor contact op met uw Account Manager en verstrek deze het ticketnummer (#:ticket_id).",
     "2. Provide the business need or purpose behind your request.": "2. Om uw verzoek snel te verwerken, is het belangrijk dat u de reden of het doel van uw verzoek aangeeft. Dit helpt ons om uw verzoek correct te verwerken.",
     "An agent has marked your ticket as resolved.": "Een agent heeft uw ticket als opgelost gemarkeerd.",
     "To reopen the ticket, simply reply to this email. Otherwise, it will be automatically closed after 48 hours.": "Om het ticket te heropenen, antwoordt u simpelweg op deze e-mail. Anders wordt het na 48 uur automatisch gesloten.",
@@ -39,5 +39,10 @@
     "Hello!": "Hallo!",
     "Regards": "Met vriendelijke groeten",
     "Ticket closed": "We hebben uw ticket gesloten",
-    "Ticket resolved": "We hebben uw ticket als opgelost gemarkeerd"
-} 
+    "Ticket resolved": "We hebben uw ticket als opgelost gemarkeerd",
+    "This article is in draft. You can see it because you're logged in as an agent.": "Dit artikel is een concept. U kunt het zien omdat u bent ingelogd als agent.",
+    "Share Article": "Artikel delen",
+    "Edit Article": "Artikel bewerken",
+    "Publish Article": "Artikel publiceren",
+    "Unpublish Article": "Artikel depubliceren"
+}
