@@ -15,9 +15,9 @@ class EditForm extends EditRecord
         return [
             Actions\Action::make('viewForm')
                 ->color('gray')
-                ->url(fn($record) => route('forms.show', [
+                ->url(fn ($record) => route('forms.show', [
                     'locale' => config('app.locale'),
-                    'form' => $record->slug
+                    'form' => $record->slug,
                 ]), true),
             Actions\DeleteAction::make(),
         ];

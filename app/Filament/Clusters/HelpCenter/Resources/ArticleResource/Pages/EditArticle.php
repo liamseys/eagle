@@ -15,9 +15,9 @@ class EditArticle extends EditRecord
         return [
             Actions\Action::make('viewArticle')
                 ->color('gray')
-                ->url(fn($record) => route('articles.show', [
+                ->url(fn ($record) => route('articles.show', [
                     'locale' => config('app.locale'),
-                    'article' => $record->slug
+                    'article' => $record->slug,
                 ]), true),
             Actions\DeleteAction::make(),
         ];

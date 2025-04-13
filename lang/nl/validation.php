@@ -229,4 +229,4 @@ return [
             'rule-name' => 'aangepaste-bericht',
         ],
     ],
-]; 
+];
