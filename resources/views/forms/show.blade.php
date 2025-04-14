@@ -22,7 +22,13 @@
                         </ul>
                     </x-card>
                 </div>
-                <div class="col-span-2">
+                <div class="col-span-2 flex flex-col space-y-4">
+                    @if(!$form->is_active)
+                        <x-alert>
+                            {{ __('This form is inactive. You can see it because you\'re logged in as an agent.') }}
+                        </x-alert>
+                    @endif
+
                     <x-card>
                         <x-slot name="header">
                             <div class="flex flex-col gap-2">
@@ -147,6 +153,8 @@
                             </div>
                         </form>
                     </x-card>
+
+                    @include('forms.partials.actions')
                 </div>
             </div>
         </x-container>

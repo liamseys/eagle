@@ -43,4 +43,36 @@ class FormController extends Controller
 
         return redirect()->back()->with('status', __('Form was successfully submitted.'));
     }
+
+    /**
+     * Activate the specified resource.
+     *
+     * @return RedirectResponse
+     */
+    public function activate($locale, Form $form)
+    {
+        if (auth()->check() && ! auth()->user()->hasPermissionTo('hc-forms')) {
+            abort(403);
+        }
+
+        $form->update(['is_active' => true]);
+
+        return redirect()->back()->with('status', 'Form has been activated!');
+    }
+
+    /**
+     * Deactivate the specified resource.
+     *
+     * @return RedirectResponse
+     */
+    public function deactivate($locale, Form $form)
+    {
+        if (auth()->check() && ! auth()->user()->hasPermissionTo('hc-forms')) {
+            abort(403);
+        }
+
+        $form->update(['is_active' => false]);
+
+        return redirect()->back()->with('status', 'Form has been deactivated!');
+    }
 }

@@ -30,6 +30,10 @@ Route::group([
         ->middleware(ProtectAgainstSpam::class)
         ->name('forms.submit');
     Route::resource('forms', FormController::class)->only('show');
+    Route::get('forms/{form}/activate', [FormController::class, 'activate'])
+        ->name('forms.activate');
+    Route::get('forms/{form}/deactivate', [FormController::class, 'deactivate'])
+        ->name('forms.deactivate');
 });
 
 Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function () {
