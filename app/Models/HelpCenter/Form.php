@@ -115,6 +115,9 @@ class Form extends Model
         return $this->hasMany(FormField::class);
     }
 
+    /**
+     * Get the label attribute of the instance.
+     */
     public function getLabelAttribute(): string
     {
         return $this->name;

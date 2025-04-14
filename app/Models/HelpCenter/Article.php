@@ -112,6 +112,9 @@ class Article extends Model
         $query->where('status', ArticleStatus::PUBLISHED);
     }
 
+    /**
+     * Get the label attribute of the instance.
+     */
     public function getLabelAttribute(): string
     {
         return $this->title;
