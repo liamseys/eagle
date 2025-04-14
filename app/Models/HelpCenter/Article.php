@@ -111,4 +111,9 @@ class Article extends Model
     {
         $query->where('status', ArticleStatus::PUBLISHED);
     }
+
+    public function getLabelAttribute(): string
+    {
+        return $this->title;
+    }
 }

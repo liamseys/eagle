@@ -51,4 +51,14 @@ class Section extends Model
     {
         return $this->hasMany(Article::class);
     }
+
+    /**
+     * Section has many forms.
+     *
+     * @return HasMany
+     */
+    public function forms()
+    {
+        return $this->hasMany(Form::class);
+    }
 }

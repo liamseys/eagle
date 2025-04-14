@@ -1,3 +1,5 @@
+@use('App\Models\HelpCenter\Article')
+
 <x-app-layout>
     <x-hero :title="__('Help Center')"/>
 
@@ -19,9 +21,12 @@
                                 @foreach($section->articles()
                                                  ->published()
                                                  ->public()
-                                                 ->get() as $article)
-                                    <x-nav-link :href="route('articles.show', $article)">
-                                        <p class="text-sm">{{ $article->title }}</p>
+                                                 ->get()
+                                                 ->merge($section->forms)
+                                                 ->sortBy('sort') as $item)
+                                    <x-nav-link
+                                        :href="route($item instanceof Article ? 'articles.show' : 'forms.show', $item)">
+                                        <p class="text-sm">{{ $item->label }}</p>
                                         <x-heroicon-s-chevron-right class="h-4 w-4"/>
                                     </x-nav-link>
                                 @endforeach
