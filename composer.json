@@ -13,6 +13,7 @@
         "filament/spatie-laravel-settings-plugin": "^3.2",
         "filament/spatie-laravel-tags-plugin": "^3.2",
         "laravel/framework": "^12.0",
+        "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "spatie/laravel-honeypot": "^4.5",
         "spatie/laravel-welcome-notification": "^2.4",
