@@ -22,6 +22,11 @@ class ArticleController extends Controller
         ]);
     }
 
+    /**
+     * Publish the specified resource.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function publish($locale, Article $article)
     {
         if (auth()->check() && ! auth()->user()->hasPermissionTo('hc-articles')) {
@@ -33,6 +38,11 @@ class ArticleController extends Controller
         return redirect()->back()->with('status', 'Article has been published!');
     }
 
+    /**
+     * Unpublish the specified resource.
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function unpublish($locale, Article $article)
     {
         if (auth()->check() && ! auth()->user()->hasPermissionTo('hc-articles')) {
