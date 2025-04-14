@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('hc_forms', function (Blueprint $table) {
             $table->foreignUlid('section_id')
-                ->nullable()
                 ->after('user_id')
+                ->nullable()
                 ->constrained('hc_sections')
                 ->cascadeOnDelete();
         });
