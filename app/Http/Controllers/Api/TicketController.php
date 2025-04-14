@@ -6,8 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\StoreTicketRequest;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Controllers\HasMiddleware;
 
-class TicketController extends Controller
+class TicketController extends Controller implements HasMiddleware
 {
     /**
      * Get the middleware that should be assigned to the controller.
