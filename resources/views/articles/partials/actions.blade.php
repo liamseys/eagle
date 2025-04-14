@@ -11,34 +11,36 @@
         {{ __('Share Article') }}
     </a>
 
-    <!-- Edit Article -->
-    <a
-        href="{{ route('filament.app.help-center.resources.articles.edit', $article) }}"
-        target="_blank"
-        class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
-    >
-        <x-heroicon-s-pencil-square class="w-4 h-4"/>
-        {{ __('Edit Article') }}
-    </a>
+    @if(auth()->check() && auth()->user()->hasPermissionTo('hc-articles'))
+        <!-- Edit Article -->
+        <a
+            href="{{ route('filament.app.help-center.resources.articles.edit', $article) }}"
+            target="_blank"
+            class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
+        >
+            <x-heroicon-s-pencil-square class="w-4 h-4"/>
+            {{ __('Edit Article') }}
+        </a>
 
-    @if ($article->status === ArticleStatus::PUBLISHED)
-        <!-- Unpublish Article -->
-        <a
-            href="{{ route('articles.unpublish', $article) }}"
-            class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
-        >
-            <x-heroicon-s-eye-slash class="w-4 h-4"/>
-            {{ __('Unpublish Article') }}
-        </a>
-    @else
-        <!-- Publish Article -->
-        <a
-            href="{{ route('articles.publish', $article) }}"
-            class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
-        >
-            <x-heroicon-s-eye class="w-4 h-4"/>
-            {{ __('Publish Article') }}
-        </a>
+        @if ($article->status === ArticleStatus::PUBLISHED)
+            <!-- Unpublish Article -->
+            <a
+                href="{{ route('articles.unpublish', $article) }}"
+                class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
+            >
+                <x-heroicon-s-eye-slash class="w-4 h-4"/>
+                {{ __('Unpublish Article') }}
+            </a>
+        @else
+            <!-- Publish Article -->
+            <a
+                href="{{ route('articles.publish', $article) }}"
+                class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
+            >
+                <x-heroicon-s-eye class="w-4 h-4"/>
+                {{ __('Publish Article') }}
+            </a>
+        @endif
     @endif
 
     <!-- Share Modal -->

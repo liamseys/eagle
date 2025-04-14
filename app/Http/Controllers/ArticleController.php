@@ -24,6 +24,10 @@ class ArticleController extends Controller
 
     public function publish($locale, Article $article)
     {
+        if (auth()->check() && ! auth()->user()->hasPermissionTo('hc-articles')) {
+            abort(403);
+        }
+
         $article->update(['status' => ArticleStatus::PUBLISHED]);
 
         return redirect()->back()->with('status', 'Article has been published!');
@@ -31,6 +35,10 @@ class ArticleController extends Controller
 
     public function unpublish($locale, Article $article)
     {
+        if (auth()->check() && ! auth()->user()->hasPermissionTo('hc-articles')) {
+            abort(403);
+        }
+
         $article->update(['status' => ArticleStatus::DRAFT]);
 
         return redirect()->back()->with('status', 'Article has been unpublished!');
