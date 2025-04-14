@@ -30,6 +30,12 @@
                     </x-card>
                 </div>
                 <div class="col-span-2 flex flex-col space-y-4">
+                    @if (session('status'))
+                        <x-alert>
+                            {{ __(session('status')) }}
+                        </x-alert>
+                    @endif
+
                     @if($article->status !== ArticleStatus::PUBLISHED)
                         <x-alert>
                             {{ __('This article is in draft. You can see it because you\'re logged in as an agent.') }}
