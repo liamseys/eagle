@@ -13,8 +13,6 @@ class TokensRelationManager extends RelationManager
 {
     protected static string $relationship = 'tokens';
 
-    protected static ?string $title = 'API Tokens';
-
     public function form(Form $form): Form
     {
         return $form
