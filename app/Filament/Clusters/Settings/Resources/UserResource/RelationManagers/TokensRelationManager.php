@@ -8,6 +8,8 @@ use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 
 class TokensRelationManager extends RelationManager
 {
@@ -30,16 +32,23 @@ class TokensRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('abilities'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
+                    ->using(function (Request $request, array $data, string $model): Model {
+                        $user = $request->user();
+
+                        $user->createToken($data['name']);
+
+                        return $user;
+                    })
                     ->modalWidth(MaxWidth::Large),
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
