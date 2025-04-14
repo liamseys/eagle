@@ -44,5 +44,10 @@
     "Share Article": "Artikel delen",
     "Edit Article": "Artikel bewerken",
     "Publish Article": "Artikel publiceren",
-    "Unpublish Article": "Artikel depubliceren"
+    "Unpublish Article": "Artikel depubliceren",
+    "This form is in draft. You can see it because you're logged in as an agent.": "Dit formulier is een concept. U kunt het zien omdat u bent ingelogd als agent.",
+    "Share Form": "Formulier delen",
+    "Edit Form": "Formulier bewerken",
+    "Activate Form": "Formulier activeren",
+    "Deactivate Form": "Formulier deactiveren"
 }
