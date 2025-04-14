@@ -9,10 +9,12 @@ use App\Filament\Clusters\HelpCenter\Resources\FormResource\Pages\EditForm;
 use App\Filament\Clusters\HelpCenter\Resources\FormResource\RelationManagers\FieldsRelationManager;
 use App\Models\HelpCenter\Form;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Livewire;
 use Filament\Forms\Form as FilamentForm;
 use Filament\Forms\Get;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
@@ -136,6 +138,32 @@ class FormResource extends Resource
                                     ->preload()
                                     ->required()
                                     ->helperText(__('The default type assigned to tickets created from this form.')),
+                                Forms\Components\Select::make('section_id')
+                                    ->label(__('Section'))
+                                    ->relationship('section', 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->createOptionForm([
+                                        Forms\Components\Select::make('category_id')
+                                            ->label(__('Category'))
+                                            ->relationship('category', 'name')
+                                            ->searchable()
+                                            ->preload()
+                                            ->required(),
+                                        Forms\Components\TextInput::make('name')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->columnSpanFull(),
+                                        Forms\Components\Textarea::make('description')
+                                            ->maxLength(255)
+                                            ->placeholder(__('(Optional) A brief description of the section.'))
+                                            ->columnSpanFull(),
+                                    ])
+                                    ->createOptionModalHeading(__('Create section'))
+                                    ->createOptionAction(
+                                        fn (Action $action) => $action->modalWidth(MaxWidth::Medium),
+                                    )
+                                    ->helperText(__('(Optional) Select the section for this form.')),
                             ]),
                         Forms\Components\Section::make(__('Status'))
                             ->schema([

@@ -35,6 +35,7 @@ class Form extends Model
      * @var list<string>
      */
     protected $fillable = [
+        'section_id',
         'slug',
         'name',
         'description',
@@ -92,6 +93,16 @@ class Form extends Model
     public function defaultGroup()
     {
         return $this->belongsTo(Group::class, 'default_group_id');
+    }
+
+    /**
+     * The section for the form.
+     *
+     * @return BelongsTo
+     */
+    public function section()
+    {
+        return $this->belongsTo(Section::class, 'section_id');
     }
 
     /**
