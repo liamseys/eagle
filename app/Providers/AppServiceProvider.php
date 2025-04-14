@@ -6,6 +6,7 @@ use App\Mailboxes\TicketMailbox;
 use App\Models\HelpCenter\Article;
 use App\Models\HelpCenter\Category;
 use App\Models\HelpCenter\Form;
+use App\Models\PersonalAccessToken;
 use App\Policies\ArticlePolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\FormPolicy;
@@ -20,6 +21,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Sanctum\Sanctum;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -69,6 +71,8 @@ class AppServiceProvider extends ServiceProvider
                 info("Attempted to lazy load [{$relation}] on model [{$class}].");
             });
         }
+
+        Sanctum::usePersonalAccessTokenModel(PersonalAccessToken::class);
     }
 
     /**
