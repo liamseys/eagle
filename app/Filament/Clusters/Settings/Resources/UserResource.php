@@ -4,10 +4,13 @@ namespace App\Filament\Clusters\Settings\Resources;
 
 use App\Filament\Clusters\Settings;
 use App\Filament\Clusters\Settings\Resources\UserResource\Pages;
+use App\Filament\Clusters\Settings\Resources\UserResource\Pages\EditUser;
+use App\Filament\Clusters\Settings\Resources\UserResource\RelationManagers\TokensRelationManager;
 use App\Models\Permission;
 use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Livewire;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Support\Enums\MaxWidth;
@@ -71,7 +74,6 @@ class UserResource extends Resource
                                 ->visible(fn ($get) => $get('send_welcome_email') === false)
                                 ->hiddenOn(['edit']),
                         ]),
-
                     Forms\Components\Section::make(__('Permissions'))
                         ->schema([
                             Forms\Components\CheckboxList::make('permissions')
@@ -83,6 +85,10 @@ class UserResource extends Resource
                                 ->columns(2)
                                 ->disabled(fn ($record) => $record?->id === auth()->id()),
                         ]),
+                    Livewire::make(TokensRelationManager::class, fn (User $record, EditUser $livewire): array => [
+                        'ownerRecord' => $record,
+                        'pageClass' => $livewire::class,
+                    ]),
                 ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
