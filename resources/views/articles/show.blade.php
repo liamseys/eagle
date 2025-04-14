@@ -49,22 +49,7 @@
                         </div>
                     </x-card>
 
-                    <div class="flex items-center space-x-4">
-                        <a href="#" class="flex items-center gap-1 text-sm hover:underline">
-                            <x-heroicon-s-share class="w-4 h-4"/>
-                            Share Article
-                        </a>
-                        <a href="{{ route('filament.app.help-center.resources.articles.edit', $article) }}"
-                           target="_blank"
-                           class="flex items-center gap-1 text-sm hover:underline">
-                            <x-heroicon-s-pencil-square class="w-4 h-4"/>
-                            Edit Article
-                        </a>
-                        <a href="#" class="flex items-center gap-1 text-sm hover:underline">
-                            <x-heroicon-s-eye-slash class="w-4 h-4"/>
-                            Unpublish Article
-                        </a>
-                    </div>
+                    @include('articles.partials.actions')
                 </div>
             </div>
         </x-container>
