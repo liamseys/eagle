@@ -22,6 +22,10 @@ Route::group([
     Route::get('/', IndexController::class)->name('index');
     Route::resource('categories', CategoryController::class)->only('show');
     Route::resource('articles', ArticleController::class)->only('show');
+    Route::get('articles/{article}/publish', [ArticleController::class, 'publish'])
+        ->name('articles.publish');
+    Route::get('articles/{article}/unpublish', [ArticleController::class, 'unpublish'])
+        ->name('articles.unpublish');
     Route::post('forms/submit', [FormController::class, 'submit'])
         ->middleware(ProtectAgainstSpam::class)
         ->name('forms.submit');

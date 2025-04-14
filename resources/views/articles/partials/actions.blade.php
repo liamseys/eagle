@@ -1,3 +1,5 @@
+@use('App\Enums\HelpCenter\Articles\ArticleStatus')
+
 <div x-data="{ showShareModal: false }" class="flex items-center gap-4">
     <!-- Share Article -->
     <a
@@ -19,14 +21,25 @@
         {{ __('Edit Article') }}
     </a>
 
-    <!-- Unpublish Article -->
-    <a
-        href="#"
-        class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
-    >
-        <x-heroicon-s-eye-slash class="w-4 h-4"/>
-        {{ __('Unpublish Article') }}
-    </a>
+    @if ($article->status === ArticleStatus::PUBLISHED)
+        <!-- Unpublish Article -->
+        <a
+            href="{{ route('articles.unpublish', $article) }}"
+            class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
+        >
+            <x-heroicon-s-eye-slash class="w-4 h-4"/>
+            {{ __('Unpublish Article') }}
+        </a>
+    @else
+        <!-- Publish Article -->
+        <a
+            href="{{ route('articles.publish', $article) }}"
+            class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
+        >
+            <x-heroicon-s-eye class="w-4 h-4"/>
+            {{ __('Publish Article') }}
+        </a>
+    @endif
 
     <!-- Share Modal -->
     <div
