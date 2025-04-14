@@ -21,4 +21,18 @@ class ArticleController extends Controller
             'article' => $article,
         ]);
     }
+
+    public function publish($locale, Article $article)
+    {
+        $article->update(['status' => ArticleStatus::PUBLISHED]);
+
+        return redirect()->back()->with('status', 'Article has been published!');
+    }
+
+    public function unpublish($locale, Article $article)
+    {
+        $article->update(['status' => ArticleStatus::DRAFT]);
+
+        return redirect()->back()->with('status', 'Article has been unpublished!');
+    }
 }

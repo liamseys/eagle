@@ -6,7 +6,7 @@
         class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
     >
         <x-heroicon-s-share class="w-4 h-4"/>
-        Share Article
+        {{ __('Share Article') }}
     </a>
 
     <!-- Edit Article -->
@@ -16,7 +16,7 @@
         class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
     >
         <x-heroicon-s-pencil-square class="w-4 h-4"/>
-        Edit Article
+        {{ __('Edit Article') }}
     </a>
 
     <!-- Unpublish Article -->
@@ -25,7 +25,7 @@
         class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
     >
         <x-heroicon-s-eye-slash class="w-4 h-4"/>
-        Unpublish Article
+        {{ __('Unpublish Article') }}
     </a>
 
     <!-- Share Modal -->
@@ -59,7 +59,7 @@
             </button>
 
             <!-- Modal Content -->
-            <h2 class="mb-4 text-lg font-semibold text-gray-800">Share this article</h2>
+            <h2 class="mb-4 text-lg font-semibold text-gray-800">{{ __('Share this article') }}</h2>
 
             <x-input
                 type="text"
@@ -70,7 +70,7 @@
             />
 
             <p class="mt-2 text-sm text-gray-500">
-                Copy and share the link above.
+                {{ __('Copy and share the link above.') }}
             </p>
         </div>
     </div>
