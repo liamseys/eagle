@@ -17,6 +17,8 @@ class TokensRelationManager extends RelationManager
 {
     protected static string $relationship = 'tokens';
 
+    protected static ?string $title = 'Personal access tokens';
+
     public function form(Form $form): Form
     {
         return $form
