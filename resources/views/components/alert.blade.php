@@ -4,6 +4,8 @@
     @if(isset($icon))
         <x-dynamic-component :component="'heroicon-m-'.$icon" class="shrink-0 inline w-5 h-5 me-2"/>
     @endif
-    <span class="sr-only">Info</span>
-    <div>{{ $slot }}</div>
+    <span class="sr-only">{{ __('Info') }}</span>
+    <div>
+        {{ $slot }}
+    </div>
 </div>
