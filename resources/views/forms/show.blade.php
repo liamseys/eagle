@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-span-2 flex flex-col space-y-4">
                     @if(!$form->is_active)
-                        <x-alert>
+                        <x-alert icon="information-circle">
                             {{ __('This form is inactive. You can see it because you\'re logged in as an agent.') }}
                         </x-alert>
                     @endif
@@ -77,7 +77,8 @@
                                                                         value="{{ $value }}"
                                                                         id="{{ $formField->name . '_' . $value }}"
                                                                         :required="$formField->is_required"/>
-                                                            <x-label for="{{ $formField->name . '_' . $value }}">{{ $label }}</x-label>
+                                                            <x-label
+                                                                for="{{ $formField->name . '_' . $value }}">{{ $label }}</x-label>
                                                         </div>
                                                     @endforeach
                                                 </fieldset>
@@ -91,7 +92,8 @@
                                                                    id="{{ $formField->name . '_' . $value }}"
                                                                    value="{{ $value }}"
                                                                 {{ $formField->is_required ? 'required' : '' }}>
-                                                            <x-label for="{{ $formField->name . '_' . $value }}">{{ $label }}</x-label>
+                                                            <x-label
+                                                                for="{{ $formField->name . '_' . $value }}">{{ $label }}</x-label>
                                                         </div>
                                                     @endforeach
                                                 </fieldset>

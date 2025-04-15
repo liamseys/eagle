@@ -86,10 +86,13 @@ class TokensRelationManager extends RelationManager
 
     public function showTokenAction(): Action
     {
+        $plainTextToken = $this->plainTextToken;
+
         return Action::make('showToken')
-            ->modalContent(function () {
+            ->modalHeading(__('Your personal access token'))
+            ->modalContent(function () use ($plainTextToken) {
                 return view('filament.pages.actions.token-modal', [
-                    'test' => $this->plainTextToken,
+                    'test' => $plainTextToken,
                 ]);
             })
             ->modalWidth(MaxWidth::Large);
