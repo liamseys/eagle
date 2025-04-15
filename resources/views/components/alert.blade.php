@@ -1,15 +1,9 @@
-@use('App\Settings\GeneralSettings')
+@props(['icon' => null])
 
-@php
-    $generalSettings = app(GeneralSettings::class);
-
-    $gradientViaColor = $generalSettings->branding_gradient_via_color;
-@endphp
-
-<div {{ $attributes->merge(['class' => 'p-4 rounded-md']) }}
-     style="background-color: {{ $gradientViaColor }};">
-    <div class="flex items-center gap-1">
-        <x-heroicon-s-bell-alert class="h-5 w-5 text-white"/>
-        <p class="text-sm text-white">{{ $slot }}</p>
-    </div>
+<div class="flex items-center p-4 text-sm text-gray-800 border border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600" role="alert">
+    @if(isset($icon))
+        <x-dynamic-component :component="'heroicon-m-'.$icon" class="shrink-0 inline w-5 h-5 me-2"/>
+    @endif
+    <span class="sr-only">Info</span>
+    <div>{{ $slot }}</div>
 </div>

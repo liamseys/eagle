@@ -37,7 +37,7 @@
                     @endif
 
                     @if($article->status !== ArticleStatus::PUBLISHED)
-                        <x-alert>
+                        <x-alert icon="information-circle">
                             {{ __('This article is in draft. You can see it because you\'re logged in as an agent.') }}
                         </x-alert>
                     @endif

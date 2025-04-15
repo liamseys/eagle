@@ -3,13 +3,13 @@
 namespace App\Filament\Clusters\Settings\Resources\UserResource\RelationManagers;
 
 use App\Models\PersonalAccessToken;
+use Filament\Actions\Action;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 
@@ -18,6 +18,8 @@ class TokensRelationManager extends RelationManager
     protected static string $relationship = 'tokens';
 
     protected static ?string $title = 'Personal access tokens';
+
+    protected ?string $plainTextToken = null;
 
     public function form(Form $form): Form
     {
@@ -56,16 +58,19 @@ class TokensRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
-                    ->using(function (Request $request, array $data, string $model): Model {
+                    ->using(function (Request $request, array $data, string $model) {
                         $user = $request->user();
 
                         $expiresAt = $data['expiration'] === 'no_expiration'
                             ? null
                             : now()->addDays((int) $data['expiration']);
 
-                        $user->createToken($data['name'], ['*'], $expiresAt);
+                        $this->plainTextToken = $user->createToken($data['name'], ['*'], $expiresAt)->plainTextToken;
 
                         return $user;
+                    })
+                    ->after(function () {
+                        $this->mountAction('showToken');
                     })
                     ->modalWidth(MaxWidth::Large),
             ])
@@ -77,5 +82,16 @@ class TokensRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
+    }
+
+    public function showTokenAction(): Action
+    {
+        return Action::make('showToken')
+            ->modalContent(function () {
+                return view('filament.pages.actions.token-modal', [
+                    'test' => $this->plainTextToken,
+                ]);
+            })
+            ->modalWidth(MaxWidth::Large);
     }
 }
