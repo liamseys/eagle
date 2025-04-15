@@ -11,6 +11,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class TokensRelationManager extends RelationManager
 {
@@ -23,6 +24,16 @@ class TokensRelationManager extends RelationManager
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255)
+                    ->columnSpanFull(),
+                Forms\Components\Select::make('expiration')
+                    ->options([
+                        7 => '7 days ('.Carbon::now()->addDays(7)->format('M d, Y').')',
+                        30 => '30 days ('.Carbon::now()->addDays(30)->format('M d, Y').')',
+                        60 => '60 days ('.Carbon::now()->addDays(60)->format('M d, Y').')',
+                        90 => '90 days ('.Carbon::now()->addDays(90)->format('M d, Y').')',
+                        'no_expiration' => 'No expiration',
+                    ])
+                    ->required()
                     ->columnSpanFull(),
             ]);
     }
@@ -46,7 +57,11 @@ class TokensRelationManager extends RelationManager
                     ->using(function (Request $request, array $data, string $model): Model {
                         $user = $request->user();
 
-                        $user->createToken($data['name']);
+                        $expiresAt = $data['expiration'] === 'no_expiration'
+                            ? null
+                            : now()->addDays((int) $data['expiration']);
+
+                        $user->createToken($data['name'], ['*'], $expiresAt);
 
                         return $user;
                     })
