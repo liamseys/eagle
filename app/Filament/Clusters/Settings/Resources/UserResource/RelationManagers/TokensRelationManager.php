@@ -2,6 +2,7 @@
 
 namespace App\Filament\Clusters\Settings\Resources\UserResource\RelationManagers;
 
+use App\Models\PersonalAccessToken;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -31,8 +32,11 @@ class TokensRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('abilities'),
+                Tables\Columns\TextColumn::make('name')
+                    ->description(fn (PersonalAccessToken $record): string => $record->expires_at
+                        ? 'Expires on '.\Carbon\Carbon::parse($record->expires_at)->format('D, M d Y')
+                        : '-'),
+                Tables\Columns\TextColumn::make('last_used_at'),
             ])
             ->filters([
                 //
