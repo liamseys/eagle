@@ -33,7 +33,7 @@ class Ticket extends Model
         'requester_id',
         'assignee_id',
         'group_id',
-        'duplicate_ticket_id',
+        'duplicate_of_ticket_id',
         'subject',
         'priority',
         'type',
@@ -122,6 +122,14 @@ class Ticket extends Model
     public function activity(): HasMany
     {
         return $this->hasMany(TicketActivity::class);
+    }
+
+    /**
+     * A ticket may belong to a main ticket.
+     */
+    public function mainTicket()
+    {
+        return $this->belongsTo(Ticket::class, 'duplicate_of_ticket_id', 'id');
     }
 
     /**

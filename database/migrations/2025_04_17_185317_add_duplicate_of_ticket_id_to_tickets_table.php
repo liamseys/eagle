@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('tickets', function (Blueprint $table) {
-            $table->foreignUlid('duplicate_ticket_id')
+            $table->foreignUlid('duplicate_of_ticket_id')
                 ->after('ticket_id')
                 ->nullable()
                 ->constrained('tickets')
@@ -26,7 +26,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('tickets', function (Blueprint $table) {
-            $table->dropColumn('duplicate_ticket_id');
+            $table->dropColumn('duplicate_of_ticket_id');
         });
     }
 };

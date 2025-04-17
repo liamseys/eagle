@@ -4,10 +4,10 @@
             'This ticket is marked as duplicate of :link.',
             [
                 'link' => '<a
-                    href="' . route('filament.app.resources.tickets.edit', $getRecord()) . '"
+                    href="' . route('filament.app.resources.tickets.edit', $getRecord()->mainTicket) . '"
                     target="_blank"
                     class="hover:underline"
-                >#' . $getRecord()->ticket_id . '</a>'
+                >#' . $getRecord()->mainTicket->ticket_id . '</a>'
             ]
         ) !!}
     </x-alert>

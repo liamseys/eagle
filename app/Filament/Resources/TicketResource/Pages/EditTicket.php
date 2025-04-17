@@ -61,7 +61,7 @@ class EditTicket extends EditRecord
                     $ticket = Ticket::findOrFail($data['mainTicket']);
 
                     $record->update([
-                        'duplicate_ticket_id' => $ticket->id,
+                        'duplicate_of_ticket_id' => $ticket->id,
                         'status' => TicketStatus::CLOSED,
                     ]);
 
@@ -69,7 +69,7 @@ class EditTicket extends EditRecord
                         ->title(__('Merged into ticket #'.$ticket->ticket_id))
                         ->success()
                         ->send();
-                })->hidden(fn ($livewire) => $livewire->record->duplicate_ticket_id),
+                })->hidden(fn ($livewire) => $livewire->record->duplicate_of_ticket_id),
             Actions\DeleteAction::make()
                 ->icon('heroicon-o-trash'),
         ];
