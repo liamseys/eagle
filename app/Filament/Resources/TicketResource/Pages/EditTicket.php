@@ -58,11 +58,20 @@ class EditTicket extends EditRecord
                         ->disableOptionWhen(fn (string $value, ?Ticket $record) => $value === (string) $record?->id),
                 ])
                 ->action(function (array $data, Ticket $record) {
+                    $user = auth()->user();
+
                     $ticket = Ticket::findOrFail($data['mainTicket']);
 
                     $record->update([
                         'duplicate_of_ticket_id' => $ticket->id,
                         'status' => TicketStatus::CLOSED,
+                    ]);
+
+                    $record->comments()->create([
+                        'authorable_type' => get_class($user),
+                        'authorable_id' => $user->id,
+                        'body' => 'The ticket was closed because it is a duplicate.',
+                        'is_public' => false,
                     ]);
 
                     Notification::make()
