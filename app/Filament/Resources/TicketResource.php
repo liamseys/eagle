@@ -12,6 +12,7 @@ use App\Filament\Resources\TicketResource\RelationManagers\FieldsRelationManager
 use App\Models\Ticket;
 use Filament\Forms;
 use Filament\Forms\Components\Livewire;
+use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -38,6 +39,7 @@ class TicketResource extends Resource
                     ->schema([
                         Forms\Components\Section::make()
                             ->schema([
+                                View::make('filament.forms.components.ticket-duplicate-message'),
                                 Forms\Components\Grid::make()
                                     ->schema([
                                         Forms\Components\Select::make('priority')

@@ -62,6 +62,7 @@ class EditTicket extends EditRecord
 
                     $record->update([
                         'duplicate_ticket_id' => $ticket->id,
+                        'status' => TicketStatus::CLOSED,
                     ]);
 
                     Notification::make()
