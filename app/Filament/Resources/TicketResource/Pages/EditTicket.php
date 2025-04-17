@@ -64,14 +64,11 @@ class EditTicket extends EditRecord
 
                     $record->update([
                         'duplicate_of_ticket_id' => $ticket->id,
-                        'status' => TicketStatus::CLOSED,
                     ]);
 
-                    $record->comments()->create([
-                        'authorable_type' => get_class($user),
-                        'authorable_id' => $user->id,
-                        'body' => 'The ticket was closed because it is a duplicate.',
-                        'is_public' => false,
+                    $updateTicketStatus = app(UpdateTicketStatus::class);
+                    $updateTicketStatus->handle($record, TicketStatus::CLOSED, [
+                        'reason' => 'The ticket was closed because it is a duplicate.',
                     ]);
 
                     Notification::make()
