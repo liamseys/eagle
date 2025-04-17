@@ -163,6 +163,10 @@ class TicketResource extends Resource
                 Filter::make('is_assigned_to_me')
                     ->label(__('Assigned to me'))
                     ->query(fn (Builder $query): Builder => $query->where('assignee_id', auth()->id())),
+                SelectFilter::make('requester')
+                    ->label(__('Requester'))
+                    ->relationship('requester', 'name')
+                    ->searchable(),
                 SelectFilter::make('priority')
                     ->label(__('Priority'))
                     ->options(TicketPriority::class)

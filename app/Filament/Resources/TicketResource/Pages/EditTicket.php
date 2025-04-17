@@ -10,7 +10,9 @@ use App\Enums\Tickets\TicketStatus;
 use App\Enums\Tickets\TicketType;
 use App\Filament\Infolists\Components\TicketActivity;
 use App\Filament\Resources\TicketResource;
+use App\Models\Ticket;
 use Filament\Actions;
+use Filament\Forms\Components\Select;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Enums\MaxWidth;
 use Illuminate\Database\Eloquent\Model;
@@ -24,6 +26,7 @@ class EditTicket extends EditRecord
         return [
             Actions\ViewAction::make('viewActivity')
                 ->label('View activity')
+                ->icon('heroicon-o-eye')
                 ->color('gray')
                 ->modalHeading(__('View activity'))
                 ->modalDescription(__('Track all updates related to the ticket, including changes in priority, type, or status, and see who made them.'))
@@ -32,7 +35,32 @@ class EditTicket extends EditRecord
                 ->infolist([
                     TicketActivity::make('ticketActivity')->label(''),
                 ]),
-            Actions\DeleteAction::make(),
+            Actions\Action::make('mergeTicket')
+                ->label(__('Merge ticket'))
+                ->icon('heroicon-o-document-duplicate')
+                ->requiresConfirmation()
+                ->modalSubmitActionLabel(__('Merge'))
+                ->modalWidth(MaxWidth::Large)
+                ->modalDescription(__('Warning: This action cannot be undone. This ticket will be merged into the original and marked as a duplicate.'))
+                ->form([
+                    Select::make('mainTicket')
+                        ->label(__('Main ticket'))
+                        ->searchable()
+                        ->options(fn (): array => Ticket::query()
+                            ->orderByDesc('created_at')
+                            ->get()
+                            ->mapWithKeys(fn (Ticket $ticket) => [
+                                $ticket->id => "#{$ticket->ticket_id} - {$ticket->subject}",
+                            ])
+                            ->toArray()
+                        )
+                        ->disableOptionWhen(fn (string $value, ?Ticket $record) => $value === (string) $record?->id),
+                ])
+                ->action(function (array $data, Ticket $record) {
+                    dd($data);
+                }),
+            Actions\DeleteAction::make()
+                ->icon('heroicon-o-trash'),
         ];
     }
 
