@@ -4,6 +4,7 @@ namespace App\Filament\Clusters\Settings\Resources\UserResource\RelationManagers
 
 use App\Models\PersonalAccessToken;
 use Filament\Actions\Action;
+use Filament\Actions\StaticAction;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -58,6 +59,7 @@ class TokensRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make()
+                    ->createAnother(false)
                     ->using(function (Request $request, array $data, string $model) {
                         $user = $request->user();
 
@@ -70,7 +72,9 @@ class TokensRelationManager extends RelationManager
                         return $user;
                     })
                     ->after(function () {
-                        $this->mountAction('showToken');
+                        $this->mountAction('showToken', [
+                            'plainTextToken' => $this->plainTextToken,
+                        ]);
                     })
                     ->modalWidth(MaxWidth::Large),
             ])
@@ -86,15 +90,15 @@ class TokensRelationManager extends RelationManager
 
     public function showTokenAction(): Action
     {
-        $plainTextToken = $this->plainTextToken;
-
         return Action::make('showToken')
             ->modalHeading(__('Your personal access token'))
-            ->modalContent(function () use ($plainTextToken) {
+            ->modalContent(function ($arguments) {
                 return view('filament.pages.actions.token-modal', [
-                    'test' => $plainTextToken,
+                    'plainTextToken' => $arguments['plainTextToken'],
                 ]);
             })
+            ->modalSubmitAction(false)
+            ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
             ->modalWidth(MaxWidth::Large);
     }
 }
