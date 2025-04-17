@@ -79,7 +79,8 @@ class TokensRelationManager extends RelationManager
                     ->modalWidth(MaxWidth::Large),
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\DeleteAction::make()
+                    ->recordTitle('personal access token'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
