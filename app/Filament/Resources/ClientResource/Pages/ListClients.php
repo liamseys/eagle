@@ -15,8 +15,10 @@ class ListClients extends ListRecords
     {
         return [
             Actions\ImportAction::make()
+                ->icon('heroicon-o-cloud-arrow-up')
                 ->importer(ClientImporter::class),
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->icon('heroicon-o-plus'),
         ];
     }
 }

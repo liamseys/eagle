@@ -14,12 +14,14 @@ class EditArticle extends EditRecord
     {
         return [
             Actions\Action::make('viewArticle')
+                ->icon('heroicon-o-eye')
                 ->color('gray')
                 ->url(fn ($record) => route('articles.show', [
                     'locale' => config('app.locale'),
                     'article' => $record->slug,
                 ]), true),
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->icon('heroicon-o-trash'),
         ];
     }
 }

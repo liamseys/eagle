@@ -14,12 +14,14 @@ class EditForm extends EditRecord
     {
         return [
             Actions\Action::make('viewForm')
+                ->icon('heroicon-o-eye')
                 ->color('gray')
                 ->url(fn ($record) => route('forms.show', [
                     'locale' => config('app.locale'),
                     'form' => $record->slug,
                 ]), true),
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->icon('heroicon-o-trash'),
         ];
     }
 

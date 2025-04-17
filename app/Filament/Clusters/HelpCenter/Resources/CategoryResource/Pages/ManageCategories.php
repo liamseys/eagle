@@ -15,6 +15,7 @@ class ManageCategories extends ManageRecords
     {
         return [
             Actions\CreateAction::make()
+                ->icon('heroicon-o-plus')
                 ->modalWidth(MaxWidth::Medium),
         ];
     }

@@ -17,6 +17,7 @@ class EditClient extends EditRecord
         return [
             Actions\Action::make('add_note')
                 ->label('Add note')
+                ->icon('heroicon-o-pencil-square')
                 ->color('gray')
                 ->modalWidth('md')
                 ->modalDescription(__('Notes can be viewed by other agents but will remain hidden from the client.'))
@@ -38,7 +39,8 @@ class EditClient extends EditRecord
                         ->success()
                         ->send();
                 }),
-            Actions\DeleteAction::make(),
+            Actions\DeleteAction::make()
+                ->icon('heroicon-o-trash'),
         ];
     }
 }

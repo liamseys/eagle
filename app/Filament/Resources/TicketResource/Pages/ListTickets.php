@@ -26,6 +26,7 @@ class ListTickets extends ListRecords
         return [
             Actions\Action::make('escalate')
                 ->label(__('Escalate ticket'))
+                ->icon('heroicon-o-bars-arrow-up')
                 ->color('gray')
                 ->modalWidth('lg')
                 ->modalHeading(__('Escalate ticket'))
@@ -79,7 +80,8 @@ class ListTickets extends ListRecords
                         ->success()
                         ->send();
                 }),
-            Actions\CreateAction::make(),
+            Actions\CreateAction::make()
+                ->icon('heroicon-o-plus'),
         ];
     }
 
