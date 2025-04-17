@@ -125,9 +125,14 @@ class Ticket extends Model
     }
 
     /**
-     * A ticket may belong to a main ticket.
+     * Get the main ticket that this ticket is a duplicate of.
+     *
+     * This defines a relationship where the current ticket was marked as a duplicate
+     * of another ticket (the main/original one). Useful for tracing merged tickets.
+     *
+     * @return BelongsTo
      */
-    public function mainTicket()
+    public function duplicateOf()
     {
         return $this->belongsTo(Ticket::class, 'duplicate_of_ticket_id', 'id');
     }
