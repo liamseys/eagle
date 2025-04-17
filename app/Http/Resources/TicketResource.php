@@ -20,6 +20,7 @@ class TicketResource extends JsonResource
             'assignee' => $this->assignee,
             'group' => $this->group,
             'ticket_id' => $this->ticket_id,
+            'duplicate_ticket_id' => $this->duplicate_ticket_id,
             'subject' => $this->subject,
             'priority' => $this->priority,
             'type' => $this->type,

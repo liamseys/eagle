@@ -13,6 +13,7 @@ use App\Filament\Resources\TicketResource;
 use App\Models\Ticket;
 use Filament\Actions;
 use Filament\Forms\Components\Select;
+use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Enums\MaxWidth;
 use Illuminate\Database\Eloquent\Model;
@@ -57,8 +58,17 @@ class EditTicket extends EditRecord
                         ->disableOptionWhen(fn (string $value, ?Ticket $record) => $value === (string) $record?->id),
                 ])
                 ->action(function (array $data, Ticket $record) {
-                    dd($data);
-                }),
+                    $ticket = Ticket::findOrFail($data['mainTicket']);
+
+                    $record->update([
+                        'duplicate_ticket_id' => $ticket->id,
+                    ]);
+
+                    Notification::make()
+                        ->title(__('Merged into ticket #'.$ticket->ticket_id))
+                        ->success()
+                        ->send();
+                })->hidden(fn ($livewire) => $livewire->record->duplicate_ticket_id),
             Actions\DeleteAction::make()
                 ->icon('heroicon-o-trash'),
         ];

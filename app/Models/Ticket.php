@@ -33,6 +33,7 @@ class Ticket extends Model
         'requester_id',
         'assignee_id',
         'group_id',
+        'duplicate_ticket_id',
         'subject',
         'priority',
         'type',
