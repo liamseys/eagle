@@ -59,6 +59,7 @@ class AppPanelProvider extends PanelProvider
             ->path($path)
             ->login()
             ->passwordReset()
+            ->emailVerification()
             ->profile(EditProfile::class)
             ->font($font, provider: GoogleFontProvider::class)
             ->viteTheme('resources/css/filament/app/theme.css')
