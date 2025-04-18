@@ -3,10 +3,6 @@
 namespace App\Providers\Filament;
 
 use App\Filament\AvatarProviders\GravatarProvider;
-use App\Filament\Pages\Auth\EditProfile;
-use App\Filament\Widgets\StatsOverview;
-use App\Filament\Widgets\TicketPriorityChart;
-use App\Filament\Widgets\TicketTypeChart;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Settings\GeneralSettings;
 use Filament\FontProviders\GoogleFontProvider;
@@ -17,9 +13,7 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Facades\FilamentView;
-use Filament\View\PanelsRenderHook;
-use Illuminate\Contracts\View\View;
+use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Database\QueryException;
@@ -29,37 +23,23 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class AppPanelProvider extends PanelProvider
+class ClientPanelProvider extends PanelProvider
 {
-    public function register(): void
-    {
-        parent::register();
-
-        FilamentView::registerRenderHook(
-            PanelsRenderHook::SIDEBAR_FOOTER,
-            fn (): View => view('filament.disclaimer'),
-        );
-    }
-
     public function panel(Panel $panel): Panel
     {
         $generalSettings = app(GeneralSettings::class);
 
         try {
-            $path = $generalSettings->app_path;
             $font = $generalSettings->branding_primary_font;
         } catch (QueryException $e) {
-            $path = 'eagle';
             $font = 'Lexend';
         }
 
         return $panel
-            ->default()
-            ->id('app')
-            ->path($path)
+            ->id('client')
+            ->path('client')
             ->login()
             ->passwordReset()
-            ->profile(EditProfile::class)
             ->font($font, provider: GoogleFontProvider::class)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->darkMode(false)
@@ -69,17 +49,15 @@ class AppPanelProvider extends PanelProvider
             ->brandLogoHeight('2rem')
             ->favicon(asset('favicon.png'))
             ->defaultAvatarProvider(GravatarProvider::class)
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
+            ->discoverResources(in: app_path('Filament/Client/Resources'), for: 'App\\Filament\\Client\\Resources')
+            ->discoverPages(in: app_path('Filament/Client/Pages'), for: 'App\\Filament\\Client\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(in: app_path('Filament/Client/Widgets'), for: 'App\\Filament\\Client\\Widgets')
             ->widgets([
-                StatsOverview::class,
-                TicketPriorityChart::class,
-                TicketTypeChart::class,
+                Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
@@ -96,6 +74,7 @@ class AppPanelProvider extends PanelProvider
                 Authenticate::class,
                 EnsureUserIsActive::class,
             ])
-            ->databaseNotifications();
+            ->authGuard('client')
+            ->authPasswordBroker('clients');
     }
 }
