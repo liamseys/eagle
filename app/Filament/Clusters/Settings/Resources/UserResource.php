@@ -88,7 +88,7 @@ class UserResource extends Resource
                     Livewire::make(TokensRelationManager::class, fn (User $record, EditUser $livewire): array => [
                         'ownerRecord' => $record,
                         'pageClass' => $livewire::class,
-                    ]),
+                    ])->hiddenOn(['create']),
                 ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([

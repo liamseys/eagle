@@ -3,15 +3,18 @@
 namespace App\Models;
 
 use App\Filament\AvatarProviders\GravatarProvider;
+use App\Observers\ClientObserver;
 use App\Traits\HasNotes;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Tags\HasTags;
 
-class Client extends Model
+#[ObservedBy([ClientObserver::class])]
+class Client extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\ClientFactory> */
     use HasFactory, HasNotes, HasTags, HasUlids, Notifiable;
@@ -24,9 +27,21 @@ class Client extends Model
     protected $fillable = [
         'name',
         'email',
+        'password',
         'phone',
         'locale',
         'timezone',
+        'is_active',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var list<string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     /**

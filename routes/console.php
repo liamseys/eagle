@@ -14,4 +14,5 @@ Artisan::command('inspire', function () {
 Schedule::command(CleanEmails::class)->daily();
 Schedule::command(CloseResolvedTicketsCommand::class)->daily();
 Schedule::command(ImportImapEmailsCommand::class)->everyMinute();
+Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 Schedule::command('sanctum:prune-expired --hours=24')->daily();
