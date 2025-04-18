@@ -21,6 +21,7 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class ClientPanelProvider extends PanelProvider
@@ -31,8 +32,16 @@ class ClientPanelProvider extends PanelProvider
 
         try {
             $font = $generalSettings->branding_primary_font;
+            $brandLogoBlack = ! empty($generalSettings->branding_logo_black)
+                ? Storage::url($generalSettings->branding_logo_black)
+                : asset('img/logo/logo-black.svg');
+            $brandLogoWhite = ! empty($generalSettings->branding_logo_white)
+                ? Storage::url($generalSettings->branding_logo_white)
+                : asset('img/logo/logo-white.svg');
         } catch (QueryException $e) {
             $font = 'Lexend';
+            $brandLogoBlack = asset('img/logo/logo-black.svg');
+            $brandLogoWhite = asset('img/logo/logo-white.svg');
         }
 
         return $panel
@@ -44,8 +53,8 @@ class ClientPanelProvider extends PanelProvider
             ->viteTheme('resources/css/filament/app/theme.css')
             ->darkMode(false)
             ->brandLogo(fn () => Auth::guest()
-                ? asset('img/logo/logo-black.svg')
-                : asset('img/logo/logo-white.svg'))
+                ? $brandLogoBlack
+                : $brandLogoWhite)
             ->brandLogoHeight('2rem')
             ->favicon(asset('favicon.png'))
             ->defaultAvatarProvider(GravatarProvider::class)
