@@ -8,6 +8,7 @@ use App\Models\Client;
 use App\Models\Ticket;
 use App\Settings\GeneralSettings;
 use BeyondCode\Mailbox\InboundEmail;
+use Illuminate\Support\Str;
 
 class TicketMailbox
 {
@@ -49,7 +50,7 @@ class TicketMailbox
     {
         $client = Client::firstOrCreate(
             ['email' => $email->from()],
-            ['name' => $email->fromName()]
+            ['name' => $email->fromName(), 'password' => bcrypt(Str::random())]
         );
 
         $ticket = $client->tickets()->create([

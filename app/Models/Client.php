@@ -3,9 +3,7 @@
 namespace App\Models;
 
 use App\Filament\AvatarProviders\GravatarProvider;
-use App\Observers\ClientObserver;
 use App\Traits\HasNotes;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -13,7 +11,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Tags\HasTags;
 
-#[ObservedBy([ClientObserver::class])]
 class Client extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\ClientFactory> */
