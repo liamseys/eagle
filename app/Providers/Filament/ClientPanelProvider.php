@@ -56,6 +56,7 @@ class ClientPanelProvider extends PanelProvider
                 ? $brandLogoBlack
                 : $brandLogoWhite)
             ->brandLogoHeight('2rem')
+            ->topNavigation()
             ->favicon(asset('favicon.png'))
             ->defaultAvatarProvider(GravatarProvider::class)
             ->discoverResources(in: app_path('Filament/Client/Resources'), for: 'App\\Filament\\Client\\Resources')
