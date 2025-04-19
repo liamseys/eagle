@@ -52,7 +52,7 @@ class ClientPanelProvider extends PanelProvider
             ->font($font, provider: GoogleFontProvider::class)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->darkMode(false)
-            ->brandLogo(fn () => Auth::guest()
+            ->brandLogo(fn () => Auth::guard('client')->guest()
                 ? $brandLogoBlack
                 : $brandLogoWhite)
             ->brandLogoHeight('2rem')
