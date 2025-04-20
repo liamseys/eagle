@@ -16,7 +16,20 @@ class FormController extends Controller
      */
     public function show($locale, Form $form)
     {
-        if (! auth()->check() && ! $form->is_active) {
+        if ($form->groups()->exists()) {
+            if (! auth()->check()) {
+                $client = auth('client')->user();
+
+                if (
+                    ! $client ||
+                    ! $client->groups()
+                        ->whereIn('groups.id', $form->groups->pluck('id'))
+                        ->exists()
+                ) {
+                    return redirect()->route('index');
+                }
+            }
+        } elseif (! auth()->check() && ! $form->is_active) {
             abort(404);
         }
 
