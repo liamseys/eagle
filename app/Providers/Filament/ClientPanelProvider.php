@@ -14,7 +14,9 @@ use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
+use Filament\View\PanelsRenderHook;
 use Filament\Widgets;
+use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Database\QueryException;
@@ -97,6 +99,10 @@ class ClientPanelProvider extends PanelProvider
                 EnsureUserIsActive::class,
             ])
             ->authGuard('client')
-            ->authPasswordBroker('clients');
+            ->authPasswordBroker('clients')
+            ->renderHook(
+                PanelsRenderHook::TOPBAR_AFTER,
+                fn (): View => view('filament.custom-header'),
+            );
     }
 }
