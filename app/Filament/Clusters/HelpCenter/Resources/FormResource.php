@@ -164,6 +164,25 @@ class FormResource extends Resource
                                         fn (Action $action) => $action->modalWidth(MaxWidth::Medium),
                                     )
                                     ->helperText(__('(Optional) Select the section for this form.')),
+                                Forms\Components\Select::make('groups')
+                                    ->relationship(name: 'groups', titleAttribute: 'name')
+                                    ->multiple()
+                                    ->preload()
+                                    ->createOptionForm([
+                                        Forms\Components\TextInput::make('name')
+                                            ->required()
+                                            ->maxLength(255)
+                                            ->columnSpanFull(),
+                                        Forms\Components\TextInput::make('description')
+                                            ->maxLength(255)
+                                            ->placeholder(__('(Optional) A brief description of the group'))
+                                            ->columnSpanFull(),
+                                    ])
+                                    ->createOptionModalHeading(__('Create group'))
+                                    ->createOptionAction(
+                                        fn (Action $action) => $action->modalWidth(MaxWidth::Large),
+                                    )
+                                    ->helperText(__('Only clients in this group will be able to see this form.')),
                             ]),
                         Forms\Components\Section::make(__('Status'))
                             ->schema([
