@@ -10,6 +10,7 @@ use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationItem;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
@@ -57,6 +58,12 @@ class ClientPanelProvider extends PanelProvider
                 : $brandLogoWhite)
             ->brandLogoHeight('2rem')
             ->topNavigation()
+            ->navigationItems([
+                NavigationItem::make('submitATicket')
+                    ->url('/', shouldOpenInNewTab: true)
+                    ->icon('heroicon-o-bolt')
+                    ->label(__('Submit a ticket')),
+            ])
             ->favicon(asset('favicon.png'))
             ->defaultAvatarProvider(GravatarProvider::class)
             ->discoverResources(in: app_path('Filament/Client/Resources'), for: 'App\\Filament\\Client\\Resources')
