@@ -63,11 +63,16 @@ class ClientPanelProvider extends PanelProvider
                     ->url('/', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-bolt')
                     ->label(__('Submit a ticket')),
+                NavigationItem::make('submitATicket')
+                    ->url('/', shouldOpenInNewTab: true)
+                    ->icon('heroicon-o-megaphone')
+                    ->label(__('Report a bug')),
             ])
             ->favicon(asset('favicon.png'))
             ->defaultAvatarProvider(GravatarProvider::class)
             ->discoverResources(in: app_path('Filament/Client/Resources'), for: 'App\\Filament\\Client\\Resources')
             ->discoverPages(in: app_path('Filament/Client/Pages'), for: 'App\\Filament\\Client\\Pages')
+            ->discoverClusters(in: app_path('Filament/Client/Clusters'), for: 'App\\Filament\\Client\\Clusters')
             ->pages([
                 Pages\Dashboard::class,
             ])
