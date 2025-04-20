@@ -65,7 +65,7 @@ class ClientPanelProvider extends PanelProvider
                     ->icon('heroicon-o-bolt')
                     ->label(__('Submit a ticket'))
                     ->sort(3),
-                NavigationItem::make('submitATicket')
+                NavigationItem::make('reportABug')
                     ->url('/', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-megaphone')
                     ->label(__('Report a bug'))
