@@ -16,6 +16,8 @@ class TicketResource extends Resource
 {
     protected static ?string $model = Ticket::class;
 
+    protected static ?int $navigationSort = 2;
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function getEloquentQuery(): Builder

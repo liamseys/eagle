@@ -63,11 +63,13 @@ class ClientPanelProvider extends PanelProvider
                 NavigationItem::make('submitATicket')
                     ->url('/', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-bolt')
-                    ->label(__('Submit a ticket')),
+                    ->label(__('Submit a ticket'))
+                    ->sort(3),
                 NavigationItem::make('submitATicket')
                     ->url('/', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-megaphone')
-                    ->label(__('Report a bug')),
+                    ->label(__('Report a bug'))
+                    ->sort(4),
             ])
             ->favicon(asset('favicon.png'))
             ->defaultAvatarProvider(GravatarProvider::class)
