@@ -17,7 +17,6 @@ use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Support\Facades\FilamentView;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -31,16 +30,6 @@ use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 class AppPanelProvider extends PanelProvider
 {
-    public function register(): void
-    {
-        parent::register();
-
-        FilamentView::registerRenderHook(
-            PanelsRenderHook::SIDEBAR_FOOTER,
-            fn (): View => view('filament.disclaimer'),
-        );
-    }
-
     public function panel(Panel $panel): Panel
     {
         $generalSettings = app(GeneralSettings::class);
@@ -97,6 +86,10 @@ class AppPanelProvider extends PanelProvider
                 Authenticate::class,
                 EnsureUserIsActive::class,
             ])
-            ->databaseNotifications();
+            ->databaseNotifications()
+            ->renderHook(
+                PanelsRenderHook::SIDEBAR_FOOTER,
+                fn (): View => view('filament.disclaimer'),
+            );
     }
 }
