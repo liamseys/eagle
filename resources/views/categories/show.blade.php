@@ -22,7 +22,7 @@
                                                  ->published()
                                                  ->public()
                                                  ->get()
-                                                 ->merge($section->forms)
+                                                 ->merge($section->forms->where('is_public', true))
                                                  ->sortBy('sort') as $item)
                                     <x-nav-link
                                         :href="route($item instanceof Article ? 'articles.show' : 'forms.show', $item)">
