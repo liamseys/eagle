@@ -7,9 +7,11 @@ use App\Filament\Resources\ClientResource\Pages;
 use App\Filament\Resources\ClientResource\RelationManagers\TicketsRelationManager;
 use App\Models\Client;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\SpatieTagsInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Columns\SpatieTagsColumn;
 use Filament\Tables\Table;
@@ -40,6 +42,24 @@ class ClientResource extends Resource
                                             ->label(__('Name'))
                                             ->required()
                                             ->maxLength(255),
+                                        Forms\Components\Select::make('groups')
+                                            ->relationship(name: 'groups', titleAttribute: 'name')
+                                            ->multiple()
+                                            ->preload()
+                                            ->createOptionForm([
+                                                Forms\Components\TextInput::make('name')
+                                                    ->required()
+                                                    ->maxLength(255)
+                                                    ->columnSpanFull(),
+                                                Forms\Components\TextInput::make('description')
+                                                    ->maxLength(255)
+                                                    ->placeholder(__('(Optional) A brief description of the group'))
+                                                    ->columnSpanFull(),
+                                            ])
+                                            ->createOptionModalHeading(__('Create group'))
+                                            ->createOptionAction(
+                                                fn (Action $action) => $action->modalWidth(MaxWidth::Large),
+                                            ),
                                     ]),
                                 Forms\Components\Grid::make()
                                     ->schema([

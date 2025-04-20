@@ -6,6 +6,7 @@ use App\Filament\AvatarProviders\GravatarProvider;
 use App\Traits\HasNotes;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -49,6 +50,17 @@ class Client extends Authenticatable
     public function tickets()
     {
         return $this->hasMany(Ticket::class, 'requester_id');
+    }
+
+    /**
+     * A client belongs to many groups.
+     *
+     * @return BelongsToMany
+     */
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class)
+            ->withTimestamps();
     }
 
     /**
