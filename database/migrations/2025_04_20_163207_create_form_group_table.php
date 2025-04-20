@@ -12,11 +12,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('form_group', function (Blueprint $table) {
-            $table->foreignUlid('group_id')
-                ->constrained()
-                ->cascadeOnDelete();
             $table->foreignUlid('form_id')
                 ->constrained('hc_forms')
+                ->cascadeOnDelete();
+            $table->foreignUlid('group_id')
+                ->constrained()
                 ->cascadeOnDelete();
             $table->timestamps();
         });
