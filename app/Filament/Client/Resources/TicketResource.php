@@ -37,7 +37,7 @@ class TicketResource extends Resource
                     ->schema([
                         Forms\Components\Section::make()
                             ->schema([
-                                View::make('filament.forms.components.ticket-duplicate-message')
+                                View::make('filament.forms.components.ticket-duplicate-client-message')
                                     ->hidden(fn (?Ticket $record) => ! $record || ! $record->duplicate_of_ticket_id),
                                 Forms\Components\Grid::make()
                                     ->schema([
