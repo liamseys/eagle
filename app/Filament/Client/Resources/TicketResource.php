@@ -2,63 +2,125 @@
 
 namespace App\Filament\Client\Resources;
 
+use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketStatus;
+use App\Enums\Tickets\TicketType;
 use App\Filament\Client\Resources\TicketResource\Pages;
-use App\Models\Scopes\GroupScope;
+use App\Filament\Forms\Components\TicketComments;
+use App\Filament\Resources\TicketResource\Pages\EditTicket;
+use App\Filament\Resources\TicketResource\RelationManagers\FieldsRelationManager;
 use App\Models\Ticket;
 use Filament\Forms;
+use Filament\Forms\Components\Livewire;
+use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class TicketResource extends Resource
 {
     protected static ?string $model = Ticket::class;
 
+    protected static ?string $recordTitleAttribute = 'subject';
+
     protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()->withoutGlobalScopes([GroupScope::class]);
-    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('requester_id')
-                    ->maxLength(26),
-                Forms\Components\TextInput::make('assignee_id')
-                    ->maxLength(26),
-                Forms\Components\TextInput::make('group_id')
-                    ->maxLength(26),
-                Forms\Components\TextInput::make('ticket_id')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('duplicate_of_ticket_id')
-                    ->maxLength(26),
-                Forms\Components\TextInput::make('subject')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('priority')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('normal'),
-                Forms\Components\TextInput::make('type')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('status')
-                    ->required()
-                    ->maxLength(255)
-                    ->default('open'),
-                Forms\Components\Toggle::make('is_escalated')
-                    ->required(),
-            ]);
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\Section::make()
+                            ->schema([
+                                View::make('filament.forms.components.ticket-duplicate-message')
+                                    ->hidden(fn (?Ticket $record) => ! $record || ! $record->duplicate_of_ticket_id),
+                                Forms\Components\Grid::make()
+                                    ->schema([
+                                        Forms\Components\Select::make('priority')
+                                            ->label(__('Priority'))
+                                            ->options(TicketPriority::class)
+                                            ->searchable()
+                                            ->preload()
+                                            ->required()
+                                            ->default(TicketPriority::NORMAL),
+                                        Forms\Components\Select::make('type')
+                                            ->label(__('Type'))
+                                            ->options(TicketType::class)
+                                            ->searchable()
+                                            ->preload()
+                                            ->required(),
+                                        Forms\Components\Select::make('status')
+                                            ->label(__('Status'))
+                                            ->options(TicketStatus::class)
+                                            ->searchable()
+                                            ->preload()
+                                            ->required()
+                                            ->hiddenOn(['create'])
+                                            ->disabled(fn ($record) => $record->status === TicketStatus::CLOSED),
+                                    ])->columns(3),
+                                Forms\Components\TextInput::make('subject')
+                                    ->label(__('Subject'))
+                                    ->placeholder(__('Enter the subject of the ticket'))
+                                    ->disabledOn(['edit'])
+                                    ->required()
+                                    ->maxLength(255),
+                            ]),
+                        Livewire::make(FieldsRelationManager::class, fn (Ticket $record, EditTicket $livewire): array => [
+                            'ownerRecord' => $record,
+                            'pageClass' => $livewire::class,
+                        ])->hidden(function (?Ticket $record) {
+                            // If no record exists, it's the create page
+                            if (! $record) {
+                                return true;
+                            }
+
+                            return $record->fields->isEmpty();
+                        }),
+                        TicketComments::make()
+                            ->hiddenOn(['create']),
+                    ])->columnSpan(['lg' => 2]),
+                Forms\Components\Group::make()
+                    ->schema([
+                        Forms\Components\View::make('filament.infolists.components.requester')
+                            ->hidden(fn (?Ticket $record) => ! $record || ! $record->requester()->exists()),
+                        Forms\Components\Section::make(__('Associations'))
+                            ->schema([
+                                Forms\Components\Select::make('requester_id')
+                                    ->label(__('Requester'))
+                                    ->relationship(name: 'requester', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->helperText(__('The client who requested the ticket.')),
+                                Forms\Components\Select::make('assignee_id')
+                                    ->label(__('Assignee'))
+                                    ->relationship(name: 'assignee', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->helperText(__('The agent assigned to the ticket.')),
+                                Forms\Components\Select::make('group_id')
+                                    ->label(__('Group'))
+                                    ->relationship(name: 'group', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->preload()
+                                    ->helperText(__('The group assigned to the ticket.')),
+                            ]),
+                        Forms\Components\Section::make(__('Metadata'))
+                            ->schema([
+                                Forms\Components\Placeholder::make('created_at')
+                                    ->label(__('Created at'))
+                                    ->content(fn (Ticket $record): ?string => $record->created_at?->diffForHumans()),
+
+                                Forms\Components\Placeholder::make('updated_at')
+                                    ->label(__('Updated at'))
+                                    ->content(fn (Ticket $record): ?string => $record->updated_at?->diffForHumans()),
+                            ])->hiddenOn(['create']),
+                    ])->columnSpan(1),
+            ])->columns(3);
     }
 
     public static function table(Table $table): Table
@@ -107,13 +169,8 @@ class TicketResource extends Resource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->bulkActions([]);
     }
 
     public static function getRelations(): array
@@ -127,9 +184,7 @@ class TicketResource extends Resource
     {
         return [
             'index' => Pages\ListTickets::route('/'),
-            'create' => Pages\CreateTicket::route('/create'),
             'view' => Pages\ViewTicket::route('/{record}'),
-            'edit' => Pages\EditTicket::route('/{record}/edit'),
         ];
     }
 }
