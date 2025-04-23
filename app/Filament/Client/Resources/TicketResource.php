@@ -18,7 +18,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 
 class TicketResource extends Resource
 {
@@ -30,15 +29,7 @@ class TicketResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
 
-    public static function getGloballySearchableAttributes(): array
-    {
-        return ['ticket_id', 'subject'];
-    }
-
-    public static function getGlobalSearchResultTitle(Model $record): string
-    {
-        return '[#'.$record->ticket_id.'] '.$record->subject;
-    }
+    protected static bool $isGloballySearchable = false;
 
     public static function form(Form $form): Form
     {
