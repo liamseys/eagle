@@ -70,7 +70,7 @@ class CreateTicketComment extends Component implements HasForms
             'is_public' => $formData['is_public'],
         ]);
 
-        if ($user instanceof User) {
+        if ($user instanceof User && is_null($this->ticket->assignee_id)) {
             $this->ticket->update(['assignee_id' => $user->id]);
         }
 
