@@ -63,35 +63,35 @@ class TicketResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('requester_id')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('assignee_id')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('group_id')
-                    ->searchable(),
                 Tables\Columns\TextColumn::make('ticket_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('duplicate_of_ticket_id')
+                    ->label(__('Ticket ID'))
+                    ->prefix('#')
+                    ->copyable()
+                    ->copyMessage(__('Ticket ID copied to clipboard'))
+                    ->copyMessageDuration(1500)
                     ->searchable(),
                 Tables\Columns\TextColumn::make('subject')
+                    ->label(__('Subject'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('priority')
+                    ->label(__('Priority'))
+                    ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('type')
+                    ->label(__('Type'))
+                    ->badge()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status')
+                    ->label(__('Status'))
+                    ->badge()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_escalated')
-                    ->boolean(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('Created at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('Updated at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
