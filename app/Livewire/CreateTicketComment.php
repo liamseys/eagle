@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Actions\Tickets\UpdateTicketStatus;
 use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket;
+use App\Models\User;
 use App\Notifications\TicketCommentByAgent;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Toggle;
@@ -69,7 +70,9 @@ class CreateTicketComment extends Component implements HasForms
             'is_public' => $formData['is_public'],
         ]);
 
-        $this->ticket->update(['assignee_id' => $user->id]);
+        if ($user instanceof User) {
+            $this->ticket->update(['assignee_id' => $user->id]);
+        }
 
         // Update the ticket status
         app(UpdateTicketStatus::class)->handle($this->ticket, TicketStatus::PENDING);
@@ -83,7 +86,7 @@ class CreateTicketComment extends Component implements HasForms
 
         $this->dispatch('comment-created');
 
-        $this->sendSuccessNotification();
+        $this->sendSuccessNotification($user);
     }
 
     /**
@@ -98,11 +101,15 @@ class CreateTicketComment extends Component implements HasForms
     /**
      * Send success notification.
      */
-    private function sendSuccessNotification(): void
+    private function sendSuccessNotification($user): void
     {
         Notification::make()
             ->title(__('Success'))
-            ->body(__('Your comment has been added to the ticket. The requester will be notified.'))
+            ->body(
+                $user instanceof User
+                    ? __('Your comment has been added to the ticket. The requester will be notified.')
+                    : __('Your comment has been added to the ticket.')
+            )
             ->success()
             ->send();
     }

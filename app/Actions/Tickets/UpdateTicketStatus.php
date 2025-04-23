@@ -5,6 +5,7 @@ namespace App\Actions\Tickets;
 use App\Enums\Tickets\TicketActivityColumn;
 use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket;
+use App\Models\User;
 use App\Notifications\TicketClosed;
 use App\Notifications\TicketEscalationRequired;
 use App\Notifications\TicketResolved;
@@ -22,12 +23,14 @@ final class UpdateTicketStatus
                 'status' => $ticketStatus,
             ]);
 
-            $ticket->activity()->create([
-                'user_id' => auth()->id(),
-                'column' => TicketActivityColumn::STATUS,
-                'value' => $ticketStatus->value,
-                'reason' => $attributes['reason'] ?? null,
-            ]);
+            if (auth()->user() instanceof User) {
+                $ticket->activity()->create([
+                    'user_id' => auth()->id(),
+                    'column' => TicketActivityColumn::STATUS,
+                    'value' => $ticketStatus->value,
+                    'reason' => $attributes['reason'] ?? null,
+                ]);
+            }
 
             if ($ticket->requester) {
                 $notificationDelay = now()->addMinutes(10);
