@@ -2,9 +2,9 @@
 
 <div>
     <form>
-        {{ $this->form }}
-
         @if($ticket->status !== TicketStatus::CLOSED)
+            {{ $this->form }}
+
             <div class="pt-6">
                 <x-filament::button wire:click="create">
                     <div class="flex items-center gap-1">

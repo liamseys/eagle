@@ -1,4 +1,6 @@
-<div class="flex flex-col space-y-6 pb-6">
+@use(App\Enums\Tickets\TicketStatus)
+
+<div class="flex flex-col space-y-6 {{ ($ticket->status !== TicketStatus::CLOSED) ? 'pb-6' : '' }}">
     @if(!$comments->isEmpty())
         @foreach($comments as $comment)
             @php
