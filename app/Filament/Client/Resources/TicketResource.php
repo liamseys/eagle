@@ -37,7 +37,7 @@ class TicketResource extends Resource
 
     public static function getGlobalSearchResultTitle(Model $record): string
     {
-        return '#'.$record->ticket_id.' - '.$record->subject;
+        return '[#'.$record->ticket_id.'] '.$record->subject;
     }
 
     public static function form(Form $form): Form
