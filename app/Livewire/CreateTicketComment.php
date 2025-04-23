@@ -53,7 +53,8 @@ class CreateTicketComment extends Component implements HasForms
                     ->label(__('Public'))
                     ->default(true)
                     ->required()
-                    ->helperText(__('Non-public comments are only visible internally.')),
+                    ->helperText(__('Non-public comments are only visible internally.'))
+                    ->hidden(fn () => ! auth()->user() instanceof User),
             ])
             ->statePath('data');
     }
@@ -67,7 +68,7 @@ class CreateTicketComment extends Component implements HasForms
             'authorable_type' => get_class($user),
             'authorable_id' => $user->id,
             'body' => $formData['comment'],
-            'is_public' => $formData['is_public'],
+            'is_public' => $formData['is_public'] ?? true,
         ]);
 
         if ($user instanceof User && is_null($this->ticket->assignee_id)) {
@@ -78,7 +79,7 @@ class CreateTicketComment extends Component implements HasForms
         app(UpdateTicketStatus::class)->handle($this->ticket, TicketStatus::PENDING);
 
         // Notify the requester if the comment is public
-        if ($formData['is_public'] && $this->ticket->requester) {
+        if (isset($formData['is_public']) && $formData['is_public'] && $this->ticket->requester) {
             $this->ticket->requester->notify(new TicketCommentByAgent($ticketComment));
         }
 
