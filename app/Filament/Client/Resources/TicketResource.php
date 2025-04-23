@@ -18,7 +18,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class TicketResource extends Resource
 {
@@ -29,16 +28,6 @@ class TicketResource extends Resource
     protected static ?int $navigationSort = 2;
 
     protected static ?string $navigationIcon = 'heroicon-o-ticket';
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withGlobalScope('client', function (Builder $builder) {
-                if ($user = auth('client')->user()) {
-                    $builder->where('requester_id', $user->id);
-                }
-            });
-    }
 
     public static function form(Form $form): Form
     {
