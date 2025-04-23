@@ -2,6 +2,7 @@
 
 namespace App\Filament\Client\Resources;
 
+use App\Enums\Tickets\TicketStatus;
 use App\Filament\Client\Resources\TicketResource\Pages;
 use App\Models\Scopes\GroupScope;
 use App\Models\Ticket;
@@ -9,6 +10,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -97,7 +99,11 @@ class TicketResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('status')
+                    ->label(__('Status'))
+                    ->options(TicketStatus::class)
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
