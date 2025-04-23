@@ -51,9 +51,12 @@ class ClientPanelProvider extends PanelProvider
             ->path('client')
             ->login()
             ->passwordReset()
+            ->authGuard('client')
+            ->authPasswordBroker('clients')
             ->font($font, provider: GoogleFontProvider::class)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->darkMode(false)
+            ->favicon(asset('favicon.png'))
             ->brandLogo(fn () => Auth::guard('client')->guest()
                 ? $brandLogoBlack
                 : $brandLogoWhite)
@@ -71,13 +74,24 @@ class ClientPanelProvider extends PanelProvider
                     ->label(__('Report a bug'))
                     ->sort(4),
             ])
-            ->favicon(asset('favicon.png'))
             ->defaultAvatarProvider(GravatarProvider::class)
-            ->discoverResources(in: app_path('Filament/Client/Resources'), for: 'App\\Filament\\Client\\Resources')
-            ->discoverPages(in: app_path('Filament/Client/Pages'), for: 'App\\Filament\\Client\\Pages')
-            ->discoverClusters(in: app_path('Filament/Client/Clusters'), for: 'App\\Filament\\Client\\Clusters')
+            ->discoverResources(
+                in: app_path('Filament/Client/Resources'),
+                for: 'App\\Filament\\Client\\Resources',
+            )
+            ->discoverPages(
+                in: app_path('Filament/Client/Pages'),
+                for: 'App\\Filament\\Client\\Pages',
+            )
+            ->discoverClusters(
+                in: app_path('Filament/Client/Clusters'),
+                for: 'App\\Filament\\Client\\Clusters',
+            )
             ->pages([])
-            ->discoverWidgets(in: app_path('Filament/Client/Widgets'), for: 'App\\Filament\\Client\\Widgets')
+            ->discoverWidgets(
+                in: app_path('Filament/Client/Widgets'),
+                for: 'App\\Filament\\Client\\Widgets',
+            )
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
@@ -97,8 +111,6 @@ class ClientPanelProvider extends PanelProvider
                 Authenticate::class,
                 EnsureUserIsActive::class,
             ])
-            ->authGuard('client')
-            ->authPasswordBroker('clients')
             ->renderHook(
                 PanelsRenderHook::TOPBAR_AFTER,
                 fn (): View => view('filament.custom-header'),

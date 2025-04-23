@@ -2,9 +2,7 @@
 
 namespace App\Filament\Client\Resources;
 
-use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketStatus;
-use App\Enums\Tickets\TicketType;
 use App\Filament\Client\Resources\TicketResource\Pages;
 use App\Filament\Forms\Components\TicketComments;
 use App\Filament\Resources\TicketResource\Pages\EditTicket;
@@ -12,7 +10,6 @@ use App\Filament\Resources\TicketResource\RelationManagers\FieldsRelationManager
 use App\Models\Ticket;
 use Filament\Forms;
 use Filament\Forms\Components\Livewire;
-use Filament\Forms\Components\View;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -37,41 +34,6 @@ class TicketResource extends Resource
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Section::make()
-                            ->schema([
-                                View::make('filament.forms.components.ticket-duplicate-client-message')
-                                    ->hidden(fn (?Ticket $record) => ! $record || ! $record->duplicate_of_ticket_id),
-                                Forms\Components\Grid::make()
-                                    ->schema([
-                                        Forms\Components\Select::make('priority')
-                                            ->label(__('Priority'))
-                                            ->options(TicketPriority::class)
-                                            ->searchable()
-                                            ->preload()
-                                            ->required()
-                                            ->default(TicketPriority::NORMAL),
-                                        Forms\Components\Select::make('type')
-                                            ->label(__('Type'))
-                                            ->options(TicketType::class)
-                                            ->searchable()
-                                            ->preload()
-                                            ->required(),
-                                        Forms\Components\Select::make('status')
-                                            ->label(__('Status'))
-                                            ->options(TicketStatus::class)
-                                            ->searchable()
-                                            ->preload()
-                                            ->required()
-                                            ->hiddenOn(['create'])
-                                            ->disabled(fn ($record) => $record->status === TicketStatus::CLOSED),
-                                    ])->columns(3),
-                                Forms\Components\TextInput::make('subject')
-                                    ->label(__('Subject'))
-                                    ->placeholder(__('Enter the subject of the ticket'))
-                                    ->disabledOn(['edit'])
-                                    ->required()
-                                    ->maxLength(255),
-                            ]),
                         Livewire::make(FieldsRelationManager::class, fn (Ticket $record, EditTicket $livewire): array => [
                             'ownerRecord' => $record,
                             'pageClass' => $livewire::class,
@@ -88,31 +50,23 @@ class TicketResource extends Resource
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\View::make('filament.infolists.components.requester')
-                            ->hidden(fn (?Ticket $record) => ! $record || ! $record->requester()->exists()),
-                        Forms\Components\Section::make(__('Associations'))
-                            ->schema([
-                                Forms\Components\Select::make('requester_id')
-                                    ->label(__('Requester'))
-                                    ->relationship(name: 'requester', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->helperText(__('The client who requested the ticket.')),
-                                Forms\Components\Select::make('assignee_id')
-                                    ->label(__('Assignee'))
-                                    ->relationship(name: 'assignee', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->helperText(__('The agent assigned to the ticket.')),
-                                Forms\Components\Select::make('group_id')
-                                    ->label(__('Group'))
-                                    ->relationship(name: 'group', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->preload()
-                                    ->helperText(__('The group assigned to the ticket.')),
-                            ]),
                         Forms\Components\Section::make(__('Metadata'))
                             ->schema([
+                                Forms\Components\Placeholder::make('priority')
+                                    ->label(__('Priority'))
+                                    ->content(fn (Ticket $record): ?string => $record->priority->getLabel()),
+
+                                Forms\Components\Placeholder::make('type')
+                                    ->label(__('Type'))
+                                    ->content(fn (Ticket $record): ?string => $record->type->getLabel()),
+
+                                Forms\Components\Placeholder::make('status')
+                                    ->label(__('Status'))
+                                    ->content(fn (Ticket $record): ?string => $record->status->getLabel()),
+                                Forms\Components\Placeholder::make('assignee')
+                                    ->label(__('Assignee'))
+                                    ->content(fn (Ticket $record): ?string => $record->assignee ? $record->assignee->name : '-'),
+
                                 Forms\Components\Placeholder::make('created_at')
                                     ->label(__('Created at'))
                                     ->content(fn (Ticket $record): ?string => $record->created_at?->diffForHumans()),
@@ -120,7 +74,9 @@ class TicketResource extends Resource
                                 Forms\Components\Placeholder::make('updated_at')
                                     ->label(__('Updated at'))
                                     ->content(fn (Ticket $record): ?string => $record->updated_at?->diffForHumans()),
-                            ])->hiddenOn(['create']),
+                            ])
+                            ->columns(1)
+                            ->hiddenOn(['create']),
                     ])->columnSpan(1),
             ])->columns(3);
     }

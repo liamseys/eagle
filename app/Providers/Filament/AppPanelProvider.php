@@ -53,19 +53,31 @@ class AppPanelProvider extends PanelProvider
             ->font($font, provider: GoogleFontProvider::class)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->darkMode(false)
+            ->favicon(asset('favicon.png'))
             ->brandLogo(fn () => Auth::guest()
                 ? asset('img/logo/logo-black.svg')
                 : asset('img/logo/logo-white.svg'))
             ->brandLogoHeight('2rem')
-            ->favicon(asset('favicon.png'))
             ->defaultAvatarProvider(GravatarProvider::class)
-            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
-            ->discoverPages(in: app_path('Filament/Pages'), for: 'App\\Filament\\Pages')
-            ->discoverClusters(in: app_path('Filament/Clusters'), for: 'App\\Filament\\Clusters')
+            ->discoverResources(
+                in: app_path('Filament/Resources'),
+                for: 'App\\Filament\\Resources',
+            )
+            ->discoverPages(
+                in: app_path('Filament/Pages'),
+                for: 'App\\Filament\\Pages',
+            )
+            ->discoverClusters(
+                in: app_path('Filament/Clusters'),
+                for: 'App\\Filament\\Clusters',
+            )
             ->pages([
                 Pages\Dashboard::class,
             ])
-            ->discoverWidgets(in: app_path('Filament/Widgets'), for: 'App\\Filament\\Widgets')
+            ->discoverWidgets(
+                in: app_path('Filament/Widgets'),
+                for: 'App\\Filament\\Widgets',
+            )
             ->widgets([
                 StatsOverview::class,
                 TicketPriorityChart::class,
