@@ -2,6 +2,9 @@
 
 namespace App\Filament\Client\Pages;
 
+use App\Enums\Tickets\TicketPriority;
+use App\Enums\Tickets\TicketStatus;
+use App\Enums\Tickets\TicketType;
 use Filament\Forms\Components\Group;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
@@ -66,6 +69,20 @@ class ReportABug extends Page
 
     public function create(): void
     {
-        dd($this->form->getState());
+        $user = auth('client')->user();
+        $formData = $this->form->getState();
+
+        $ticket = $user->tickets()->create([
+            'subject' => $formData['title'],
+            'priority' => TicketPriority::NORMAL,
+            'type' => TicketType::PROBLEM,
+            'status' => TicketStatus::OPEN,
+        ]);
+
+        $ticket->comments()->create([
+            'authorable_type' => get_class($user),
+            'authorable_id' => $user->id,
+            'body' => $formData['description'],
+        ]);
     }
 }
