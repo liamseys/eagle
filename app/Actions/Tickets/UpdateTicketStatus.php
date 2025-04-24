@@ -28,7 +28,7 @@ final class UpdateTicketStatus
                     'user_id' => auth()->id(),
                     'column' => TicketActivityColumn::STATUS,
                     'value' => $ticketStatus->value,
-                    'reason' => $attributes['reason'] ?? null,
+                    'reason' => isset($attributes['reason']) ? $attributes['reason'] : null,
                 ]);
             }
 
