@@ -2,7 +2,11 @@
 
 namespace App\Filament\Client\Resources\TicketResource\Pages;
 
+use App\Actions\Tickets\UpdateTicketStatus;
+use App\Enums\Tickets\TicketStatus;
 use App\Filament\Client\Resources\TicketResource;
+use App\Models\Ticket;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -17,6 +21,19 @@ class ViewTicket extends ViewRecord
 
     protected function getHeaderActions(): array
     {
-        return [];
+        return [
+            Action::make('closeTicket')
+                ->label(__('Close ticket'))
+                ->icon('heroicon-o-check-circle')
+                ->requiresConfirmation()
+                ->action(function (Ticket $record) {
+                    app(UpdateTicketStatus::class)->handle(
+                        $record,
+                        TicketStatus::CLOSED,
+                        ['reason' => 'The ticket was closed by requester.'],
+                    );
+                })
+                ->hidden(fn (Ticket $record): bool => $record->status === TicketStatus::CLOSED),
+        ];
     }
 }
