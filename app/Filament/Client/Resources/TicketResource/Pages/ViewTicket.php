@@ -26,7 +26,7 @@ class ViewTicket extends ViewRecord
                 ->label(__('Close ticket'))
                 ->icon('heroicon-o-check-circle')
                 ->requiresConfirmation()
-                ->modalHeading(__('Are you sure you would like to do this? Once the ticket is closed, it cannot be reopened.'))
+                ->modalDescription(__('Are you sure you would like to do this? Once the ticket is closed, it cannot be reopened.'))
                 ->action(function (Ticket $record) {
                     app(UpdateTicketStatus::class)->handle(
                         $record,
