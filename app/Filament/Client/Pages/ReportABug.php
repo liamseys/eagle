@@ -10,6 +10,7 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
 
@@ -84,5 +85,30 @@ class ReportABug extends Page
             'authorable_id' => $user->id,
             'body' => $formData['description'],
         ]);
+
+        $this->resetForm();
+
+        $this->sendSuccessNotification();
+    }
+
+    /**
+     * Reset form data.
+     */
+    private function resetForm(): void
+    {
+        $this->reset('data');
+        $this->form->fill();
+    }
+
+    /**
+     * Send success notification.
+     */
+    private function sendSuccessNotification()
+    {
+        Notification::make()
+            ->title(__('Success'))
+            ->body(__('Your bug report has been submitted.'))
+            ->success()
+            ->send();
     }
 }
