@@ -50,7 +50,7 @@ class TicketResource extends Resource
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
                     ->schema([
-                        Forms\Components\Section::make(__('Metadata'))
+                        Forms\Components\Section::make(__('Details'))
                             ->schema([
                                 Forms\Components\Placeholder::make('priority')
                                     ->label(__('Priority'))
