@@ -25,7 +25,8 @@ class TicketActivity extends Model
      */
     protected $fillable = [
         'ticket_id',
-        'user_id',
+        'authorable_type',
+        'authorable_id',
         'column',
         'value',
         'reason',
@@ -52,10 +53,10 @@ class TicketActivity extends Model
     }
 
     /**
-     * Ticket activity belongs to a user.
+     * Ticket activity author (user or other model).
      */
-    public function user(): BelongsTo
+    public function authorable()
     {
-        return $this->belongsTo(User::class);
+        return $this->morphTo();
     }
 }

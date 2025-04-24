@@ -23,9 +23,12 @@ final class UpdateTicketStatus
                 'status' => $ticketStatus,
             ]);
 
+            $user = auth()->user();
+
             if (auth()->user() instanceof User) {
                 $ticket->activity()->create([
-                    'user_id' => auth()->id(),
+                    'authorable_type' => get_class($user),
+                    'authorable_id' => $user->id,
                     'column' => TicketActivityColumn::STATUS,
                     'value' => $ticketStatus->value,
                     'reason' => isset($attributes['reason']) ? $attributes['reason'] : null,

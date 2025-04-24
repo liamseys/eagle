@@ -10,7 +10,7 @@
     ];
 
     $activities = $getRecord()->activity()
-        ->with('user')
+        ->with('authorable')
         ->whereIn('column', array_keys($enumMap))
         ->get();
 @endphp
@@ -24,7 +24,7 @@
                     $enumInstance = $enumClass::from($ticketActivity->value);
                     $color = method_exists($enumInstance, 'getColor') ? $enumInstance->getColor() : null;
                     $icon = method_exists($enumInstance, 'getIcon') ? $enumInstance->getIcon() : null;
-                    $causer = $ticketActivity->user ? $ticketActivity->user->name : 'System';
+                    $causer = $ticketActivity->authorable ? $ticketActivity->authorable->name : 'System';
                 @endphp
 
                 <li>
