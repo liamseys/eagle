@@ -61,7 +61,7 @@ class CreateTicketComment extends Component implements HasForms
 
     public function create(): void
     {
-        if ($this->ticket->status == TicketStatus::CLOSED) {
+        if ($this->ticket->status === TicketStatus::CLOSED) {
             return;
         }
 
