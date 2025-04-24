@@ -13,6 +13,7 @@ use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class CreateTicketComment extends Component implements HasForms
@@ -119,6 +120,7 @@ class CreateTicketComment extends Component implements HasForms
             ->send();
     }
 
+    #[On('ticket-closed')]
     public function render()
     {
         return view('livewire.create-ticket-comment');

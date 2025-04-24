@@ -33,6 +33,8 @@ class ViewTicket extends ViewRecord
                         TicketStatus::CLOSED,
                         ['reason' => 'The ticket was closed by requester.'],
                     );
+
+                    $this->dispatch('ticket-closed');
                 })
                 ->hidden(fn (Ticket $record): bool => $record->status === TicketStatus::CLOSED),
         ];

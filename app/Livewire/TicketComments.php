@@ -17,6 +17,7 @@ class TicketComments extends Component
     }
 
     #[On('comment-created')]
+    #[On('ticket-closed')]
     public function render()
     {
         $commentsQuery = $this->ticket
