@@ -44,8 +44,8 @@ class ReportABug extends Page
                             ->label(__('Title'))
                             ->placeholder(__('Provide a brief, clear summary of the issue or request'))
                             ->required(),
-                        RichEditor::make('comment')
-                            ->label(__('Comment'))
+                        RichEditor::make('description')
+                            ->label(__('Description'))
                             ->toolbarButtons([
                                 'bold',
                                 'bulletList',
