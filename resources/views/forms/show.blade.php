@@ -1,4 +1,5 @@
 @use('App\Enums\HelpCenter\Forms\FormFieldType')
+@use('App\Settings\GeneralSettings')
 
 <x-app-layout>
     <x-hero :title="__('Help Center')"/>
@@ -142,8 +143,12 @@
 
                                 <p class="text-xs text-gray-500">{{ __('* This field is required') }}</p>
                                 <p class="w-full sm:w-3/5 text-xs text-gray-500">
+                                    @php
+                                        $generalSettings = app(GeneralSettings::class);
+                                    @endphp
+
                                     {!! __('Some system info is sent to :name. It helps improve support, fix issues, and make products better, in line with the <a href=":privacy_policy" class="underline">Privacy Policy</a> and <a href=":terms_of_service" class="underline">Terms of Service</a>.', [
-                                        'name' => config('app.name'),
+                                        'name' => $generalSettings->app_name,
                                         'privacy_policy' => config('app.privacy_policy'),
                                         'terms_of_service' => config('app.terms_of_service'),
                                     ]) !!}
