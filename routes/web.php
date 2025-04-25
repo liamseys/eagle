@@ -34,6 +34,8 @@ Route::group([
         ->name('forms.activate');
     Route::get('forms/{form}/deactivate', [FormController::class, 'deactivate'])
         ->name('forms.deactivate');
+    Route::get('forms/{form}/embed', [FormController::class, 'embed'])
+        ->name('forms.embed');
 });
 
 Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function () {

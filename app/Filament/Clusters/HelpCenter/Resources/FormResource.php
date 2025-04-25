@@ -220,7 +220,19 @@ class FormResource extends Resource
                                     ->label(__('Embed code'))
                                     ->autosize()
                                     ->helperText(__('Copy and paste this code into your website to embed the form.'))
-                                    ->visible(fn ($get) => $get('is_embeddable')),
+                                    ->visible(fn ($get) => $get('is_embeddable'))
+                                    ->readOnly()
+                                    ->afterStateHydrated(function (Forms\Components\Textarea $component, $state, $record) {
+                                        if ($record) {
+                                            $component->state(sprintf(
+                                                '<iframe src="%s" width="100%%" height="600" frameborder="0" allowfullscreen></iframe>',
+                                                route('forms.embed', [
+                                                    'locale' => config('app.locale'),
+                                                    'form' => $record,
+                                                ])
+                                            ));
+                                        }
+                                    }),
                             ])->hiddenOn(['create']),
                     ])->columnSpan(1),
             ])->columns(3);
