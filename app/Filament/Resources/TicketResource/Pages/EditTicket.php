@@ -17,6 +17,7 @@ use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Enums\MaxWidth;
 use Illuminate\Database\Eloquent\Model;
+use Livewire\Attributes\On;
 
 class EditTicket extends EditRecord
 {
@@ -112,5 +113,11 @@ class EditTicket extends EditRecord
         }
 
         return $record;
+    }
+
+    #[On('comment-created')]
+    public function refreshFormDataAction()
+    {
+        $this->refreshFormData(['status']);
     }
 }
