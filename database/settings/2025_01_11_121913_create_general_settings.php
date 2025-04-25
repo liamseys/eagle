@@ -13,6 +13,7 @@ return new class extends SettingsMigration
 
         $this->migrator->add('general.allowlisted_domains', []);
 
+        $this->migrator->add('general.branding_favicon', '');
         $this->migrator->add('general.branding_logo_black', '');
         $this->migrator->add('general.branding_logo_white', '');
         $this->migrator->add('general.branding_primary_color', '#000000');

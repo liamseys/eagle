@@ -109,14 +109,29 @@ class ManageGeneral extends SettingsPage
                     ->schema([
                         Grid::make()
                             ->schema([
-                                FileUpload::make('branding_logo_black')
-                                    ->image()
-                                    ->directory('branding/logo')
-                                    ->label(__('Logo black')),
-                                FileUpload::make('branding_logo_white')
-                                    ->image()
-                                    ->directory('branding/logo')
-                                    ->label(__('Logo white')),
+                                Grid::make()
+                                    ->schema([
+                                        Grid::make()
+                                            ->schema([
+                                                FileUpload::make('branding_favicon')
+                                                    ->image()
+                                                    ->directory('branding/favicon')
+                                                    ->label(__('Favicon')),
+                                            ])
+                                            ->columns(3),
+                                        Grid::make()
+                                            ->schema([
+                                                FileUpload::make('branding_logo_black')
+                                                    ->image()
+                                                    ->directory('branding/logo')
+                                                    ->label(__('Logo black')),
+
+                                                FileUpload::make('branding_logo_white')
+                                                    ->image()
+                                                    ->directory('branding/logo')
+                                                    ->label(__('Logo white')),
+                                            ]),
+                                    ]),
                                 ColorPicker::make('branding_primary_color')
                                     ->label(__('Primary color'))
                                     ->regex('/^#([a-f0-9]{6}|[a-f0-9]{3})\b$/')

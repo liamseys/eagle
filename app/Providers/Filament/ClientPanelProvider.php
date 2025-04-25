@@ -34,6 +34,9 @@ class ClientPanelProvider extends PanelProvider
 
         try {
             $font = $generalSettings->branding_primary_font;
+            $brandFavicon = ! empty($generalSettings->branding_favicon)
+                ? Storage::url($generalSettings->branding_favicon)
+                : asset('favicon.png');
             $brandLogoBlack = ! empty($generalSettings->branding_logo_black)
                 ? Storage::url($generalSettings->branding_logo_black)
                 : asset('img/logo/logo-black.svg');
@@ -42,6 +45,7 @@ class ClientPanelProvider extends PanelProvider
                 : asset('img/logo/logo-white.svg');
         } catch (QueryException $e) {
             $font = 'Lexend';
+            $brandFavicon = asset('favicon.png');
             $brandLogoBlack = asset('img/logo/logo-black.svg');
             $brandLogoWhite = asset('img/logo/logo-white.svg');
         }
@@ -56,7 +60,7 @@ class ClientPanelProvider extends PanelProvider
             ->font($font, provider: GoogleFontProvider::class)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->darkMode(false)
-            ->favicon(asset('favicon.png'))
+            ->favicon($brandFavicon)
             ->brandLogo(fn () => Auth::guard('client')->guest()
                 ? $brandLogoBlack
                 : $brandLogoWhite)
