@@ -25,7 +25,11 @@ class TicketController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        return Ticket::all()->toResourceCollection();
+        return Ticket::with([
+            'requester',
+            'assignee',
+            'group',
+        ])->get()->toResourceCollection();
     }
 
     /**
