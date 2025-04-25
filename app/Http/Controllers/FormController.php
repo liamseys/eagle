@@ -88,4 +88,16 @@ class FormController extends Controller
 
         return redirect()->back()->with('status', 'Form has been deactivated!');
     }
+
+    public function embed($locale, Form $form)
+    {
+        if (! $form->is_embeddable) {
+            abort(404);
+        }
+
+        return view('forms.embed', [
+            'locale' => $locale,
+            'form' => $form,
+        ]);
+    }
 }
