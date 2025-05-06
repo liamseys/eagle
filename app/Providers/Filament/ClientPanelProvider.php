@@ -4,6 +4,7 @@ namespace App\Providers\Filament;
 
 use App\Filament\AvatarProviders\GravatarProvider;
 use App\Filament\Client\Widgets\CommonIssues;
+use App\Filament\Client\Widgets\LookingForSomethingElse;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Settings\GeneralSettings;
 use Filament\FontProviders\GoogleFontProvider;
@@ -93,6 +94,7 @@ class ClientPanelProvider extends PanelProvider
             )
             ->widgets([
                 CommonIssues::class,
+                LookingForSomethingElse::class,
             ])
             ->middleware([
                 EncryptCookies::class,
