@@ -10,7 +10,7 @@
             <h2 class="text-xl font-semibold">{{ $category->name }}</h2>
 
             @if(!$sections->isEmpty())
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 items-start">
                     @foreach($sections as $section)
                         <x-card>
                             <x-slot name="header">

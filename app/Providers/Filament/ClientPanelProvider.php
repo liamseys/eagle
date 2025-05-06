@@ -3,6 +3,7 @@
 namespace App\Providers\Filament;
 
 use App\Filament\AvatarProviders\GravatarProvider;
+use App\Filament\Client\Widgets\CommonIssues;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Settings\GeneralSettings;
 use Filament\FontProviders\GoogleFontProvider;
@@ -14,7 +15,6 @@ use Filament\Navigation\NavigationItem;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\View\PanelsRenderHook;
-use Filament\Widgets;
 use Illuminate\Contracts\View\View;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
@@ -92,8 +92,7 @@ class ClientPanelProvider extends PanelProvider
                 for: 'App\\Filament\\Client\\Widgets',
             )
             ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
+                CommonIssues::class,
             ])
             ->middleware([
                 EncryptCookies::class,

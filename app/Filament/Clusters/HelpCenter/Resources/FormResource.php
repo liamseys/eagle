@@ -110,6 +110,10 @@ class FormResource extends Resource
                                     ->label(__('Require escalation'))
                                     ->helperText(__('Clients must work with an Account Manager for tickets from this form.'))
                                     ->default(false),
+                                Forms\Components\Toggle::make('settings.client_portal_featured')
+                                    ->label(__('Show in client portal'))
+                                    ->helperText(__('This form will be displayed in the client portal.'))
+                                    ->default(false),
                             ]),
                     ])->columnSpan(['lg' => 2]),
                 Forms\Components\Group::make()
