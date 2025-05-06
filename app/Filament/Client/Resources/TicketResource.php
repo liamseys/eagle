@@ -128,7 +128,8 @@ class TicketResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
             ])
-            ->bulkActions([]);
+            ->bulkActions([])
+            ->defaultSort('ticket_id', 'DESC');
     }
 
     public static function getRelations(): array
