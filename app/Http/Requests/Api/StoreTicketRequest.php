@@ -29,7 +29,7 @@ class StoreTicketRequest extends FormRequest
             'assignee_id' => ['nullable', 'exists:users,id'],
             'group_id' => ['nullable', 'exists:groups,id'],
             'subject' => ['required', 'string', 'max:255'],
-            'priority' => ['required', Rule::enum(TicketPriority::class)],
+            'priority' => [Rule::enum(TicketPriority::class)],
             'type' => ['required', Rule::enum(TicketType::class)],
         ];
     }
