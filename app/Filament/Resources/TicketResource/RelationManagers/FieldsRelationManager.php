@@ -7,8 +7,10 @@ use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class FieldsRelationManager extends RelationManager
 {
@@ -35,8 +37,17 @@ class FieldsRelationManager extends RelationManager
                     ->badge(),
                 Tables\Columns\TextColumn::make('formField.label')
                     ->label(__('Label')),
-                Tables\Columns\TextColumn::make('value')
-                    ->label(__('Value')),
+                TextColumn::make('value')
+                    ->label(__('Value'))
+                    ->state(function (Model $record): string {
+                        if ($record->type === 'string') {
+                            return $record->value;
+                        }
+
+                        return collect(json_decode($record->value, true))
+                            ->map(fn ($key) => $record->formField->options[$key])
+                            ->implode(', ');
+                    }),
             ])
             ->filters([
                 //

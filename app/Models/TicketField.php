@@ -21,6 +21,7 @@ class TicketField extends Model
     protected $fillable = [
         'ticket_id',
         'form_field_id',
+        'type',
         'value',
     ];
 

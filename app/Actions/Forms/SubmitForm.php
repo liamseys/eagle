@@ -83,9 +83,12 @@ final class SubmitForm
     {
         $ticket->fields()->createMany(
             $form->fields->map(function ($field) use ($request) {
+                $value = $request->input($field->name);
+
                 return [
                     'form_field_id' => $field->id,
-                    'value' => $request->get($field->name),
+                    'type' => is_array($value) ? 'array' : 'string',
+                    'value' => is_array($value) ? json_encode($value) : $value,
                 ];
             })->toArray()
         );
