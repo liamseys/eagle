@@ -15,6 +15,10 @@ class StringOrArray implements CastsAttributes
      */
     public function get(Model $model, string $key, mixed $value, array $attributes): mixed
     {
+        if (! $model->relationLoaded('formField')) {
+            $model->load('formField');
+        }
+
         if ($model->formField->type === FormFieldType::CHECKBOX) {
             return json_decode($value, true);
         }
@@ -29,6 +33,10 @@ class StringOrArray implements CastsAttributes
      */
     public function set(Model $model, string $key, mixed $value, array $attributes): mixed
     {
+        if (! $model->relationLoaded('formField')) {
+            $model->load('formField');
+        }
+
         if ($model->formField->type === FormFieldType::CHECKBOX) {
             return json_encode((array) $value);
         }
