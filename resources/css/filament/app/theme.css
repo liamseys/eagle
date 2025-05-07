@@ -50,6 +50,6 @@
 
 .ticket-comment-body {
     p {
-        @apply text-sm;
+        @apply text-sm mb-2 last:mb-0;
     }
 }
