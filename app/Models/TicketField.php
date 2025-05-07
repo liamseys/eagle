@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Casts\StringOrArray;
 use App\Models\HelpCenter\FormField;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,6 +24,18 @@ class TicketField extends Model
         'form_field_id',
         'value',
     ];
+
+    /**
+     * Get the attributes that should be cast.
+     *
+     * @return array<string, string>
+     */
+    protected function casts(): array
+    {
+        return [
+            'value' => StringOrArray::class,
+        ];
+    }
 
     /**
      * TicketField belongs to a Ticket.

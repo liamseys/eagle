@@ -3,7 +3,6 @@
 namespace App\Actions\Forms;
 
 use App\Actions\Tickets\UpdateTicketStatus;
-use App\Enums\HelpCenter\Forms\FormFieldType;
 use App\Enums\Tickets\TicketStatus;
 use App\Models\Client;
 use App\Models\HelpCenter\Form;
@@ -84,11 +83,9 @@ final class SubmitForm
     {
         $ticket->fields()->createMany(
             $form->fields->map(function ($field) use ($request) {
-                $value = $request->input($field->name);
-
                 return [
                     'form_field_id' => $field->id,
-                    'value' => $field->type === FormFieldType::CHECKBOX ? json_encode((array) $value) : $value,
+                    'value' => $request->input($field->name),
                 ];
             })->toArray()
         );

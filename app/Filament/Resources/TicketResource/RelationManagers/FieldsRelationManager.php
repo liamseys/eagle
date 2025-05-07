@@ -83,7 +83,7 @@ class FieldsRelationManager extends RelationManager
                 TextColumn::make('value')
                     ->label(__('Value'))
                     ->state(fn (Model $record): string => match ($record->formField->type) {
-                        FormFieldType::CHECKBOX => collect(json_decode($record->value, true))
+                        FormFieldType::CHECKBOX => collect($record->value)
                             ->map(fn ($key) => $record->formField->options[$key] ?? $key)
                             ->implode(', '),
 
