@@ -3,6 +3,7 @@
 namespace App\Actions\Forms;
 
 use App\Actions\Tickets\UpdateTicketStatus;
+use App\Enums\HelpCenter\Forms\FormFieldType;
 use App\Enums\Tickets\TicketStatus;
 use App\Models\Client;
 use App\Models\HelpCenter\Form;
@@ -87,8 +88,7 @@ final class SubmitForm
 
                 return [
                     'form_field_id' => $field->id,
-                    'type' => is_array($value) ? 'array' : 'string',
-                    'value' => is_array($value) ? json_encode($value) : $value,
+                    'value' => $field->type === FormFieldType::CHECKBOX ? json_encode((array) $value) : $value,
                 ];
             })->toArray()
         );

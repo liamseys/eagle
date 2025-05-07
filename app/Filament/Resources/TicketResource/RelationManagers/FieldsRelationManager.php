@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\TicketResource\RelationManagers;
 
+use App\Enums\HelpCenter\Forms\FormFieldType;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -39,14 +40,14 @@ class FieldsRelationManager extends RelationManager
                     ->label(__('Label')),
                 TextColumn::make('value')
                     ->label(__('Value'))
-                    ->state(function (Model $record): string {
-                        if ($record->type === 'string') {
-                            return $record->value;
-                        }
+                    ->state(fn (Model $record): string => match ($record->formField->type) {
+                        FormFieldType::CHECKBOX => collect(json_decode($record->value, true))
+                            ->map(fn ($key) => $record->formField->options[$key] ?? $key)
+                            ->implode(', '),
 
-                        return collect(json_decode($record->value, true))
-                            ->map(fn ($key) => $record->formField->options[$key])
-                            ->implode(', ');
+                        FormFieldType::RADIO, FormFieldType::SELECT => $record->formField->options[$record->value] ?? $record->value,
+
+                        default => $record->value,
                     }),
             ])
             ->filters([
