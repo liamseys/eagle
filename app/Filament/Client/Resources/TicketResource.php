@@ -5,7 +5,6 @@ namespace App\Filament\Client\Resources;
 use App\Enums\Tickets\TicketStatus;
 use App\Filament\Client\Resources\TicketResource\Pages;
 use App\Filament\Forms\Components\TicketComments;
-use App\Filament\Resources\TicketResource\Pages\EditTicket;
 use App\Filament\Resources\TicketResource\RelationManagers\FieldsRelationManager;
 use App\Models\Ticket;
 use Filament\Forms;
@@ -34,7 +33,7 @@ class TicketResource extends Resource
             ->schema([
                 Forms\Components\Group::make()
                     ->schema([
-                        Livewire::make(FieldsRelationManager::class, fn (Ticket $record, EditTicket $livewire): array => [
+                        Livewire::make(FieldsRelationManager::class, fn (Ticket $record, Pages\ViewTicket $livewire): array => [
                             'ownerRecord' => $record,
                             'pageClass' => $livewire::class,
                         ])->hidden(function (?Ticket $record) {
