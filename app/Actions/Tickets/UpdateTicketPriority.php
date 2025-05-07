@@ -15,12 +15,15 @@ final class UpdateTicketPriority
     public function handle(Ticket $ticket, TicketPriority $ticketPriority, array $attributes = []): void
     {
         DB::transaction(function () use ($ticket, $ticketPriority) {
+            $user = auth()->user();
+
             $ticket->update([
                 'priority' => $ticketPriority,
             ]);
 
             $ticket->activity()->create([
-                'user_id' => auth()->id(),
+                'authorable_type' => get_class($user),
+                'authorable_id' => $user->id,
                 'column' => TicketActivityColumn::PRIORITY,
                 'value' => $ticketPriority->value,
             ]);
