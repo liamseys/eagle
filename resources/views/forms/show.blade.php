@@ -75,8 +75,7 @@
                                                         <div class="flex flex-row items-center gap-2">
                                                             <x-checkbox name="{{ $formField->name }}[]"
                                                                         value="{{ $value }}"
-                                                                        id="{{ $formField->name . '_' . $value }}"
-                                                                        :required="$formField->is_required"/>
+                                                                        id="{{ $formField->name . '_' . $value }}"/>
                                                             <x-label
                                                                 for="{{ $formField->name . '_' . $value }}">{{ $label }}</x-label>
                                                         </div>

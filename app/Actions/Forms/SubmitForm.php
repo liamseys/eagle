@@ -3,11 +3,14 @@
 namespace App\Actions\Forms;
 
 use App\Actions\Tickets\UpdateTicketStatus;
+use App\Enums\HelpCenter\Forms\FormFieldType;
 use App\Enums\Tickets\TicketStatus;
 use App\Models\Client;
 use App\Models\HelpCenter\Form;
+use App\Models\HelpCenter\FormField;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 final class SubmitForm
@@ -34,18 +37,34 @@ final class SubmitForm
 
     private function getValidationRules(Form $form): array
     {
-        $validationRules = [];
+        return $form->fields->mapWithKeys(
+            fn ($field) => [
+                $field->name => collect($this->baseRules($field))
+                    ->merge($this->dynamicRules($field))
+                    ->unique()
+                    ->values()
+                    ->toArray(),
+            ]
+        )->toArray();
+    }
 
-        foreach ($form->fields()->whereNotNull('validation_rules')->get() as $formField) {
-            $validationRules[$formField->name] = collect($formField->validation_rules)
-                ->map(fn ($ruleSet) => isset($ruleSet['value'])
-                    ? "{$ruleSet['rule']}:{$ruleSet['value']}"
-                    : $ruleSet['rule']
-                )
-                ->toArray();
-        }
+    private function baseRules(FormField $field): array
+    {
+        return match (true) {
+            $field->type === FormFieldType::CHECKBOX && $field->is_required => ['required', 'array', 'min:1'],
+            $field->type === FormFieldType::CHECKBOX => ['array'],
+            $field->is_required => ['required'],
+            default => [],
+        };
+    }
 
-        return $validationRules;
+    private function dynamicRules(FormField $field): Collection
+    {
+        return collect($field->validation_rules ?? [])
+            ->map(fn ($rule) => isset($rule['value'])
+                ? "{$rule['rule']}:{$rule['value']}"
+                : $rule['rule']
+            );
     }
 
     private function createTicketBasedOnClientSettings(Request $request, Form $form): Ticket
