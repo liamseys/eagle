@@ -7,7 +7,6 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\IndexController;
 use App\Http\Middleware\SetDefaultLocaleForUrls;
 use Illuminate\Support\Facades\Route;
-use Spatie\Honeypot\ProtectAgainstSpam;
 use Spatie\WelcomeNotification\WelcomesNewUsers;
 
 Route::get('/', function () {
@@ -27,7 +26,6 @@ Route::group([
     Route::get('articles/{article}/unpublish', [ArticleController::class, 'unpublish'])
         ->name('articles.unpublish');
     Route::post('forms/submit', [FormController::class, 'submit'])
-        ->middleware(ProtectAgainstSpam::class)
         ->name('forms.submit');
     Route::resource('forms', FormController::class)->only('show');
     Route::get('forms/{form}/activate', [FormController::class, 'activate'])

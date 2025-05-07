@@ -43,7 +43,6 @@
                         <form method="POST" action="{{ route('forms.submit') }}">
                             @csrf
 
-                            <x-honeypot/>
                             <input type="hidden" name="form_id" value="{{ $form->id }}">
 
                             <div class="flex flex-col space-y-4">
