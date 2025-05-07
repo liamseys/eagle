@@ -19,13 +19,55 @@ class FieldsRelationManager extends RelationManager
 
     public function form(Form $form): Form
     {
-        return $form
-            ->schema([
+        return $form->schema(fn (?Model $record): array => match ($record->formField->type) {
+            FormFieldType::TEXT => [
                 Forms\Components\TextInput::make('value')
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull(),
-            ]);
+            ],
+            FormFieldType::TEXTAREA => [
+                Forms\Components\Textarea::make('value')
+                    ->required()
+                    ->columnSpanFull(),
+            ],
+            FormFieldType::EMAIL => [
+                Forms\Components\TextInput::make('value')
+                    ->email()
+                    ->required()
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+            ],
+            FormFieldType::CHECKBOX => [
+                Forms\Components\CheckboxList::make('value')
+                    ->options($record->formField->options)
+                    ->required()
+                    ->columnSpanFull(),
+            ],
+            FormFieldType::RADIO => [
+                Forms\Components\Radio::make('value')
+                    ->options($record->formField->options)
+                    ->required()
+                    ->columnSpanFull(),
+            ],
+            FormFieldType::SELECT => [
+                Forms\Components\Select::make('value')
+                    ->options($record->formField->options)
+                    ->required()
+                    ->columnSpanFull(),
+            ],
+            FormFieldType::DATE => [
+                Forms\Components\DatePicker::make('value')
+                    ->required()
+                    ->columnSpanFull(),
+            ],
+            FormFieldType::DATETIME_LOCAL => [
+                Forms\Components\DateTimePicker::make('value')
+                    ->required()
+                    ->columnSpanFull(),
+            ],
+            default => [],
+        });
     }
 
     public function table(Table $table): Table
