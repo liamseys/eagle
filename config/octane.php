@@ -12,19 +12,15 @@ use Laravel\Octane\Events\WorkerErrorOccurred;
 use Laravel\Octane\Events\WorkerStarting;
 use Laravel\Octane\Events\WorkerStopping;
 use Laravel\Octane\Listeners\CloseMonologHandlers;
-use Laravel\Octane\Listeners\CollectGarbage;
-use Laravel\Octane\Listeners\DisconnectFromDatabases;
 use Laravel\Octane\Listeners\EnsureUploadedFilesAreValid;
 use Laravel\Octane\Listeners\EnsureUploadedFilesCanBeMoved;
 use Laravel\Octane\Listeners\FlushOnce;
 use Laravel\Octane\Listeners\FlushTemporaryContainerInstances;
-use Laravel\Octane\Listeners\FlushUploadedFiles;
 use Laravel\Octane\Listeners\ReportException;
 use Laravel\Octane\Listeners\StopWorkerIfNecessary;
 use Laravel\Octane\Octane;
 
 return [
-
     /*
     |--------------------------------------------------------------------------
     | Octane Server
@@ -38,7 +34,7 @@ return [
     |
     */
 
-    'server' => env('OCTANE_SERVER', 'roadrunner'),
+    "server" => env("OCTANE_SERVER", "roadrunner"),
 
     /*
     |--------------------------------------------------------------------------
@@ -51,7 +47,7 @@ return [
     |
     */
 
-    'https' => env('OCTANE_HTTPS', false),
+    "https" => env("OCTANE_HTTPS", false),
 
     /*
     |--------------------------------------------------------------------------
@@ -64,7 +60,7 @@ return [
     |
     */
 
-    'listeners' => [
+    "listeners" => [
         WorkerStarting::class => [
             EnsureUploadedFilesAreValid::class,
             EnsureUploadedFilesCanBeMoved::class,
@@ -114,9 +110,7 @@ return [
             StopWorkerIfNecessary::class,
         ],
 
-        WorkerStopping::class => [
-            CloseMonologHandlers::class,
-        ],
+        WorkerStopping::class => [CloseMonologHandlers::class],
     ],
 
     /*
@@ -130,13 +124,9 @@ return [
     |
     */
 
-    'warm' => [
-        ...Octane::defaultServicesToWarm(),
-    ],
+    "warm" => [...Octane::defaultServicesToWarm()],
 
-    'flush' => [
-        //
-    ],
+    "flush" => [\Barryvdh\Debugbar\LaravelDebugbar::class],
 
     /*
     |--------------------------------------------------------------------------
@@ -149,10 +139,10 @@ return [
     |
     */
 
-    'tables' => [
-        'example:1000' => [
-            'name' => 'string:1000',
-            'votes' => 'int',
+    "tables" => [
+        "example:1000" => [
+            "name" => "string:1000",
+            "votes" => "int",
         ],
     ],
 
@@ -167,9 +157,9 @@ return [
     |
     */
 
-    'cache' => [
-        'rows' => 1000,
-        'bytes' => 10000,
+    "cache" => [
+        "rows" => 1000,
+        "bytes" => 10000,
     ],
 
     /*
@@ -183,16 +173,16 @@ return [
     |
     */
 
-    'watch' => [
-        'app',
-        'bootstrap',
-        'config/**/*.php',
-        'database/**/*.php',
-        'public/**/*.php',
-        'resources/**/*.php',
-        'routes',
-        'composer.lock',
-        '.env',
+    "watch" => [
+        "app",
+        "bootstrap",
+        "config/**/*.php",
+        "database/**/*.php",
+        "public/**/*.php",
+        "resources/**/*.php",
+        "routes",
+        "composer.lock",
+        ".env",
     ],
 
     /*
@@ -206,7 +196,7 @@ return [
     |
     */
 
-    'garbage' => 50,
+    "garbage" => 50,
 
     /*
     |--------------------------------------------------------------------------
@@ -219,6 +209,17 @@ return [
     |
     */
 
-    'max_execution_time' => 30,
+    "max_execution_time" => 30,
 
+    "swoole" => [
+        "options" => [
+            "http_compression" => true,
+            "http_compression_level" => 6, // 1 - 9
+            "compression_min_length" => 20,
+            "package_max_length" => 20 * 1024 * 1024, // 20MB
+            "open_http2_protocol" => true,
+            "document_root" => public_path(),
+            "enable_static_handler" => true,
+        ],
+    ],
 ];
