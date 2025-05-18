@@ -1,0 +1,65 @@
+# Docker Compose template for Eagle
+# Usage instructions:
+# 1. Copy this file to "compose.yml"
+# 2. Adjust the variables according to your environment in the .env file
+# 3. Customize the services as needed (use profiles for groups of services)
+# 4. Deploy with: docker compose up -d eagle
+
+# Common logging configuration for all services
+x-logging: &default-logging
+  driver: "json-file"
+  options:
+    max-size: "50m"
+    max-file: 6
+
+# Base configuration for application services
+x-base: &base
+  profiles: [eagle]
+  build:
+    context: .
+    dockerfile: Dockerfile
+    args:
+      APP_ENV: "${APP_ENV:-production}"
+      WWWUSER: ${HOST_UID:-1000}
+      WWWGROUP: ${HOST_GID:-1000}
+      TZ: ${APP_TIMEZONE:-UTC}
+  image: ${DOCKER_IMAGE:-liamseys/eagle:latest}
+  user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+  ulimits:
+    nofile:
+      soft: 20000
+      hard: 40000
+  security_opt:
+    - no-new-privileges:true
+  networks:
+    - stack
+  volumes:
+    - "./storage/app/public:/var/www/html/storage/app/public"
+    - "./storage/logs:/var/www/html/storage/logs"
+    - "./storage/sqlite:/var/www/html/storage/sqlite"
+  env_file:
+    - .env
+  logging: *default-logging
+  restart: unless-stopped
+
+# === Network Configuration ===
+networks:
+  stack:
+    driver: bridge
+
+services:
+  eagle:
+    <<: *base
+    container_name: eagle
+    environment:
+      WITH_WORKER: "${WITH_WORKER:-true}"
+      # WITH_HORIZON: "${WITH_HORIZON:-true}" #! Needs Redis
+      APP_KEY: "${APP_KEY}"
+      DB_CONNECTION: "${DB_CONNECTION:-sqlite}"
+    healthcheck:
+      test: ["CMD", "curl", "--fail", "localhost:8000/up"]
+      interval: 3s
+      retries: 12
+      timeout: 5s
+    ports:
+      - "${APP_PORT:-8000}:${APP_PORT:-8000}"
