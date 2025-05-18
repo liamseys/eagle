@@ -16,6 +16,8 @@
         "filament/spatie-laravel-settings-plugin": "^3.2",
         "filament/spatie-laravel-tags-plugin": "^3.2",
         "laravel/framework": "^12.0",
+        "laravel/horizon": "^5.32",
+        "laravel/octane": "^2.9",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "spatie/laravel-welcome-notification": "^2.4",
@@ -64,6 +66,10 @@
         "dev": [
             "Composer\\Config::disableProcessTimeout",
             "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan serve\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev\" --names=server,queue,logs,vite"
+        ],
+        "dev:octane": [
+            "Composer\\Config::disableProcessTimeout",
+            "npx concurrently -c \"#93c5fd,#c4b5fd,#fb7185,#fdba74\" \"php artisan octane:start --host=0.0.0.0\" \"php artisan queue:listen --tries=1\" \"php artisan pail --timeout=0\" \"npm run dev --host 0.0.0.0\" --names=server,queue,logs,vite"
         ]
     },
     "extra": {
