@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+
+set -e
+
+php "${ROOT}/artisan" octane:status
+else
+    echo "Healthcheck failed."
+    exit 1
+fi
