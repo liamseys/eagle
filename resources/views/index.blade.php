@@ -7,17 +7,24 @@
     <section class="py-12">
         <x-container class="max-w-7xl">
             @if(!$categories->isEmpty())
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                     @foreach($categories as $category)
-                        <a href="{{ route('categories.show', $category) }}">
-                            <div class="flex flex-col p-4 space-y-2 border rounded-lg hover:bg-gray-100 hover:cursor-pointer">
-                                <x-dynamic-component :component="$category->icon" class="h-6 w-6"/>
+                        <a href="{{ route('categories.show', $category) }}"
+                           class="flex items-start gap-4 rounded-xl border border-gray-200 bg-white/80 p-4 transition hover:border-gray-300 hover:bg-white hover:-translate-y-0.5 duration-200">
+                            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-lg bg-gray-50">
+                                <x-dynamic-component :component="$category->icon" class="h-6 w-6 text-gray-700"/>
+                            </div>
 
-                                <p class="font-bold text-black">{{ $category->name }}</p>
+                            <div>
+                                <p class="font-semibold text-gray-900">{{ $category->name }}</p>
 
-                                @if($category->description)
-                                    <p class="text-sm text-gray-500">{{ $category->description }}</p>
+                                @if(!empty($category->description))
+                                    <p class="mt-1 text-sm text-gray-500 leading-snug">{{ $category->description }}</p>
                                 @endif
+
+                                <p class="mt-2 text-xs text-gray-400">
+                                    {{ $category->articles_count }} {{ Str::plural('article', $category->articles_count) }}
+                                </p>
                             </div>
                         </a>
                     @endforeach

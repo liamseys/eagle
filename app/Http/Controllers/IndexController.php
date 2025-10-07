@@ -13,10 +13,15 @@ class IndexController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $categories = Category::whereHas('articles', function ($query) {
+        $categories = Category::withCount(['articles' => function ($query) {
             $query->where('status', ArticleStatus::PUBLISHED)
-                ->where('is_public', '=', true);
-        })->orderBy('sort')->get();
+                ->where('is_public', true);
+        }])->whereHas('articles', function ($query) {
+            $query->where('status', ArticleStatus::PUBLISHED)
+                ->where('is_public', true);
+        })
+            ->orderBy('sort')
+            ->get();
 
         return view('index', [
             'categories' => $categories,
