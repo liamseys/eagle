@@ -7,7 +7,8 @@
     "mcp": true,
     "nightwatch_mcp": false,
     "packages": [
-        "filament/filament"
+        "filament/filament",
+        "filament/blueprint"
     ],
     "sail": false,
     "skills": [
