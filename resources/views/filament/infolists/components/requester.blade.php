@@ -47,7 +47,7 @@
                     <p class="text-sm font-medium leading-6 text-gray-950">{{ __('Locale') }}</p>
                 </div>
                 <p class="text-sm">
-                    {{ Locales::getName($getRecord()->requester->locale) }}
+                    {{ Locales::exists($getRecord()->requester->locale) ? Locales::getName($getRecord()->requester->locale) : __('Unknown') }}
                 </p>
             </div>
 
@@ -59,8 +59,8 @@
                 <p class="text-sm">
                     {{ now()->tz($getRecord()->requester->timezone)->format('H:i') }}
                     @if($getRecord()->requester->timezone !== 'UTC')
-                        <span>|</span> {{ Timezones::getName(timezone: $getRecord()->requester->timezone) }}
-                    @endif  
+                        <span>|</span> {{ Timezones::exists($getRecord()->requester->timezone) ? Timezones::getName(timezone: $getRecord()->requester->timezone) : __('Unknown') }}
+                    @endif
                 </p>
             </div>
         </div>
