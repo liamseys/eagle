@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed3b6ef25f8927191474f4bff7f44f51",
+    "content-hash": "46af10ded78f61781c74368583dc0793",
     "packages": [
         {
             "name": "beyondcode/laravel-mailbox",
@@ -9989,6 +9989,28 @@
                 }
             ],
             "time": "2025-08-14T07:29:31+00:00"
+        },
+        {
+            "name": "filament/blueprint",
+            "version": "v2.1.2",
+            "dist": {
+                "type": "zip",
+                "url": "https://packages.filamentphp.com/composer/10/552/download"
+            },
+            "require": {
+                "filament/support": "^5.0",
+                "laravel/boost": "^1.8|^2.0"
+            },
+            "type": "library",
+            "license": [
+                "proprietary"
+            ],
+            "description": "Guidelines for AI agents to produce detailed Filament implementation plans.",
+            "homepage": "https://github.com/filamentphp/filament",
+            "support": {
+                "issues": "https://github.com/filamentphp/filament/issues",
+                "source": "https://github.com/filamentphp/filament"
+            }
         },
         {
             "name": "filament/upgrade",
