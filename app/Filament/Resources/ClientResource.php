@@ -25,7 +25,10 @@ use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\SpatieTagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ViewColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Spatie\Tags\Tag;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\Intl\Timezones;
 
@@ -149,7 +152,14 @@ class ClientResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
+                SelectFilter::make('tags')
+                    ->multiple()
+                    ->options(Tag::all()->pluck('name', 'name'))
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query->when($data['values'], function (Builder $query, $values): Builder {
+                            return $query->withAnyTags($values);
+                        });
+                    }),
             ])
             ->recordActions([
                 EditAction::make(),
