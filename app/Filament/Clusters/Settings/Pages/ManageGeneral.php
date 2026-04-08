@@ -64,29 +64,26 @@ class ManageGeneral extends SettingsPage
                     ]),
                 Section::make(__('Business Hours'))
                     ->description(__('Manage your business hours per day of the week.'))
-                    ->schema([
-                        Grid::make()
-                            ->schema(collect(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'])->map(fn (string $day) => [
-                                Grid::make()
-                                    ->schema([
-                                        Toggle::make("business_hours.{$day}.enabled")
-                                            ->label(__(ucfirst($day)))
-                                            ->live(),
-                                        TimePicker::make("business_hours.{$day}.start")
-                                            ->label(__('Start'))
-                                            ->seconds(false)
-                                            ->required(fn (Get $get) => $get("business_hours.{$day}.enabled"))
-                                            ->disabled(fn (Get $get) => ! $get("business_hours.{$day}.enabled")),
-                                        TimePicker::make("business_hours.{$day}.end")
-                                            ->label(__('End'))
-                                            ->seconds(false)
-                                            ->required(fn (Get $get) => $get("business_hours.{$day}.enabled"))
-                                            ->disabled(fn (Get $get) => ! $get("business_hours.{$day}.enabled"))
-                                            ->after("business_hours.{$day}.start"),
-                                    ])
-                                    ->columns(3),
-                            ])->flatten(1)->toArray()),
-                    ]),
+                    ->schema(collect(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'])->map(fn (string $day) => [
+                        Grid::make(3)
+                            ->schema([
+                                Toggle::make("business_hours.{$day}.enabled")
+                                    ->label(__(ucfirst($day)))
+                                    ->inline(false)
+                                    ->live(),
+                                TimePicker::make("business_hours.{$day}.start")
+                                    ->label(__('Start'))
+                                    ->seconds(false)
+                                    ->required(fn (Get $get) => $get("business_hours.{$day}.enabled"))
+                                    ->disabled(fn (Get $get) => ! $get("business_hours.{$day}.enabled")),
+                                TimePicker::make("business_hours.{$day}.end")
+                                    ->label(__('End'))
+                                    ->seconds(false)
+                                    ->required(fn (Get $get) => $get("business_hours.{$day}.enabled"))
+                                    ->disabled(fn (Get $get) => ! $get("business_hours.{$day}.enabled"))
+                                    ->after("business_hours.{$day}.start"),
+                            ]),
+                    ])->flatten(1)->toArray()),
                 Section::make(__('Support addresses'))
                     ->description(__('Emails to these addresses will create tickets.'))
                     ->schema([
