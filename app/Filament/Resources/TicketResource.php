@@ -72,7 +72,7 @@ class TicketResource extends Resource
                                             ->preload()
                                             ->required()
                                             ->hiddenOn(['create'])
-                                            ->disabled(fn ($record) => $record->status === TicketStatus::CLOSED),
+                                            ->disabled(fn ($record) => $record?->status === TicketStatus::CLOSED),
                                     ])->columns(3),
                                 TextInput::make('subject')
                                     ->label(__('Subject'))
