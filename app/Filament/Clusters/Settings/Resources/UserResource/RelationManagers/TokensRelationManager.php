@@ -65,7 +65,7 @@ class TokensRelationManager extends RelationManager
                 CreateAction::make()
                     ->createAnother(false)
                     ->using(function (Request $request, array $data, string $model) {
-                        $user = $request->user();
+                        $user = $this->getOwnerRecord();
 
                         $expiresAt = $data['expiration'] === 'no_expiration'
                             ? null
