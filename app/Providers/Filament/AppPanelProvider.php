@@ -7,6 +7,7 @@ use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Widgets\StatsOverview;
 use App\Filament\Widgets\TicketPriorityChart;
 use App\Filament\Widgets\TicketTypeChart;
+use App\Http\Middleware\EnsureDomainIsAllowlisted;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Settings\GeneralSettings;
 use Filament\FontProviders\GoogleFontProvider;
@@ -97,6 +98,7 @@ class AppPanelProvider extends PanelProvider
             ->authMiddleware([
                 Authenticate::class,
                 EnsureUserIsActive::class,
+                EnsureDomainIsAllowlisted::class,
             ])
             ->databaseNotifications()
             ->renderHook(
