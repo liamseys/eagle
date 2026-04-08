@@ -2,7 +2,7 @@
 
 namespace App\Filament\Forms\Components;
 
-use Filament\Forms\Components\Component;
+use Filament\Schemas\Components\Component;
 
 class Notes extends Component
 {

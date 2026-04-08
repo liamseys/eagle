@@ -3,14 +3,20 @@
 namespace App\Filament\Clusters\HelpCenter\Resources;
 
 use App\Filament\Clusters\HelpCenter;
-use App\Filament\Clusters\HelpCenter\Resources\CategoryResource\Pages;
+use App\Filament\Clusters\HelpCenter\Resources\CategoryResource\Pages\ManageCategories;
 use App\Models\HelpCenter\Category;
 use App\Services\Icons;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Support\Enums\MaxWidth;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -19,25 +25,25 @@ class CategoryResource extends Resource
 {
     protected static ?string $model = Category::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $cluster = HelpCenter::class;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Select::make('icon')
+        return $schema
+            ->components([
+                Select::make('icon')
                     ->label(__('Icon'))
                     ->options(Icons::all())
                     ->searchable()
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('name')
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull(),
-                Forms\Components\Textarea::make('description')
+                Textarea::make('description')
                     ->maxLength(255)
                     ->placeholder(__('(Optional) A brief description of the category'))
                     ->columnSpanFull(),
@@ -48,21 +54,21 @@ class CategoryResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->formatStateUsing(fn ($record) => new HtmlString(sprintf(
                         '%s<br><span class="text-xs text-gray-500">%s</span>',
                         $record->name,
                         Str::limit($record->description, 75),
                     )))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('articles_count')
+                TextColumn::make('articles_count')
                     ->counts('articles')
                     ->label(__('Articles')),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -70,14 +76,14 @@ class CategoryResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
-                    ->modalWidth(MaxWidth::Medium),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make()
+                    ->modalWidth(Width::Medium),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('sort', 'ASC')
@@ -87,7 +93,7 @@ class CategoryResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageCategories::route('/'),
+            'index' => ManageCategories::route('/'),
         ];
     }
 }

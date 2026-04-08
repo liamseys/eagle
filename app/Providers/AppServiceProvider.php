@@ -12,6 +12,9 @@ use App\Policies\CategoryPolicy;
 use App\Policies\FormPolicy;
 use App\Settings\GeneralSettings;
 use BeyondCode\Mailbox\Facades\Mailbox;
+use Filament\Schemas\Components\Fieldset;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
 use Filament\Support\Colors\Color;
 use Filament\Support\Facades\FilamentColor;
 use Illuminate\Database\Eloquent\Model;
@@ -44,6 +47,7 @@ class AppServiceProvider extends ServiceProvider
         $this->configureModels();
         $this->configureMacros();
         $this->configureFilamentColor($generalSettings);
+        $this->configureFilamentDefaults();
         $this->configureGatePolicies();
         $this->configureUrl();
         $this->configureMailbox();
@@ -95,12 +99,27 @@ class AppServiceProvider extends ServiceProvider
     private function configureFilamentColor(GeneralSettings $generalSettings): void
     {
         try {
-            $color = Color::hex($generalSettings->branding_primary_color);
+            $color = Color::generateV3Palette($generalSettings->branding_primary_color);
         } catch (QueryException $e) {
-            $color = Color::hex('#000000');
+            $color = Color::generateV3Palette('#000000');
         }
 
         FilamentColor::register(['primary' => $color]);
+    }
+
+    /**
+     * Configure Filament component defaults for V4 compatibility.
+     */
+    private function configureFilamentDefaults(): void
+    {
+        Fieldset::configureUsing(fn (Fieldset $fieldset) => $fieldset
+            ->columnSpanFull());
+
+        Grid::configureUsing(fn (Grid $grid) => $grid
+            ->columnSpanFull());
+
+        Section::configureUsing(fn (Section $section) => $section
+            ->columnSpanFull());
     }
 
     /**

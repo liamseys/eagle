@@ -11,11 +11,13 @@ use App\Enums\Tickets\TicketType;
 use App\Filament\Infolists\Components\TicketActivity;
 use App\Filament\Resources\TicketResource;
 use App\Models\Ticket;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
-use Filament\Support\Enums\MaxWidth;
+use Filament\Support\Enums\Width;
 use Illuminate\Database\Eloquent\Model;
 use Livewire\Attributes\On;
 
@@ -26,25 +28,25 @@ class EditTicket extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make('viewActivity')
+            ViewAction::make('viewActivity')
                 ->label('View activity')
                 ->icon('heroicon-o-eye')
                 ->color('gray')
                 ->modalHeading(__('View activity'))
                 ->modalDescription(__('Track all updates related to the ticket, including changes in priority, type, or status, and see who made them.'))
-                ->modalWidth(MaxWidth::Large)
+                ->modalWidth(Width::Large)
                 ->slideOver()
-                ->infolist([
+                ->schema([
                     TicketActivity::make('ticketActivity')->label(''),
                 ]),
-            Actions\Action::make('mergeTicket')
+            Action::make('mergeTicket')
                 ->label(__('Merge ticket'))
                 ->icon('heroicon-o-document-duplicate')
                 ->requiresConfirmation()
                 ->modalSubmitActionLabel(__('Merge'))
-                ->modalWidth(MaxWidth::Large)
+                ->modalWidth(Width::Large)
                 ->modalDescription(__('Warning: This action cannot be undone. This ticket will be merged into the original and marked as a duplicate.'))
-                ->form([
+                ->schema([
                     Select::make('mainTicket')
                         ->label(__('Main ticket'))
                         ->searchable()
@@ -77,12 +79,12 @@ class EditTicket extends EditRecord
                         ->success()
                         ->send();
                 })->hidden(fn ($livewire) => $livewire->record->duplicate_of_ticket_id),
-            Actions\DeleteAction::make()
+            DeleteAction::make()
                 ->icon('heroicon-o-trash'),
         ];
     }
 
-    protected function getSaveFormAction(): Actions\Action
+    protected function getSaveFormAction(): Action
     {
         return parent::getSaveFormAction()
             ->submit(null)

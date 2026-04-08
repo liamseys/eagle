@@ -7,7 +7,7 @@ use Filament\Widgets\Widget;
 
 class CommonIssues extends Widget
 {
-    protected static string $view = 'filament.client.widgets.common-issues';
+    protected string $view = 'filament.client.widgets.common-issues';
 
     protected int|string|array $columnSpan = 'full';
 

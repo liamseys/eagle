@@ -1,17 +1,18 @@
-@import '/vendor/filament/filament/resources/css/theme.css';
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
 
-@config 'tailwind.config.js';
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+@source '../../../../resources/views/components/**/*';
+@source '../../../../resources/views/livewire/**/*';
 
 .fi-topbar {
-    nav {
-        @apply bg-[#000000];
+    @apply bg-[#000000];
 
-        .fi-input-wrp {
-            @apply bg-white/10;
+    .fi-input-wrp {
+        @apply bg-white/10;
 
-            .fi-input {
-                @apply text-white;
-            }
+        .fi-input {
+            @apply text-white;
         }
     }
 }
@@ -20,7 +21,7 @@
     @apply bg-[#000000];
 }
 
-.fi-topbar-item-button {
+.fi-topbar-item-btn {
     @apply bg-transparent;
 
     .fi-topbar-item-label,
@@ -29,7 +30,7 @@
     }
 }
 
-.fi-topbar-item-button:hover:not(.fi-topbar-item-active) {
+.fi-topbar-item-btn:hover {
     @apply bg-neutral-700;
 
     .fi-topbar-item-label,
@@ -38,8 +39,8 @@
     }
 }
 
-.fi-topbar-item-active .fi-topbar-item-button,
-.fi-topbar-item-active .fi-topbar-item-button:hover {
+.fi-topbar-item.fi-active .fi-topbar-item-btn,
+.fi-topbar-item.fi-active .fi-topbar-item-btn:hover {
     @apply bg-neutral-800;
 
     .fi-topbar-item-label,

@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Observers\FormObserver;
 use App\Traits\HasActiveScope;
 use App\Traits\HasPublicScope;
+use Database\Factories\HelpCenter\FormFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,7 +21,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[ObservedBy([FormObserver::class])]
 class Form extends Model
 {
-    /** @use HasFactory<\Database\Factories\HelpCenter\FormFactory> */
+    /** @use HasFactory<FormFactory> */
     use HasActiveScope, HasFactory, HasPublicScope, HasUlids;
 
     /**

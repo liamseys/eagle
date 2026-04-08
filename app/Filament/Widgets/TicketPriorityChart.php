@@ -8,9 +8,9 @@ use Filament\Widgets\ChartWidget;
 
 class TicketPriorityChart extends ChartWidget
 {
-    protected static ?string $heading = 'Tickets by priority';
+    protected ?string $heading = 'Tickets by priority';
 
-    protected static ?string $maxHeight = '300px';
+    protected ?string $maxHeight = '300px';
 
     protected function getData(): array
     {

@@ -8,5 +8,5 @@ class HelpCenter extends Cluster
 {
     protected static ?int $navigationSort = 4;
 
-    protected static ?string $navigationIcon = 'heroicon-o-lifebuoy';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-lifebuoy';
 }

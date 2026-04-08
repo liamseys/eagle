@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Casts\StringOrArray;
 use App\Models\HelpCenter\FormField;
+use Database\Factories\TicketFieldFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,7 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class TicketField extends Model
 {
-    /** @use HasFactory<\Database\Factories\TicketFieldFactory> */
+    /** @use HasFactory<TicketFieldFactory> */
     use HasFactory, HasUlids;
 
     /**

@@ -3,13 +3,17 @@
 namespace App\Filament\Clusters\Settings\Resources;
 
 use App\Filament\Clusters\Settings;
-use App\Filament\Clusters\Settings\Resources\GroupResource\Pages;
+use App\Filament\Clusters\Settings\Resources\GroupResource\Pages\ManageGroups;
 use App\Models\Group;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Support\Enums\MaxWidth;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
 
@@ -19,19 +23,19 @@ class GroupResource extends Resource
 
     protected static ?string $model = Group::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static ?string $cluster = Settings::class;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
+        return $schema
+            ->components([
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('description')
+                TextInput::make('description')
                     ->maxLength(255)
                     ->placeholder(__('(Optional) A brief description of the group'))
                     ->columnSpanFull(),
@@ -42,21 +46,21 @@ class GroupResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->formatStateUsing(fn ($record) => new HtmlString(sprintf(
                         '%s<br><span class="text-xs text-gray-500">%s</span>',
                         $record->name,
                         $record->description
                     )))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('users_count')
+                TextColumn::make('users_count')
                     ->counts('users')
                     ->label(__('Users')),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -64,14 +68,14 @@ class GroupResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
-                    ->modalWidth(MaxWidth::Large),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make()
+                    ->modalWidth(Width::Large),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -79,7 +83,7 @@ class GroupResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ManageGroups::route('/'),
+            'index' => ManageGroups::route('/'),
         ];
     }
 }

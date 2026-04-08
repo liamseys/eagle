@@ -6,19 +6,19 @@ use App\Filament\Clusters\Settings;
 use App\Settings\GeneralSettings;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Support\HtmlString;
 
 class ManageGeneral extends SettingsPage
 {
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationIcon = 'heroicon-o-adjustments-horizontal';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-adjustments-horizontal';
 
     protected static ?string $navigationLabel = 'General';
 
@@ -37,10 +37,10 @@ class ManageGeneral extends SettingsPage
         return auth()->user()->hasPermissionTo('settings');
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make(__('Basics'))
                     ->description(__('Manage your basic settings.'))
                     ->schema([

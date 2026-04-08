@@ -7,9 +7,9 @@ use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\SimplePage;
+use Filament\Schemas\Schema;
 
 class Welcome extends SimplePage implements HasForms
 {
@@ -25,7 +25,7 @@ class Welcome extends SimplePage implements HasForms
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string $view = 'filament.pages.auth.welcome';
+    protected string $view = 'filament.pages.auth.welcome';
 
     public function mount(User $user): void
     {
@@ -34,10 +34,10 @@ class Welcome extends SimplePage implements HasForms
         $this->form->fill();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Hidden::make('email')
                     ->default($this->user->email)
                     ->required(),

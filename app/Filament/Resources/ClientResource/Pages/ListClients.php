@@ -4,7 +4,8 @@ namespace App\Filament\Resources\ClientResource\Pages;
 
 use App\Filament\Imports\ClientImporter;
 use App\Filament\Resources\ClientResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
+use Filament\Actions\ImportAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListClients extends ListRecords
@@ -14,10 +15,10 @@ class ListClients extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ImportAction::make()
+            ImportAction::make()
                 ->icon('heroicon-o-cloud-arrow-up')
                 ->importer(ClientImporter::class),
-            Actions\CreateAction::make()
+            CreateAction::make()
                 ->icon('heroicon-o-plus'),
         ];
     }

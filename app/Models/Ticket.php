@@ -9,6 +9,7 @@ use App\Models\Scopes\ClientScope;
 use App\Models\Scopes\GroupScope;
 use App\Observers\TicketObserver;
 use App\Traits\HasNotes;
+use Database\Factories\TicketFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -22,7 +23,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[ScopedBy([GroupScope::class, ClientScope::class])]
 class Ticket extends Model
 {
-    /** @use HasFactory<\Database\Factories\TicketFactory> */
+    /** @use HasFactory<TicketFactory> */
     use HasFactory, HasNotes, HasUlids;
 
     /**

@@ -8,9 +8,9 @@ use Filament\Widgets\ChartWidget;
 
 class TicketTypeChart extends ChartWidget
 {
-    protected static ?string $heading = 'Tickets by type';
+    protected ?string $heading = 'Tickets by type';
 
-    protected static ?string $maxHeight = '300px';
+    protected ?string $maxHeight = '300px';
 
     protected function getData(): array
     {

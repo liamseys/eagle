@@ -3,11 +3,18 @@
 namespace App\Filament\Resources\TicketResource\RelationManagers;
 
 use App\Enums\HelpCenter\Forms\FormFieldType;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Support\Enums\MaxWidth;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -17,52 +24,52 @@ class FieldsRelationManager extends RelationManager
 {
     protected static string $relationship = 'fields';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form->schema(fn (?Model $record): array => match ($record->formField->type) {
+        return $schema->components(fn (?Model $record): array => match ($record->formField->type) {
             FormFieldType::TEXT => [
-                Forms\Components\TextInput::make('value')
+                TextInput::make('value')
                     ->required($record?->formField?->is_required)
                     ->maxLength(255)
                     ->columnSpanFull(),
             ],
             FormFieldType::TEXTAREA => [
-                Forms\Components\Textarea::make('value')
+                Textarea::make('value')
                     ->required($record?->formField?->is_required)
                     ->columnSpanFull(),
             ],
             FormFieldType::EMAIL => [
-                Forms\Components\TextInput::make('value')
+                TextInput::make('value')
                     ->email()
                     ->required($record?->formField?->is_required)
                     ->maxLength(255)
                     ->columnSpanFull(),
             ],
             FormFieldType::CHECKBOX => [
-                Forms\Components\CheckboxList::make('value')
+                CheckboxList::make('value')
                     ->options($record->formField->options)
                     ->required($record?->formField?->is_required)
                     ->columnSpanFull(),
             ],
             FormFieldType::RADIO => [
-                Forms\Components\Radio::make('value')
+                Radio::make('value')
                     ->options($record->formField->options)
                     ->required($record?->formField?->is_required)
                     ->columnSpanFull(),
             ],
             FormFieldType::SELECT => [
-                Forms\Components\Select::make('value')
+                Select::make('value')
                     ->options($record->formField->options)
                     ->required($record?->formField?->is_required)
                     ->columnSpanFull(),
             ],
             FormFieldType::DATE => [
-                Forms\Components\DatePicker::make('value')
+                DatePicker::make('value')
                     ->required($record?->formField?->is_required)
                     ->columnSpanFull(),
             ],
             FormFieldType::DATETIME_LOCAL => [
-                Forms\Components\DateTimePicker::make('value')
+                DateTimePicker::make('value')
                     ->required($record?->formField?->is_required)
                     ->columnSpanFull(),
             ],
@@ -75,10 +82,10 @@ class FieldsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('value')
             ->columns([
-                Tables\Columns\TextColumn::make('formField.type')
+                TextColumn::make('formField.type')
                     ->label(__('Type'))
                     ->badge(),
-                Tables\Columns\TextColumn::make('formField.label')
+                TextColumn::make('formField.label')
                     ->label(__('Label')),
                 TextColumn::make('value')
                     ->label(__('Value'))
@@ -98,14 +105,14 @@ class FieldsRelationManager extends RelationManager
             ->headerActions([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
+            ->recordActions([
+                EditAction::make()
                     ->modalHeading(__('Edit field'))
                     ->modalDescription(__('Update the value for this field. Once saved, the changes will take effect immediately.'))
-                    ->modalWidth(MaxWidth::Large),
+                    ->modalWidth(Width::Large),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
+            ->toolbarActions([
+                BulkActionGroup::make([
                     //
                 ]),
             ])

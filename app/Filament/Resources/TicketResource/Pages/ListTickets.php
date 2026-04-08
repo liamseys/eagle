@@ -9,12 +9,13 @@ use App\Enums\Tickets\TicketStatus;
 use App\Filament\Resources\TicketResource;
 use App\Models\Ticket;
 use Closure;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Notifications\Notification;
-use Filament\Resources\Components\Tab;
 use Filament\Resources\Pages\ListRecords;
+use Filament\Schemas\Components\Tabs\Tab;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListTickets extends ListRecords
@@ -24,7 +25,7 @@ class ListTickets extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('escalate')
+            Action::make('escalate')
                 ->label(__('Escalate ticket'))
                 ->icon('heroicon-o-bars-arrow-up')
                 ->color('gray')
@@ -32,7 +33,7 @@ class ListTickets extends ListRecords
                 ->modalHeading(__('Escalate ticket'))
                 ->modalDescription(__('By escalating a ticket, it’s marked as urgent and handled with top priority. This can only be done once and isn’t available for all tickets.'))
                 ->modalSubmitActionLabel(__('Escalate'))
-                ->form([
+                ->schema([
                     TextInput::make('ticket_id')
                         ->label(__('Ticket ID'))
                         ->rules([
@@ -80,7 +81,7 @@ class ListTickets extends ListRecords
                         ->success()
                         ->send();
                 }),
-            Actions\CreateAction::make()
+            CreateAction::make()
                 ->icon('heroicon-o-plus'),
         ];
     }

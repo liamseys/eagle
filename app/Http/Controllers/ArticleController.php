@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\HelpCenter\Articles\ArticleStatus;
 use App\Models\HelpCenter\Article;
+use Illuminate\Http\RedirectResponse;
 
 class ArticleController extends Controller
 {
@@ -25,7 +26,7 @@ class ArticleController extends Controller
     /**
      * Publish the specified resource.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function publish($locale, Article $article)
     {
@@ -41,7 +42,7 @@ class ArticleController extends Controller
     /**
      * Unpublish the specified resource.
      *
-     * @return \Illuminate\Http\RedirectResponse
+     * @return RedirectResponse
      */
     public function unpublish($locale, Article $article)
     {

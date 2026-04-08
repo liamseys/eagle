@@ -3,15 +3,19 @@
 namespace App\Filament\Client\Resources;
 
 use App\Enums\Tickets\TicketStatus;
-use App\Filament\Client\Resources\TicketResource\Pages;
+use App\Filament\Client\Resources\TicketResource\Pages\ListTickets;
+use App\Filament\Client\Resources\TicketResource\Pages\ViewTicket;
 use App\Filament\Forms\Components\TicketComments;
 use App\Filament\Resources\TicketResource\RelationManagers\FieldsRelationManager;
 use App\Models\Ticket;
-use Filament\Forms;
-use Filament\Forms\Components\Livewire;
-use Filament\Forms\Form;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Placeholder;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Livewire;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
@@ -23,17 +27,17 @@ class TicketResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationIcon = 'heroicon-o-ticket';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-ticket';
 
     protected static bool $isGloballySearchable = false;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Group::make()
+        return $schema
+            ->components([
+                Group::make()
                     ->schema([
-                        Livewire::make(FieldsRelationManager::class, fn (Ticket $record, Pages\ViewTicket $livewire): array => [
+                        Livewire::make(FieldsRelationManager::class, fn (Ticket $record, ViewTicket $livewire): array => [
                             'ownerRecord' => $record,
                             'pageClass' => $livewire::class,
                         ])->hidden(function (?Ticket $record) {
@@ -47,30 +51,30 @@ class TicketResource extends Resource
                         TicketComments::make()
                             ->hiddenOn(['create']),
                     ])->columnSpan(['lg' => 2]),
-                Forms\Components\Group::make()
+                Group::make()
                     ->schema([
-                        Forms\Components\Section::make(__('Details'))
+                        Section::make(__('Details'))
                             ->schema([
-                                Forms\Components\Placeholder::make('priority')
+                                Placeholder::make('priority')
                                     ->label(__('Priority'))
                                     ->content(fn (Ticket $record): ?string => $record->priority->getLabel()),
 
-                                Forms\Components\Placeholder::make('type')
+                                Placeholder::make('type')
                                     ->label(__('Type'))
                                     ->content(fn (Ticket $record): ?string => $record->type->getLabel()),
 
-                                Forms\Components\Placeholder::make('status')
+                                Placeholder::make('status')
                                     ->label(__('Status'))
                                     ->content(fn (Ticket $record): ?string => $record->status->getLabel()),
-                                Forms\Components\Placeholder::make('assignee')
+                                Placeholder::make('assignee')
                                     ->label(__('Assignee'))
                                     ->content(fn (Ticket $record): ?string => $record->assignee ? $record->assignee->name : '-'),
 
-                                Forms\Components\Placeholder::make('created_at')
+                                Placeholder::make('created_at')
                                     ->label(__('Created at'))
                                     ->content(fn (Ticket $record): ?string => $record->created_at?->diffForHumans()),
 
-                                Forms\Components\Placeholder::make('updated_at')
+                                Placeholder::make('updated_at')
                                     ->label(__('Updated at'))
                                     ->content(fn (Ticket $record): ?string => $record->updated_at?->diffForHumans()),
                             ])
@@ -84,34 +88,34 @@ class TicketResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('ticket_id')
+                TextColumn::make('ticket_id')
                     ->label(__('Ticket ID'))
                     ->prefix('#')
                     ->copyable()
                     ->copyMessage(__('Ticket ID copied to clipboard'))
                     ->copyMessageDuration(1500)
                     ->searchable(),
-                Tables\Columns\TextColumn::make('subject')
+                TextColumn::make('subject')
                     ->label(__('Subject'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('priority')
+                TextColumn::make('priority')
                     ->label(__('Priority'))
                     ->badge()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->label(__('Type'))
                     ->badge()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->label(__('Status'))
                     ->badge()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label(__('Created at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label(__('Updated at'))
                     ->dateTime()
                     ->sortable()
@@ -124,10 +128,10 @@ class TicketResource extends Resource
                     ->searchable()
                     ->preload(),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
+            ->recordActions([
+                ViewAction::make(),
             ])
-            ->bulkActions([])
+            ->toolbarActions([])
             ->defaultSort('ticket_id', 'DESC');
     }
 
@@ -141,8 +145,8 @@ class TicketResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTickets::route('/'),
-            'view' => Pages\ViewTicket::route('/{record}'),
+            'index' => ListTickets::route('/'),
+            'view' => ViewTicket::route('/{record}'),
         ];
     }
 }

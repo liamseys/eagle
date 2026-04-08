@@ -5,13 +5,13 @@ namespace App\Filament\Client\Pages;
 use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketStatus;
 use App\Enums\Tickets\TicketType;
-use Filament\Forms\Components\Group;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Concerns\InteractsWithForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 
 class ReportABug extends Page
@@ -25,23 +25,23 @@ class ReportABug extends Page
         $this->form->fill();
     }
 
-    protected static ?string $navigationIcon = 'heroicon-o-megaphone';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-megaphone';
 
     protected static ?string $navigationLabel = 'Report a bug';
 
     protected static ?int $navigationSort = 4;
 
-    protected static string $view = 'filament.client.pages.report-a-bug';
+    protected string $view = 'filament.client.pages.report-a-bug';
 
     public function getTitle(): string|Htmlable
     {
         return __('Report a bug');
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Group::make()
                     ->schema([
                         TextInput::make('title')

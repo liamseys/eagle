@@ -9,6 +9,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use RuntimeException;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Exceptions\ConnectionFailedException;
 
@@ -64,7 +65,7 @@ class ImportImapEmails implements ShouldQueue
             }
 
         } catch (ConnectionFailedException $e) {
-            throw new \RuntimeException('Could not connect to IMAP server: '.$e->getMessage());
+            throw new RuntimeException('Could not connect to IMAP server: '.$e->getMessage());
         } finally {
             if (isset($client)) {
                 $client->disconnect();

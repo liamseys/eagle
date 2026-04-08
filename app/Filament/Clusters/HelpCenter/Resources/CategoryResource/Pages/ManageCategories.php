@@ -3,9 +3,9 @@
 namespace App\Filament\Clusters\HelpCenter\Resources\CategoryResource\Pages;
 
 use App\Filament\Clusters\HelpCenter\Resources\CategoryResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ManageRecords;
-use Filament\Support\Enums\MaxWidth;
+use Filament\Support\Enums\Width;
 
 class ManageCategories extends ManageRecords
 {
@@ -14,9 +14,9 @@ class ManageCategories extends ManageRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make()
+            CreateAction::make()
                 ->icon('heroicon-o-plus')
-                ->modalWidth(MaxWidth::Medium),
+                ->modalWidth(Width::Medium),
         ];
     }
 }

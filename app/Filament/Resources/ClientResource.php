@@ -3,17 +3,28 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Forms\Components\Notes;
-use App\Filament\Resources\ClientResource\Pages;
+use App\Filament\Resources\ClientResource\Pages\CreateClient;
+use App\Filament\Resources\ClientResource\Pages\EditClient;
+use App\Filament\Resources\ClientResource\Pages\ListClients;
 use App\Filament\Resources\ClientResource\RelationManagers\TicketsRelationManager;
 use App\Models\Client;
-use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieTagsInput;
-use Filament\Forms\Form;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Support\Enums\MaxWidth;
-use Filament\Tables;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\SpatieTagsColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 use Symfony\Component\Intl\Locales;
 use Symfony\Component\Intl\Timezones;
@@ -24,65 +35,65 @@ class ClientResource extends Resource
 
     protected static ?int $navigationSort = 1;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-users';
 
     protected static ?string $recordTitleAttribute = 'name';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Group::make()
+        return $schema
+            ->components([
+                Group::make()
                     ->schema([
-                        Forms\Components\Section::make()
+                        Section::make()
                             ->schema([
-                                Forms\Components\Grid::make()
+                                Grid::make()
                                     ->schema([
-                                        Forms\Components\TextInput::make('name')
+                                        TextInput::make('name')
                                             ->label(__('Name'))
                                             ->required()
                                             ->maxLength(255),
-                                        Forms\Components\Select::make('groups')
+                                        Select::make('groups')
                                             ->relationship(name: 'groups', titleAttribute: 'name')
                                             ->multiple()
                                             ->preload()
                                             ->createOptionForm([
-                                                Forms\Components\TextInput::make('name')
+                                                TextInput::make('name')
                                                     ->required()
                                                     ->maxLength(255)
                                                     ->columnSpanFull(),
-                                                Forms\Components\TextInput::make('description')
+                                                TextInput::make('description')
                                                     ->maxLength(255)
                                                     ->placeholder(__('(Optional) A brief description of the group'))
                                                     ->columnSpanFull(),
                                             ])
                                             ->createOptionModalHeading(__('Create group'))
                                             ->createOptionAction(
-                                                fn (Action $action) => $action->modalWidth(MaxWidth::Large),
+                                                fn (Action $action) => $action->modalWidth(Width::Large),
                                             ),
                                     ]),
-                                Forms\Components\Grid::make()
+                                Grid::make()
                                     ->schema([
-                                        Forms\Components\TextInput::make('email')
+                                        TextInput::make('email')
                                             ->label(__('Email'))
                                             ->email()
                                             ->required()
                                             ->maxLength(255),
-                                        Forms\Components\TextInput::make('phone')
+                                        TextInput::make('phone')
                                             ->label(__('Phone'))
                                             ->tel()
                                             ->maxLength(255),
                                     ]),
-                                Forms\Components\Grid::make()
+                                Grid::make()
                                     ->schema([
-                                        Forms\Components\Select::make('locale')
+                                        Select::make('locale')
                                             ->label(__('Locale'))
                                             ->options(Locales::getNames())
                                             ->searchable()
                                             ->preload()
                                             ->required()
                                             ->default('en'),
-                                        Forms\Components\Select::make('timezone')
+                                        Select::make('timezone')
                                             ->label(__('Timezone'))
                                             ->options(Timezones::getNames())
                                             ->searchable()
@@ -93,15 +104,15 @@ class ClientResource extends Resource
                                 SpatieTagsInput::make('tags'),
                             ]),
                     ])->columnSpan(['lg' => 2]),
-                Forms\Components\Group::make()
+                Group::make()
                     ->schema([
-                        Forms\Components\Section::make(__('Metadata'))
+                        Section::make(__('Metadata'))
                             ->schema([
-                                Forms\Components\Placeholder::make('created_at')
+                                Placeholder::make('created_at')
                                     ->label(__('Created at'))
                                     ->content(fn (Client $record): ?string => $record->created_at?->diffForHumans()),
 
-                                Forms\Components\Placeholder::make('updated_at')
+                                Placeholder::make('updated_at')
                                     ->label(__('Updated at'))
                                     ->content(fn (Client $record): ?string => $record->updated_at?->diffForHumans()),
                             ])->hiddenOn(['create']),
@@ -115,23 +126,23 @@ class ClientResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\ViewColumn::make('name')
+                ViewColumn::make('name')
                     ->label(__('Name'))
                     ->view('filament.tables.columns.avatar-name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('email')
+                TextColumn::make('email')
                     ->label(__('Email'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('phone')
+                TextColumn::make('phone')
                     ->label(__('Phone'))
                     ->searchable(),
                 SpatieTagsColumn::make('tags'),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label(__('Created at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label(__('Updated at'))
                     ->dateTime()
                     ->sortable()
@@ -140,12 +151,12 @@ class ClientResource extends Resource
             ->filters([
                 //
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -160,9 +171,9 @@ class ClientResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListClients::route('/'),
-            'create' => Pages\CreateClient::route('/create'),
-            'edit' => Pages\EditClient::route('/{record}/edit'),
+            'index' => ListClients::route('/'),
+            'create' => CreateClient::route('/create'),
+            'edit' => EditClient::route('/{record}/edit'),
         ];
     }
 }

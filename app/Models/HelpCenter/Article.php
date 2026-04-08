@@ -6,6 +6,7 @@ use App\Enums\HelpCenter\Articles\ArticleStatus;
 use App\Models\User;
 use App\Observers\HelpCenter\ArticleObserver;
 use App\Traits\HasPublicScope;
+use Database\Factories\HelpCenter\ArticleFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -18,7 +19,7 @@ use Spatie\Tags\HasTags;
 #[ObservedBy([ArticleObserver::class])]
 class Article extends Model
 {
-    /** @use HasFactory<\Database\Factories\HelpCenter\ArticleFactory> */
+    /** @use HasFactory<ArticleFactory> */
     use HasFactory, HasPublicScope, HasTags, HasUlids;
 
     /**

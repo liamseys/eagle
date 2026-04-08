@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Filament\AvatarProviders\GravatarProvider;
 use App\Traits\HasNotes;
+use Database\Factories\ClientFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -14,7 +15,7 @@ use Spatie\Tags\HasTags;
 
 class Client extends Authenticatable
 {
-    /** @use HasFactory<\Database\Factories\ClientFactory> */
+    /** @use HasFactory<ClientFactory> */
     use HasFactory, HasNotes, HasTags, HasUlids, Notifiable;
 
     /**

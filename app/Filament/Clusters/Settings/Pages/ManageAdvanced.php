@@ -5,18 +5,18 @@ namespace App\Filament\Clusters\Settings\Pages;
 use App\Filament\Clusters\Settings;
 use App\Settings\AdvancedSettings;
 use Closure;
-use Filament\Forms\Components\Grid;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Pages\SettingsPage;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
 
 class ManageAdvanced extends SettingsPage
 {
     protected static ?int $navigationSort = 3;
 
-    protected static ?string $navigationIcon = 'heroicon-o-command-line';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-command-line';
 
     protected static ?string $navigationLabel = 'Advanced';
 
@@ -35,10 +35,10 @@ class ManageAdvanced extends SettingsPage
         return auth()->user()->hasPermissionTo('settings');
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make(__('Advanced'))
                     ->description(__('Manage your advanced settings.'))
                     ->schema([

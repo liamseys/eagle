@@ -3,54 +3,65 @@
 namespace App\Filament\Clusters\HelpCenter\Resources\FormResource\RelationManagers;
 
 use App\Enums\HelpCenter\Forms\FormFieldType;
-use Filament\Forms;
-use Filament\Forms\Components\Tabs;
-use Filament\Forms\Form;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\KeyValue;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class FieldsRelationManager extends RelationManager
 {
     protected static string $relationship = 'fields';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make('Tabs')
                     ->tabs([
-                        Tabs\Tab::make(__('General'))
+                        Tab::make(__('General'))
                             ->icon('heroicon-o-information-circle')
                             ->schema([
-                                Forms\Components\Grid::make()
+                                Grid::make()
                                     ->schema([
-                                        Forms\Components\Select::make('type')
+                                        Select::make('type')
                                             ->label(__('Type'))
                                             ->options(FormFieldType::class)
                                             ->searchable()
                                             ->preload()
                                             ->required()
                                             ->live(),
-                                        Forms\Components\TextInput::make('label')
+                                        TextInput::make('label')
                                             ->label(__('Label'))
                                             ->required()
                                             ->maxLength(255),
-                                        Forms\Components\TextInput::make('description')
+                                        TextInput::make('description')
                                             ->label(__('Description'))
                                             ->maxLength(255)
                                             ->columnSpanFull(),
-                                        Forms\Components\Toggle::make('is_visible')
+                                        Toggle::make('is_visible')
                                             ->label(__('Visible'))
                                             ->default(true)
                                             ->required()
                                             ->helperText(__('Visible fields appear on the form, while hidden fields are only accessible to agents.')),
                                     ]),
                             ]),
-                        Tabs\Tab::make(__('Options'))
+                        Tab::make(__('Options'))
                             ->icon('heroicon-o-list-bullet')
                             ->schema([
-                                Forms\Components\KeyValue::make('options')
+                                KeyValue::make('options')
                                     ->addActionLabel(__('Add option'))
                                     ->requiredIf('type', [
                                         FormFieldType::CHECKBOX->value,
@@ -64,23 +75,23 @@ class FieldsRelationManager extends RelationManager
                                 FormFieldType::RADIO->value,
                                 FormFieldType::SELECT->value,
                             ])),
-                        Tabs\Tab::make(__('Extra validation'))
+                        Tab::make(__('Extra validation'))
                             ->icon('heroicon-o-variable')
                             ->schema([
-                                Forms\Components\Grid::make()
+                                Grid::make()
                                     ->schema([
-                                        Forms\Components\Toggle::make('is_required')
+                                        Toggle::make('is_required')
                                             ->label(__('Required'))
                                             ->default(true)
                                             ->required()
                                             ->helperText(__('Indicates if this field is required and must be filled out before the form can be submitted.')),
                                     ]),
-                                Forms\Components\Repeater::make('validation_rules')
+                                Repeater::make('validation_rules')
                                     ->addActionLabel(__('Add rule'))
                                     ->schema([
-                                        Forms\Components\Grid::make()
+                                        Grid::make()
                                             ->schema([
-                                                Forms\Components\Select::make('rule')
+                                                Select::make('rule')
                                                     ->label(__('Rule'))
                                                     ->options([
                                                         'string' => 'String',
@@ -96,7 +107,7 @@ class FieldsRelationManager extends RelationManager
                                                     ->live()
                                                     ->required(),
 
-                                                Forms\Components\TextInput::make('value')
+                                                TextInput::make('value')
                                                     ->label(__('Value'))
                                                     ->maxLength(255)
                                                     ->disabled(fn ($get) => ! in_array($get('rule'), ['max', 'min', 'in', 'regex']))
@@ -114,27 +125,27 @@ class FieldsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('label')
             ->columns([
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->badge(),
-                Tables\Columns\TextColumn::make('label'),
+                TextColumn::make('label'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                CreateAction::make()
                     ->label(__('New field'))
                     ->modalHeading(__('Create field')),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make()
+            ->recordActions([
+                EditAction::make()
                     ->recordTitle('field'),
-                Tables\Actions\DeleteAction::make()
+                DeleteAction::make()
                     ->recordTitle('field'),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('sort', 'ASC')

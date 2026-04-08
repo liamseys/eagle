@@ -4,6 +4,7 @@ namespace App\Models\HelpCenter;
 
 use App\Enums\HelpCenter\Forms\FormFieldType;
 use App\Observers\FormFieldObserver;
+use Database\Factories\HelpCenter\FormFieldFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
@@ -14,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 #[ObservedBy([FormFieldObserver::class])]
 class FormField extends Model
 {
-    /** @use HasFactory<\Database\Factories\HelpCenter\FormFieldFactory> */
+    /** @use HasFactory<FormFieldFactory> */
     use HasFactory, HasUlids;
 
     /**

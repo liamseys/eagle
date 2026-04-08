@@ -5,20 +5,20 @@ namespace App\Filament\Clusters\Settings\Pages;
 use App\Enums\Tickets\TicketPriority;
 use App\Filament\Clusters\Settings;
 use App\Settings\WorkflowSettings;
-use Filament\Forms\Components\Grid;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Filament\Schemas\Components\Grid;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 
 class ManageWorkflow extends SettingsPage
 {
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $navigationIcon = 'heroicon-o-arrows-right-left';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-arrows-right-left';
 
     protected static ?string $navigationLabel = 'Workflows';
 
@@ -37,10 +37,10 @@ class ManageWorkflow extends SettingsPage
         return auth()->user()->hasPermissionTo('settings');
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Section::make(__('SLA Policy'))
                     ->description(__('Define and manage Service Level Agreement (SLA) policies for each ticket priority. Specify the time limits for first response, subsequent responses, and resolution to ensure consistent and efficient client support.'))
                     ->schema([

@@ -4,12 +4,16 @@ namespace App\Filament\Clusters\Settings\Resources\UserResource\RelationManagers
 
 use App\Models\PersonalAccessToken;
 use Filament\Actions\Action;
-use Filament\Actions\StaticAction;
-use Filament\Forms;
-use Filament\Forms\Form;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Support\Enums\MaxWidth;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -22,15 +26,15 @@ class TokensRelationManager extends RelationManager
 
     protected ?string $plainTextToken = null;
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
+        return $schema
+            ->components([
+                TextInput::make('name')
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull(),
-                Forms\Components\Select::make('expiration')
+                Select::make('expiration')
                     ->options([
                         7 => '7 days ('.Carbon::now()->addDays(7)->format('M d, Y').')',
                         30 => '30 days ('.Carbon::now()->addDays(30)->format('M d, Y').')',
@@ -48,17 +52,17 @@ class TokensRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('name')
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->description(fn (PersonalAccessToken $record): string => $record->expires_at
                         ? 'Expires on '.\Carbon\Carbon::parse($record->expires_at)->format('D, M d Y')
                         : '-'),
-                Tables\Columns\TextColumn::make('last_used_at'),
+                TextColumn::make('last_used_at'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make()
+                CreateAction::make()
                     ->createAnother(false)
                     ->using(function (Request $request, array $data, string $model) {
                         $user = $request->user();
@@ -76,15 +80,15 @@ class TokensRelationManager extends RelationManager
                             'plainTextToken' => $this->plainTextToken,
                         ]);
                     })
-                    ->modalWidth(MaxWidth::Large),
+                    ->modalWidth(Width::Large),
             ])
-            ->actions([
-                Tables\Actions\DeleteAction::make()
+            ->recordActions([
+                DeleteAction::make()
                     ->recordTitle('personal access token'),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -99,7 +103,7 @@ class TokensRelationManager extends RelationManager
                 ]);
             })
             ->modalSubmitAction(false)
-            ->modalCancelAction(fn (StaticAction $action) => $action->label('Close'))
-            ->modalWidth(MaxWidth::Large);
+            ->modalCancelAction(fn (Action $action) => $action->label('Close'))
+            ->modalWidth(Width::Large);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models\HelpCenter;
 
+use Database\Factories\HelpCenter\SectionFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -10,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Section extends Model
 {
-    /** @use HasFactory<\Database\Factories\HelpCenter\SectionFactory> */
+    /** @use HasFactory<SectionFactory> */
     use HasFactory, HasUlids;
 
     /**

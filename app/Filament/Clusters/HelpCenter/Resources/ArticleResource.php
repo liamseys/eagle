@@ -4,14 +4,27 @@ namespace App\Filament\Clusters\HelpCenter\Resources;
 
 use App\Enums\HelpCenter\Articles\ArticleStatus;
 use App\Filament\Clusters\HelpCenter;
-use App\Filament\Clusters\HelpCenter\Resources\ArticleResource\Pages;
+use App\Filament\Clusters\HelpCenter\Resources\ArticleResource\Pages\CreateArticle;
+use App\Filament\Clusters\HelpCenter\Resources\ArticleResource\Pages\EditArticle;
+use App\Filament\Clusters\HelpCenter\Resources\ArticleResource\Pages\ListArticles;
 use App\Models\HelpCenter\Article;
-use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Form;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Support\Enums\MaxWidth;
-use Filament\Tables;
+use Filament\Schemas\Components\Group;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\Width;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Support\HtmlString;
@@ -20,29 +33,29 @@ class ArticleResource extends Resource
 {
     protected static ?string $model = Article::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string|\BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?string $cluster = HelpCenter::class;
 
     protected static ?string $recordTitleAttribute = 'title';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Group::make()
+        return $schema
+            ->components([
+                Group::make()
                     ->schema([
-                        Forms\Components\Section::make()
+                        Section::make()
                             ->schema([
-                                Forms\Components\TextInput::make('title')
+                                TextInput::make('title')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\Textarea::make('description')
+                                Textarea::make('description')
                                     ->label(__('Description'))
                                     ->autosize()
                                     ->helperText(__('(Optional) A brief description of the article. This will be displayed on the article\'s page. '))
                                     ->columnSpanFull(),
-                                Forms\Components\RichEditor::make('body')
+                                RichEditor::make('body')
                                     ->label(__('Content'))
                                     ->toolbarButtons([
                                         'blockquote',
@@ -62,60 +75,60 @@ class ArticleResource extends Resource
                                     ->columnSpanFull(),
                             ]),
                     ])->columnSpan(['lg' => 2]),
-                Forms\Components\Group::make()
+                Group::make()
                     ->schema([
-                        Forms\Components\Section::make(__('Associations'))
+                        Section::make(__('Associations'))
                             ->schema([
-                                Forms\Components\Select::make('section_id')
+                                Select::make('section_id')
                                     ->label(__('Section'))
                                     ->relationship('section', 'name')
                                     ->searchable()
                                     ->preload()
                                     ->createOptionForm([
-                                        Forms\Components\Select::make('category_id')
+                                        Select::make('category_id')
                                             ->label(__('Category'))
                                             ->relationship('category', 'name')
                                             ->searchable()
                                             ->preload()
                                             ->required(),
-                                        Forms\Components\TextInput::make('name')
+                                        TextInput::make('name')
                                             ->required()
                                             ->maxLength(255)
                                             ->columnSpanFull(),
-                                        Forms\Components\Textarea::make('description')
+                                        Textarea::make('description')
                                             ->maxLength(255)
                                             ->placeholder(__('(Optional) A brief description of the section.'))
                                             ->columnSpanFull(),
                                     ])
                                     ->createOptionModalHeading(__('Create section'))
                                     ->createOptionAction(
-                                        fn (Action $action) => $action->modalWidth(MaxWidth::Medium),
+                                        fn (Action $action) => $action->modalWidth(Width::Medium),
                                     )
                                     ->required(),
                             ]),
-                        Forms\Components\Section::make(__('Status'))
+                        Section::make(__('Status'))
                             ->schema([
-                                Forms\Components\Select::make('status')
+                                Select::make('status')
                                     ->label(__('Status'))
                                     ->options(ArticleStatus::class)
                                     ->default(ArticleStatus::DRAFT)
                                     ->required(),
-                                Forms\Components\Toggle::make('is_public')
+                                Toggle::make('is_public')
                                     ->label(__('Public'))
                                     ->required()
                                     ->helperText(__('Public articles are visible to everyone.')),
                             ]),
-                        Forms\Components\Section::make(__('Metadata'))
+                        Section::make(__('Metadata'))
                             ->schema([
-                                Forms\Components\Placeholder::make('created_by')
+                                Placeholder::make('created_by')
                                     ->label(__('Created by'))
                                     ->content(fn (Article $record): ?string => $record->author?->name),
 
-                                Forms\Components\Placeholder::make('created_at')
+                                Placeholder::make('created_at')
                                     ->label(__('Created at'))
                                     ->content(fn (Article $record): ?string => $record->created_at?->diffForHumans()),
 
-                                Forms\Components\Placeholder::make('updated_at')
+                                Placeholder::make('updated_at')
                                     ->label(__('Updated at'))
                                     ->content(fn (Article $record): ?string => $record->updated_at?->diffForHumans()),
                             ])->hiddenOn(['create']),
@@ -131,7 +144,7 @@ class ArticleResource extends Resource
                     ->with('category')
             )
             ->columns([
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->label(__('Title'))
                     ->formatStateUsing(fn ($record) => new HtmlString(sprintf(
                         '%s<br><span class="text-xs text-gray-500">%s</span>',
@@ -139,22 +152,22 @@ class ArticleResource extends Resource
                         $record->category?->name,
                     )))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->label(__('Status'))
                     ->badge()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_public')
+                IconColumn::make('is_public')
                     ->label(__('Public'))
                     ->boolean(),
-                Tables\Columns\TextColumn::make('author.name')
+                TextColumn::make('author.name')
                     ->label(__('Author'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->label(__('Created at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->label(__('Updated at'))
                     ->dateTime()
                     ->sortable()
@@ -166,12 +179,12 @@ class ArticleResource extends Resource
                     ->searchable()
                     ->preload(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('sort', 'ASC');
@@ -187,9 +200,9 @@ class ArticleResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListArticles::route('/'),
-            'create' => Pages\CreateArticle::route('/create'),
-            'edit' => Pages\EditArticle::route('/{record}/edit'),
+            'index' => ListArticles::route('/'),
+            'create' => CreateArticle::route('/create'),
+            'edit' => EditArticle::route('/{record}/edit'),
         ];
     }
 }

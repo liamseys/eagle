@@ -3,7 +3,7 @@
     'footer' => null,
 ])
 
-<div {{ $attributes->merge(['class' => 'divide-y divide-gray-200 overflow-hidden rounded-lg bg-white border']) }}>
+<div {{ $attributes->merge(['class' => 'divide-y divide-gray-200 overflow-hidden rounded-lg bg-white border border-gray-200']) }}>
     @if($header)
         <div class="px-4 py-5 sm:px-6">
             {{ $header }}

@@ -3,7 +3,8 @@
 namespace App\Filament\Clusters\HelpCenter\Resources\ArticleResource\Pages;
 
 use App\Filament\Clusters\HelpCenter\Resources\ArticleResource;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditArticle extends EditRecord
@@ -13,14 +14,14 @@ class EditArticle extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('viewArticle')
+            Action::make('viewArticle')
                 ->icon('heroicon-o-eye')
                 ->color('gray')
                 ->url(fn ($record) => route('articles.show', [
                     'locale' => config('app.locale'),
                     'article' => $record->slug,
                 ]), true),
-            Actions\DeleteAction::make()
+            DeleteAction::make()
                 ->icon('heroicon-o-trash'),
         ];
     }

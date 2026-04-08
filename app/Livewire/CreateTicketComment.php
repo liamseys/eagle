@@ -7,17 +7,20 @@ use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Notifications\TicketCommentByAgent;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
+use Filament\Schemas\Schema;
 use Livewire\Attributes\On;
 use Livewire\Component;
 
-class CreateTicketComment extends Component implements HasForms
+class CreateTicketComment extends Component implements HasActions, HasForms
 {
+    use InteractsWithActions;
     use InteractsWithForms;
 
     public Ticket $ticket;
@@ -31,10 +34,10 @@ class CreateTicketComment extends Component implements HasForms
         $this->form->fill();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 RichEditor::make('comment')
                     ->label(__('Comment'))
                     ->toolbarButtons([
