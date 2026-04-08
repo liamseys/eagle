@@ -9,7 +9,7 @@ return new class extends SettingsMigration
         $this->migrator->add('general.app_name', 'Eagle');
         $this->migrator->add('general.app_path', 'eagle');
 
-        $this->migrator->add('basics.business_hours', [
+        $this->migrator->add('general.business_hours', [
             'monday' => ['enabled' => true, 'start' => '09:00', 'end' => '17:00'],
             'tuesday' => ['enabled' => true, 'start' => '09:00', 'end' => '17:00'],
             'wednesday' => ['enabled' => true, 'start' => '09:00', 'end' => '17:00'],
