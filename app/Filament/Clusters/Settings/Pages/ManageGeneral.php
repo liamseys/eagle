@@ -64,6 +64,8 @@ class ManageGeneral extends SettingsPage
                     ]),
                 Section::make(__('Business Hours'))
                     ->description(__('Manage your business hours per day of the week.'))
+                    ->collapsible()
+                    ->collapsed()
                     ->schema(collect(['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'])->map(fn (string $day) => [
                         Grid::make(3)
                             ->schema([
@@ -86,6 +88,8 @@ class ManageGeneral extends SettingsPage
                     ])->flatten(1)->toArray()),
                 Section::make(__('Support addresses'))
                     ->description(__('Emails to these addresses will create tickets.'))
+                    ->collapsible()
+                    ->collapsed()
                     ->schema([
                         Repeater::make('support_email_addresses')
                             ->label('')
@@ -109,6 +113,8 @@ class ManageGeneral extends SettingsPage
                     ]),
                 Section::make(__('Allowlisted domains'))
                     ->description(__('These domains are allowed to access Eagle.'))
+                    ->collapsible()
+                    ->collapsed()
                     ->schema([
                         Repeater::make('allowlisted_domains')
                             ->label('')
@@ -131,6 +137,8 @@ class ManageGeneral extends SettingsPage
                     ]),
                 Section::make(__('Branding'))
                     ->description(__('Customize your branding settings.'))
+                    ->collapsible()
+                    ->collapsed()
                     ->schema([
                         Grid::make()
                             ->schema([
