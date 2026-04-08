@@ -2,12 +2,13 @@
 
 namespace Database\Factories\HelpCenter;
 
+use App\Models\HelpCenter\Article;
 use App\Models\HelpCenter\Section;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\HelpCenter\Article>
+ * @extends Factory<Article>
  */
 class ArticleFactory extends Factory
 {

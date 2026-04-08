@@ -7,11 +7,12 @@ use App\Enums\Tickets\TicketStatus;
 use App\Enums\Tickets\TicketType;
 use App\Models\Client;
 use App\Models\Group;
+use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Ticket>
+ * @extends Factory<Ticket>
  */
 class TicketFactory extends Factory
 {

@@ -9,6 +9,16 @@ return new class extends SettingsMigration
         $this->migrator->add('general.app_name', 'Eagle');
         $this->migrator->add('general.app_path', 'eagle');
 
+        $this->migrator->add('basics.business_hours', [
+            'monday' => ['enabled' => true, 'start' => '09:00', 'end' => '17:00'],
+            'tuesday' => ['enabled' => true, 'start' => '09:00', 'end' => '17:00'],
+            'wednesday' => ['enabled' => true, 'start' => '09:00', 'end' => '17:00'],
+            'thursday' => ['enabled' => true, 'start' => '09:00', 'end' => '17:00'],
+            'friday' => ['enabled' => true, 'start' => '09:00', 'end' => '17:00'],
+            'saturday' => ['enabled' => false, 'start' => '09:00', 'end' => '17:00'],
+            'sunday' => ['enabled' => false, 'start' => '09:00', 'end' => '17:00'],
+        ]);
+
         $this->migrator->add('general.support_email_addresses', []);
 
         $this->migrator->add('general.allowlisted_domains', []);

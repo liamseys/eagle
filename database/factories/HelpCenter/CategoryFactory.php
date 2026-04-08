@@ -2,11 +2,12 @@
 
 namespace Database\Factories\HelpCenter;
 
+use App\Models\HelpCenter\Category;
 use App\Services\Icons;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\HelpCenter\Category>
+ * @extends Factory<Category>
  */
 class CategoryFactory extends Factory
 {

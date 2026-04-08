@@ -4,10 +4,11 @@ namespace Database\Factories\HelpCenter;
 
 use App\Enums\HelpCenter\Forms\FormFieldType;
 use App\Models\HelpCenter\Form;
+use App\Models\HelpCenter\FormField;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\HelpCenter\FormField>
+ * @extends Factory<FormField>
  */
 class FormFieldFactory extends Factory
 {

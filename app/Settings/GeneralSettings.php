@@ -10,6 +10,8 @@ class GeneralSettings extends Settings
 
     public string $app_path;
 
+    public array $business_hours;
+
     public array $support_email_addresses;
 
     public array $allowlisted_domains;

@@ -4,10 +4,11 @@ namespace Database\Factories;
 
 use App\Models\HelpCenter\FormField;
 use App\Models\Ticket;
+use App\Models\TicketField;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TicketField>
+ * @extends Factory<TicketField>
  */
 class TicketFieldFactory extends Factory
 {

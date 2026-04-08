@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Middleware\SetDefaultLocaleForUrls;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Routing\Middleware\SubstituteBindings;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -13,8 +15,8 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->prependToPriorityList(
-            before: \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            prepend: \App\Http\Middleware\SetDefaultLocaleForUrls::class,
+            before: SubstituteBindings::class,
+            prepend: SetDefaultLocaleForUrls::class,
         );
     })
     ->withExceptions(function (Exceptions $exceptions) {

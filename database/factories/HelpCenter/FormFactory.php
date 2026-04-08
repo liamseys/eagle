@@ -2,11 +2,12 @@
 
 namespace Database\Factories\HelpCenter;
 
+use App\Models\HelpCenter\Form;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\HelpCenter\Form>
+ * @extends Factory<Form>
  */
 class FormFactory extends Factory
 {

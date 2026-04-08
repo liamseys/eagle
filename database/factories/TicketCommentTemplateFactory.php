@@ -2,11 +2,12 @@
 
 namespace Database\Factories;
 
+use App\Models\TicketCommentTemplate;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\TicketCommentTemplate>
+ * @extends Factory<TicketCommentTemplate>
  */
 class TicketCommentTemplateFactory extends Factory
 {

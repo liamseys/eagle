@@ -1,5 +1,7 @@
 <?php
 
+use BeyondCode\Mailbox\InboundEmail;
+
 return [
 
     /*
@@ -14,7 +16,7 @@ return [
      * The model class to use when converting an incoming email to a message.
      * It must extend the default model class
      */
-    'model' => \BeyondCode\Mailbox\InboundEmail::class,
+    'model' => InboundEmail::class,
 
     /*
      * The path for driver specific routes. This is where
