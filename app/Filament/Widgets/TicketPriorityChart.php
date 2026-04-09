@@ -5,16 +5,24 @@ namespace App\Filament\Widgets;
 use App\Enums\Tickets\TicketPriority;
 use App\Models\Ticket;
 use Filament\Widgets\ChartWidget;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 
 class TicketPriorityChart extends ChartWidget
 {
+    use InteractsWithPageFilters;
+
     protected ?string $heading = 'Tickets by priority';
 
     protected ?string $maxHeight = '300px';
 
     protected function getData(): array
     {
+        $startDate = $this->filters['startDate'] ?? null;
+        $endDate = $this->filters['endDate'] ?? null;
+
         $counts = Ticket::query()
+            ->when($startDate, fn ($query) => $query->where('created_at', '>=', $startDate))
+            ->when($endDate, fn ($query) => $query->where('created_at', '<=', $endDate))
             ->selectRaw('priority, COUNT(*) as total')
             ->groupBy('priority')
             ->pluck('total', 'priority');

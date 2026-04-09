@@ -4,15 +4,39 @@ namespace App\Filament\Widgets;
 
 use App\Models\Ticket;
 use Carbon\Carbon;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
 
 class StatsOverview extends BaseWidget
 {
+    use InteractsWithPageFilters;
+
     protected function getStats(): array
     {
-        $currentCounts = $this->getCounts();
-        $previousCounts = $this->getCounts(Carbon::now()->subDays(30));
+        $startDate = $this->filters['startDate'] ?? null;
+        $endDate = $this->filters['endDate'] ?? null;
+
+        $isFilterActive = $startDate || $endDate;
+
+        $currentCounts = $this->getCounts($startDate, $endDate);
+
+        if ($isFilterActive) {
+            return [
+                $this->makeStat(
+                    'Created tickets',
+                    $currentCounts['total'],
+                ),
+                $this->makeStat('Unsolved tickets',
+                    $currentCounts['unsolved'],
+                ),
+                $this->makeStat('Solved tickets',
+                    $currentCounts['solved'],
+                ),
+            ];
+        }
+
+        $previousCounts = $this->getCounts(null, Carbon::now()->subDays(30));
 
         return [
             $this->makeStat(
@@ -31,12 +55,16 @@ class StatsOverview extends BaseWidget
         ];
     }
 
-    private function getCounts(?Carbon $before = null): array
+    private function getCounts(?string $startDate = null, ?string $endDate = null): array
     {
         $query = Ticket::query();
 
-        if ($before) {
-            $query->where('created_at', '<', $before);
+        if ($startDate) {
+            $query->where('created_at', '>=', $startDate);
+        }
+
+        if ($endDate) {
+            $query->where('created_at', '<=', $endDate);
         }
 
         return [
@@ -46,12 +74,17 @@ class StatsOverview extends BaseWidget
         ];
     }
 
-    private function makeStat(string $label, int $value, array $change): Stat
+    private function makeStat(string $label, int $value, ?array $change = null): Stat
     {
-        return Stat::make($label, number_format($value))
-            ->description($change['description'])
-            ->descriptionIcon($change['icon'])
-            ->color($change['color']);
+        $stat = Stat::make($label, number_format($value));
+
+        if ($change) {
+            $stat->description($change['description'])
+                ->descriptionIcon($change['icon'])
+                ->color($change['color']);
+        }
+
+        return $stat;
     }
 
     private function getChange(int $previous, int $current): array

@@ -5,16 +5,24 @@ namespace App\Filament\Widgets;
 use App\Enums\Tickets\TicketType;
 use App\Models\Ticket;
 use Filament\Widgets\ChartWidget;
+use Filament\Widgets\Concerns\InteractsWithPageFilters;
 
 class TicketTypeChart extends ChartWidget
 {
+    use InteractsWithPageFilters;
+
     protected ?string $heading = 'Tickets by type';
 
     protected ?string $maxHeight = '300px';
 
     protected function getData(): array
     {
+        $startDate = $this->filters['startDate'] ?? null;
+        $endDate = $this->filters['endDate'] ?? null;
+
         $counts = Ticket::query()
+            ->when($startDate, fn ($query) => $query->where('created_at', '>=', $startDate))
+            ->when($endDate, fn ($query) => $query->where('created_at', '<=', $endDate))
             ->selectRaw('type, COUNT(*) as total')
             ->groupBy('type')
             ->pluck('total', 'type');
