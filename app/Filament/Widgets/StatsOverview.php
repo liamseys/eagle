@@ -16,10 +16,11 @@ class StatsOverview extends BaseWidget
     {
         $startDate = $this->filters['startDate'] ?? null;
         $endDate = $this->filters['endDate'] ?? null;
+        $clientId = $this->filters['clientId'] ?? null;
 
-        $isFilterActive = $startDate || $endDate;
+        $isFilterActive = $startDate || $endDate || $clientId;
 
-        $currentCounts = $this->getCounts($startDate, $endDate);
+        $currentCounts = $this->getCounts($startDate, $endDate, $clientId);
 
         if ($isFilterActive) {
             return [
@@ -55,7 +56,7 @@ class StatsOverview extends BaseWidget
         ];
     }
 
-    private function getCounts(?string $startDate = null, ?string $endDate = null): array
+    private function getCounts(?string $startDate = null, ?string $endDate = null, ?string $clientId = null): array
     {
         $query = Ticket::query();
 
@@ -65,6 +66,10 @@ class StatsOverview extends BaseWidget
 
         if ($endDate) {
             $query->where('created_at', '<=', $endDate);
+        }
+
+        if ($clientId) {
+            $query->where('requester_id', $clientId);
         }
 
         return [

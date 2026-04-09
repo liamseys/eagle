@@ -19,10 +19,12 @@ class TicketTypeChart extends ChartWidget
     {
         $startDate = $this->filters['startDate'] ?? null;
         $endDate = $this->filters['endDate'] ?? null;
+        $clientId = $this->filters['clientId'] ?? null;
 
         $counts = Ticket::query()
             ->when($startDate, fn ($query) => $query->where('created_at', '>=', $startDate))
             ->when($endDate, fn ($query) => $query->where('created_at', '<=', $endDate))
+            ->when($clientId, fn ($query) => $query->where('requester_id', $clientId))
             ->selectRaw('type, COUNT(*) as total')
             ->groupBy('type')
             ->pluck('total', 'type');

@@ -2,8 +2,10 @@
 
 namespace App\Filament\Pages;
 
+use App\Models\Client;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Dashboard\Concerns\HasFiltersForm;
 use Filament\Schemas\Components\Section;
@@ -38,6 +40,11 @@ class Dashboard extends BaseDashboard
                                     ->action(fn ($set) => $set('endDate', null))
                                     ->visible(fn ($state) => filled($state))
                             )
+                            ->live(),
+                        Select::make('clientId')
+                            ->label('Client')
+                            ->options(Client::query()->pluck('name', 'id'))
+                            ->searchable()
                             ->live(),
                     ])
                     ->columns(3),
