@@ -17,7 +17,7 @@ class Dashboard extends BaseDashboard
         return $schema
             ->components([
                 DatePicker::make('startDate')
-                    ->label('Start Date')
+                    ->label('Start date')
                     ->native(false)
                     ->suffixAction(
                         Action::make('clearStartDate')
@@ -27,7 +27,7 @@ class Dashboard extends BaseDashboard
                     )
                     ->live(),
                 DatePicker::make('endDate')
-                    ->label('End Date')
+                    ->label('End date')
                     ->native(false)
                     ->suffixAction(
                         Action::make('clearEndDate')
