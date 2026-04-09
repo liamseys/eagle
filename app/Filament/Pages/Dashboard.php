@@ -10,10 +10,14 @@ use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Pages\Dashboard\Concerns\HasFiltersForm;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Livewire\Attributes\Url;
 
 class Dashboard extends BaseDashboard
 {
     use HasFiltersForm;
+
+    #[Url]
+    public ?array $filters = null;
 
     public function filtersForm(Schema $schema): Schema
     {
@@ -49,5 +53,10 @@ class Dashboard extends BaseDashboard
                     ])
                     ->columns(3),
             ]);
+    }
+
+    public function persistsFiltersInSession(): bool
+    {
+        return false;
     }
 }
