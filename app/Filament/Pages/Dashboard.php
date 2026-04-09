@@ -19,7 +19,7 @@ class Dashboard extends BaseDashboard
     {
         return $schema
             ->components([
-                Section::make('Filters')
+                Section::make()
                     ->schema([
                         DatePicker::make('startDate')
                             ->label('Start date')
