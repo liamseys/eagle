@@ -76,7 +76,7 @@ class TokensRelationManager extends RelationManager
                         return $user;
                     })
                     ->after(function () {
-                        $this->mountAction('showToken', [
+                        $this->replaceMountedAction('showToken', [
                             'plainTextToken' => $this->plainTextToken,
                         ]);
                     })
