@@ -137,10 +137,12 @@ class TicketResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->with(['duplicateOf']))
             ->columns([
                 TextColumn::make('ticket_id')
                     ->label(__('Ticket ID'))
                     ->prefix('#')
+                    ->description(fn (Ticket $record): ?string => $record->duplicateOf?->ticket_id ? "Duplicate of #{$record->duplicateOf->ticket_id}" : null)
                     ->copyable()
                     ->copyMessage(__('Ticket ID copied to clipboard'))
                     ->copyMessageDuration(1500)
