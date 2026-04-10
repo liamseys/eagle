@@ -70,11 +70,10 @@ import Pusher from 'pusher-js';
     }
 
     const widgetHTML = `
-    <div id="eagle-chatbot" x-data="eagleChatbot">
+    <div id="eagle-chatbot" x-data="eagleChatbot" x-cloak>
         <!-- Chat Bubble Button -->
         <button
             @click="toggle()"
-            x-show="!open"
             class="ec-bubble"
         >
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
@@ -85,8 +84,13 @@ import Pusher from 'pusher-js';
         <!-- Chat Window -->
         <div
             x-show="open"
-            x-transition
-            class="ec-window ec-window-enter"
+            x-transition:enter="ec-window-enter"
+            x-transition:enter-start="ec-window-enter-start"
+            x-transition:enter-end="ec-window-enter-end"
+            x-transition:leave="ec-window-leave"
+            x-transition:leave-start="ec-window-enter-end"
+            x-transition:leave-end="ec-window-enter-start"
+            class="ec-window"
         >
             <!-- Header -->
             <div class="ec-header">

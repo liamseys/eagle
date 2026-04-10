@@ -1,3 +1,7 @@
+[x-cloak] {
+    display: none !important;
+}
+
 #eagle-chatbot {
     position: fixed;
     bottom: 1.25rem;
@@ -10,6 +14,9 @@
 
 /* Chat Bubble Button */
 #eagle-chatbot .ec-bubble {
+    position: absolute;
+    bottom: 0;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -40,6 +47,9 @@
 
 /* Chat Window */
 #eagle-chatbot .ec-window {
+    position: absolute;
+    bottom: 0;
+    right: 0;
     display: flex;
     flex-direction: column;
     width: 380px;
@@ -372,18 +382,22 @@
     border-radius: 2px;
 }
 
-/* Transitions */
+/* Window transitions */
 #eagle-chatbot .ec-window-enter {
-    animation: ec-slide-up 0.3s cubic-bezier(0.2, 0.9, 0.3, 1);
+    transition: opacity 0.25s cubic-bezier(0.2, 0.9, 0.3, 1), transform 0.25s cubic-bezier(0.2, 0.9, 0.3, 1);
 }
 
-@keyframes ec-slide-up {
-    from {
-        opacity: 0;
-        transform: translateY(0.75rem) scale(0.97);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
+#eagle-chatbot .ec-window-enter-start {
+    opacity: 0;
+    transform: translateY(0.75rem) scale(0.97);
 }
+
+#eagle-chatbot .ec-window-enter-end {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+#eagle-chatbot .ec-window-leave {
+    transition: opacity 0.15s ease-in, transform 0.15s ease-in;
+}
+
