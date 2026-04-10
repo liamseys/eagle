@@ -5,6 +5,7 @@ namespace App\Ai\Agents;
 use App\Ai\Tools\CreateTicketTool;
 use App\Ai\Tools\SearchArticlesTool;
 use Laravel\Ai\Attributes\MaxSteps;
+use Laravel\Ai\Attributes\Model;
 use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Concerns\RemembersConversations;
 use Laravel\Ai\Contracts\Agent;
@@ -15,6 +16,7 @@ use Laravel\Ai\Promptable;
 
 #[MaxSteps(5)]
 #[Timeout(120)]
+#[Model('gpt-5.4-mini')]
 class EagleAgent implements Agent, Conversational, HasTools
 {
     use Promptable, RemembersConversations;
