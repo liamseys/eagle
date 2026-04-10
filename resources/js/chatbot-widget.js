@@ -165,6 +165,7 @@ import Pusher from 'pusher-js';
         userEmail: settings.email || '',
         channelSubscribed: false,
         currentAssistantMessage: null,
+        responseTimeout: null,
 
         init() {
             this.subscribeToChannel();
@@ -190,6 +191,7 @@ import Pusher from 'pusher-js';
 
             echo.channel(channelName)
                 .listen('.text_delta', (e) => {
+                    this.clearResponseTimeout();
                     if (!this.currentAssistantMessage) {
                         this.loading = false;
                         this.currentAssistantMessage = {
@@ -202,16 +204,13 @@ import Pusher from 'pusher-js';
                     this.$nextTick(() => this.scrollToBottom());
                 })
                 .listen('.stream_end', () => {
+                    this.clearResponseTimeout();
                     this.currentAssistantMessage = null;
                     this.loading = false;
                 })
                 .listen('.error', () => {
-                    this.loading = false;
-                    this.currentAssistantMessage = null;
-                    this.messages.push({
-                        role: 'assistant',
-                        content: 'Sorry, something went wrong. Please try again.',
-                    });
+                    this.clearResponseTimeout();
+                    this.handleFailedMessage();
                 });
 
             this.channelSubscribed = true;
@@ -255,13 +254,36 @@ import Pusher from 'pusher-js';
                 if (data.conversation_id) {
                     this.conversationId = data.conversation_id;
                 }
+                this.startResponseTimeout();
             } catch (error) {
-                this.loading = false;
-                this.messages.push({
-                    role: 'assistant',
-                    content: 'Sorry, something went wrong. Please try again.',
-                });
+                this.handleFailedMessage();
             }
+        },
+
+        startResponseTimeout() {
+            this.clearResponseTimeout();
+            this.responseTimeout = setTimeout(() => {
+                if (this.loading) {
+                    this.handleFailedMessage();
+                }
+            }, 30000);
+        },
+
+        clearResponseTimeout() {
+            if (this.responseTimeout) {
+                clearTimeout(this.responseTimeout);
+                this.responseTimeout = null;
+            }
+        },
+
+        handleFailedMessage() {
+            this.loading = false;
+            this.currentAssistantMessage = null;
+            this.messages.push({
+                role: 'assistant',
+                content: 'Sorry, something went wrong. Please try again.',
+            });
+            this.$nextTick(() => this.scrollToBottom());
         },
 
         formatMessage(content) {

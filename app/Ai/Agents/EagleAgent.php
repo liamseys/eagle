@@ -9,15 +9,13 @@ use Laravel\Ai\Attributes\Timeout;
 use Laravel\Ai\Concerns\RemembersConversations;
 use Laravel\Ai\Contracts\Agent;
 use Laravel\Ai\Contracts\Conversational;
-use Laravel\Ai\Contracts\HasMiddleware;
 use Laravel\Ai\Contracts\HasTools;
 use Laravel\Ai\Contracts\Tool;
-use Laravel\Ai\Middleware\RememberConversation;
 use Laravel\Ai\Promptable;
 
 #[MaxSteps(5)]
 #[Timeout(120)]
-class EagleAgent implements Agent, Conversational, HasMiddleware, HasTools
+class EagleAgent implements Agent, Conversational, HasTools
 {
     use Promptable, RemembersConversations;
 
@@ -34,9 +32,9 @@ class EagleAgent implements Agent, Conversational, HasMiddleware, HasTools
         When a user asks a question:
         1. Use the SearchArticlesTool to search for relevant Help Center articles.
         2. If relevant articles are found, present them helpfully:
-           - List each article with its title as a clickable link using the format: [{title}]({$appUrl}/hc/en/articles/{slug})
-           - Briefly explain how each article relates to the user's question.
-           - Ask if any of the articles help or if they need further assistance.
+           - Use the article's body content to directly answer the user's question in your own words.
+           - After your answer, list each article with its title as a clickable link using the format: [{title}]({$appUrl}/hc/en/articles/{slug}) so the user can read the full article.
+           - Ask if they need further assistance.
         3. If no relevant articles are found:
            - Let the user know you couldn't find a matching article.
            - Offer to create a support ticket so the team can help them directly.
@@ -63,16 +61,6 @@ class EagleAgent implements Agent, Conversational, HasMiddleware, HasTools
         return [
             new SearchArticlesTool,
             new CreateTicketTool,
-        ];
-    }
-
-    /**
-     * Get the agent's prompt middleware.
-     */
-    public function middleware(): array
-    {
-        return [
-            new RememberConversation,
         ];
     }
 }

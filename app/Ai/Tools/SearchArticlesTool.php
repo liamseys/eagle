@@ -14,7 +14,7 @@ class SearchArticlesTool implements Tool
      */
     public function description(): string
     {
-        return 'Search through Help Center articles to find relevant content that matches the user\'s question. Returns article titles, descriptions, and slugs for linking.';
+        return 'Search through Help Center articles to find relevant content that matches the user\'s question. Returns article titles, descriptions, body content, and slugs for linking.';
     }
 
     /**
@@ -37,7 +37,7 @@ class SearchArticlesTool implements Tool
                     });
                 }
             })
-            ->select(['title', 'slug', 'description'])
+            ->select(['title', 'slug', 'description', 'body'])
             ->limit(5)
             ->get();
 
