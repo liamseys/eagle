@@ -5,6 +5,10 @@ namespace App\Models;
 use App\Filament\AvatarProviders\GravatarProvider;
 use App\Traits\HasNotes;
 use Database\Factories\ClientFactory;
+use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthentication;
+use Filament\Auth\MultiFactor\App\Concerns\InteractsWithAppAuthenticationRecovery;
+use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthentication;
+use Filament\Auth\MultiFactor\App\Contracts\HasAppAuthenticationRecovery;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -13,10 +17,10 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Tags\HasTags;
 
-class Client extends Authenticatable
+class Client extends Authenticatable implements HasAppAuthentication, HasAppAuthenticationRecovery
 {
     /** @use HasFactory<ClientFactory> */
-    use HasFactory, HasNotes, HasTags, HasUlids, Notifiable;
+    use HasFactory, HasNotes, HasTags, HasUlids, InteractsWithAppAuthentication, InteractsWithAppAuthenticationRecovery, Notifiable;
 
     /**
      * The attributes that are mass assignable.

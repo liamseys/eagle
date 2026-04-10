@@ -11,6 +11,7 @@ use App\Filament\Widgets\TicketTypeChart;
 use App\Http\Middleware\EnsureDomainIsAllowlisted;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Settings\GeneralSettings;
+use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -51,6 +52,10 @@ class AppPanelProvider extends PanelProvider
             ->passwordReset()
             ->emailVerification()
             ->profile(EditProfile::class)
+            ->multiFactorAuthentication([
+                AppAuthentication::make()
+                    ->recoverable(),
+            ])
             ->font($font, provider: GoogleFontProvider::class)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->darkMode(false)

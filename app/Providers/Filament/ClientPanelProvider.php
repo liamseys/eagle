@@ -7,6 +7,7 @@ use App\Filament\Client\Widgets\CommonIssues;
 use App\Filament\Client\Widgets\LookingForSomethingElse;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Settings\GeneralSettings;
+use Filament\Auth\MultiFactor\App\AppAuthentication;
 use Filament\FontProviders\GoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -56,6 +57,11 @@ class ClientPanelProvider extends PanelProvider
             ->path('client')
             ->login()
             ->passwordReset()
+            ->profile()
+            ->multiFactorAuthentication([
+                AppAuthentication::make()
+                    ->recoverable(),
+            ])
             ->authGuard('client')
             ->authPasswordBroker('clients')
             ->font($font, provider: GoogleFontProvider::class)
