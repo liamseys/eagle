@@ -3,6 +3,7 @@
 use App\Filament\Pages\Auth\Welcome;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\ChatbotWidgetController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\IndexController;
 use App\Http\Middleware\SetDefaultLocaleForUrls;
@@ -35,6 +36,11 @@ Route::group([
     Route::get('forms/{form}/embed', [FormController::class, 'embed'])
         ->name('forms.embed');
 });
+
+Route::get('chatbot/widget.js', [ChatbotWidgetController::class, 'script'])
+    ->name('chatbot.widget.script');
+Route::get('chatbot/widget.css', [ChatbotWidgetController::class, 'styles'])
+    ->name('chatbot.widget.styles');
 
 Route::group(['middleware' => ['web', WelcomesNewUsers::class]], function () {
     Route::get('eagle/welcome/{user}', Welcome::class)->name('welcome');

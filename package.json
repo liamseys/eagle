@@ -2,7 +2,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "build": "vite build",
+        "build": "vite build && vite build --config vite.widget.config.js",
+        "build:widget": "vite build --config vite.widget.config.js",
         "dev": "vite"
     },
     "devDependencies": {
@@ -11,7 +12,9 @@
         "@tailwindcss/vite": "^4.2.2",
         "axios": "^1.7.4",
         "concurrently": "^9.0.1",
+        "laravel-echo": "^2.3.4",
         "laravel-vite-plugin": "^2.0",
+        "pusher-js": "^8.5.0",
         "tailwindcss": "^4.2.2",
         "vite": "^7.0"
     },

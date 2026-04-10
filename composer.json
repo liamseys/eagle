@@ -17,6 +17,7 @@
         "filament/spatie-laravel-tags-plugin": "^5.0",
         "laravel/ai": "^0.5.0",
         "laravel/framework": "^13.0",
+        "laravel/reverb": "^1.10",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^3.0",
         "spatie/laravel-welcome-notification": "^2.4",
