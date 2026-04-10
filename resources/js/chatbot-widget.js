@@ -111,6 +111,33 @@ import Pusher from 'pusher-js';
                         <div x-show="msg.role === 'assistant'" class="ec-msg-row ec-assistant">
                             <div class="ec-msg-bubble" x-html="formatMessage(msg.content)"></div>
                         </div>
+                        <div x-show="msg.role === 'assistant' && msg.content && msg.content.includes('[form:create-ticket]') && !msg.formSubmitted" class="ec-msg-row ec-assistant">
+                            <div class="ec-form-card">
+                                <div class="ec-form-field">
+                                    <label class="ec-form-label">Name</label>
+                                    <input type="text" x-model="ticketForm.name" class="ec-form-input" placeholder="Your name" />
+                                </div>
+                                <div class="ec-form-field">
+                                    <label class="ec-form-label">Email</label>
+                                    <input type="email" x-model="ticketForm.email" class="ec-form-input" placeholder="your@email.com" />
+                                </div>
+                                <div class="ec-form-field">
+                                    <label class="ec-form-label">How can we help?</label>
+                                    <textarea x-model="ticketForm.description" class="ec-form-textarea" placeholder="Describe your issue..." rows="3"></textarea>
+                                </div>
+                                <button @click="submitTicketForm(index)" type="button" class="ec-form-submit" :disabled="!ticketForm.name.trim() || !ticketForm.email.trim() || !ticketForm.description.trim()">
+                                    Submit Ticket
+                                </button>
+                            </div>
+                        </div>
+                        <div x-show="msg.role === 'assistant' && msg.formSubmitted" class="ec-msg-row ec-assistant">
+                            <div class="ec-form-card ec-form-success">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="ec-form-success-icon">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                                <span>Ticket submitted</span>
+                            </div>
+                        </div>
                     </div>
                 </template>
 
@@ -166,6 +193,7 @@ import Pusher from 'pusher-js';
         channelSubscribed: false,
         currentAssistantMessage: null,
         responseTimeout: null,
+        ticketForm: { name: settings.name || '', email: settings.email || '', description: '' },
 
         init() {
             this.subscribeToChannel();
@@ -286,6 +314,55 @@ import Pusher from 'pusher-js';
             this.$nextTick(() => this.scrollToBottom());
         },
 
+        async submitTicketForm(msgIndex) {
+            const form = this.ticketForm;
+            if (!form.name.trim() || !form.email.trim() || !form.description.trim()) return;
+
+            this.messages[msgIndex].formSubmitted = true;
+
+            this.userName = form.name;
+            this.userEmail = form.email;
+
+            this.messages.push({
+                role: 'user',
+                content: form.description,
+            });
+
+            this.loading = true;
+            this.$nextTick(() => this.scrollToBottom());
+
+            const message = `Please create a support ticket with the following details:\nName: ${form.name}\nEmail: ${form.email}\nIssue: ${form.description}`;
+
+            try {
+                const response = await fetch(`${baseUrl}/api/chatbot/message`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        conversation_id: this.conversationId,
+                        session_id: sessionId,
+                        name: form.name,
+                        email: form.email,
+                    }),
+                });
+
+                if (!response.ok) throw new Error('Request failed');
+
+                const data = await response.json();
+                if (data.conversation_id) {
+                    this.conversationId = data.conversation_id;
+                }
+                this.startResponseTimeout();
+            } catch (error) {
+                this.handleFailedMessage();
+            }
+
+            this.ticketForm = { name: settings.name || '', email: settings.email || '', description: '' };
+        },
+
         formatMessage(content) {
             if (!content) return '';
 
@@ -293,6 +370,10 @@ import Pusher from 'pusher-js';
                 .replace(/&/g, '&amp;')
                 .replace(/</g, '&lt;')
                 .replace(/>/g, '&gt;');
+
+            // Strip form markers (full and partial during streaming)
+            formatted = formatted.replace(/\[form:create-ticket\]/g, '');
+            formatted = formatted.replace(/\[form:[^\]]*$/g, '');
 
             // Convert markdown links [text](url) to HTML
             formatted = formatted.replace(

@@ -37,12 +37,11 @@ class EagleAgent implements Agent, Conversational, HasTools
            - Ask if they need further assistance.
         3. If no relevant articles are found:
            - Let the user know you couldn't find a matching article.
-           - Offer to create a support ticket so the team can help them directly.
-        4. If the user wants to create a support ticket:
-           - You need their name, email address, and a description of their issue.
-           - If any of this information was already provided in the conversation context (e.g. from eagleSettings), do NOT ask for it again. Use what you already know.
-           - Generate a concise, descriptive subject line from their message.
-           - Use the CreateTicketTool with all the collected information.
+           - Offer to create a support ticket and include the marker [form:create-ticket] at the end of your message. This renders an inline form for the user to fill out. Do NOT ask the user to type their name, email, or description as text messages.
+        4. If the user wants to create a support ticket (or you want to offer one):
+           - Always include [form:create-ticket] at the end of your message to show the ticket form.
+           - Do NOT ask for name, email, or description via text. The form handles this.
+           - When the user submits the form, you will receive their details. Then generate a concise subject line and use the CreateTicketTool.
         5. After a ticket is created:
            - Confirm that the ticket was created successfully.
            - Let them know the team will be in touch shortly.
