@@ -10,7 +10,6 @@ use Filament\Actions\Action;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\RichEditor\EditorCommand;
 use Filament\Forms\Components\RichEditor\Plugins\Contracts\RichContentPlugin;
 use Filament\Forms\Components\RichEditor\RichEditorTool;
 use Filament\Forms\Components\Select;
@@ -25,6 +24,7 @@ use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Livewire\Component as LivewireComponent;
 use Tiptap\Core\Extension;
 
 /**
@@ -89,9 +89,9 @@ class CannedResponsesPlugin implements RichContentPlugin
     {
         return Action::make('cannedResponses')
             ->modalHeading(__('Canned responses'))
-            ->modalDescription(__('Insert a saved response into your reply.'))
+            ->modalDescription(__('Selecting a response replaces the current draft.'))
             ->modalWidth(Width::ThreeExtraLarge)
-            ->modalSubmitActionLabel(__('Insert'))
+            ->modalSubmitActionLabel(__('Use response'))
             ->fillForm([
                 'search' => null,
                 'canned_response_category_id' => null,
@@ -103,8 +103,8 @@ class CannedResponsesPlugin implements RichContentPlugin
                 $this->editAction(),
                 $this->manageCategoriesAction(),
             ])
-            ->action(function (array $data, RichEditor $component, array $arguments): void {
-                $this->insertResponse($data['canned_response_id'] ?? null, $component, $arguments);
+            ->action(function (array $data, RichEditor $component, LivewireComponent $livewire): void {
+                $this->applyResponse($data['canned_response_id'] ?? null, $component, $livewire);
             });
     }
 
@@ -472,9 +472,9 @@ class CannedResponsesPlugin implements RichContentPlugin
     }
 
     /**
-     * @param  array<string, mixed>  $arguments
+     * Replace the editor's current draft with the chosen canned response.
      */
-    protected function insertResponse(?string $id, RichEditor $component, array $arguments): void
+    protected function applyResponse(?string $id, RichEditor $component, LivewireComponent $livewire): void
     {
         if (blank($id)) {
             return;
@@ -488,10 +488,7 @@ class CannedResponsesPlugin implements RichContentPlugin
 
         $response->forceFill(['last_used_at' => now()])->saveQuietly();
 
-        $component->runCommands(
-            [EditorCommand::make('insertContent', arguments: [$response->content])],
-            editorSelection: $arguments['editorSelection'],
-        );
+        data_set($livewire, $component->getStatePath(), $response->content);
     }
 
     /**
