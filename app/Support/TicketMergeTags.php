@@ -43,7 +43,7 @@ class TicketMergeTags
         return [
             'client.name' => fn (): string => $ticket?->requester?->name ?? '',
             'client.email' => fn (): string => $ticket?->requester?->email ?? '',
-            'ticket.id' => fn (): string => $ticket?->id ?? '',
+            'ticket.id' => fn (): string => (string) ($ticket?->ticket_id ?? ''),
             'ticket.subject' => fn (): string => $ticket?->subject ?? '',
             'ticket.status' => fn (): string => $ticket?->status?->value ?? '',
             'agent.name' => fn (): string => auth()->user()?->name ?? '',
