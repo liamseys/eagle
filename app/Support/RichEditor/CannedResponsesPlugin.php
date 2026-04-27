@@ -7,7 +7,7 @@ use App\Models\CannedResponseCategory;
 use App\Models\User;
 use App\Support\TicketMergeTags;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\RichEditor\Plugins\Contracts\RichContentPlugin;
@@ -19,10 +19,12 @@ use Filament\Notifications\Notification;
 use Filament\Schemas\Components\Component;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\View;
 use Filament\Support\Enums\Width;
 use Filament\Support\Icons\Heroicon;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Livewire\Component as LivewireComponent;
 use Tiptap\Core\Extension;
@@ -33,11 +35,18 @@ use Tiptap\Core\Extension;
  *
  * The plugin registers a single editor-level action (`cannedResponses`); all
  * Create / Edit / Delete / Manage flows are nested inside that action's
- * modal footer so the entire feature lives in a single mount-point with no
- * Filament Resources.
+ * modal so the entire feature lives in a single mount-point with no
+ * Filament Resources. Edit and Delete are rendered inline within the list,
+ * while Create and Manage Categories sit in the modal footer.
  */
 class CannedResponsesPlugin implements RichContentPlugin
 {
+    /**
+     * Maximum number of responses listed in the picker before the user is
+     * prompted to refine their search.
+     */
+    protected const PICKER_LIMIT = 25;
+
     public static function make(): static
     {
         return app(static::class);
@@ -92,6 +101,11 @@ class CannedResponsesPlugin implements RichContentPlugin
             ->modalDescription(__('Selecting a response replaces the current draft.'))
             ->modalWidth(Width::ThreeExtraLarge)
             ->modalSubmitActionLabel(__('Use response'))
+            ->modalSubmitAction(fn (Action $action, $livewire): Action => $action
+                ->livewire($livewire)
+                ->disabled(fn (array $mountedActions): bool => blank(
+                    $mountedActions[0]?->getRawData()['canned_response_id'] ?? null,
+                )))
             ->fillForm([
                 'search' => null,
                 'canned_response_category_id' => null,
@@ -100,8 +114,11 @@ class CannedResponsesPlugin implements RichContentPlugin
             ->schema(fn (): array => $this->pickerSchema())
             ->extraModalFooterActions(fn (): array => [
                 $this->createAction(),
-                $this->editAction(),
                 $this->manageCategoriesAction(),
+            ])
+            ->registerModalActions([
+                $this->editAction(),
+                $this->deleteAction(),
             ])
             ->action(function (array $data, RichEditor $component, LivewireComponent $livewire): void {
                 $this->applyResponse($data['canned_response_id'] ?? null, $component, $livewire);
@@ -131,12 +148,10 @@ class CannedResponsesPlugin implements RichContentPlugin
                             ->all())
                         ->live(),
                 ]),
-            Radio::make('canned_response_id')
-                ->hiddenLabel()
-                ->required()
-                ->columns(1)
-                ->options(fn (Get $get): array => $this->buildOptions($get))
-                ->descriptions(fn (Get $get): array => $this->buildDescriptions($get)),
+            Hidden::make('canned_response_id')
+                ->required(),
+            View::make('filament.canned-responses.list')
+                ->viewData(fn (Get $get): array => $this->buildListViewData($get)),
         ];
     }
 
@@ -207,24 +222,24 @@ class CannedResponsesPlugin implements RichContentPlugin
     protected function editAction(): Action
     {
         return Action::make('editCannedResponse')
-            ->label(__('Edit selected'))
+            ->label(__('Edit'))
             ->icon(Heroicon::PencilSquare)
             ->color('gray')
             ->modalHeading(__('Edit canned response'))
             ->modalWidth(Width::TwoExtraLarge)
             ->slideOver()
-            ->mountUsing(function (array $mountedActions): void {
-                if ($this->resolveSelectedResponse($mountedActions)) {
+            ->mountUsing(function (array $arguments): void {
+                if ($this->resolveResponseFromArguments($arguments)) {
                     return;
                 }
 
                 Notification::make()
-                    ->title(__('Select a canned response to edit first.'))
+                    ->title(__('Canned response not found.'))
                     ->warning()
                     ->send();
             })
-            ->fillForm(function (array $mountedActions): array {
-                $response = $this->resolveSelectedResponse($mountedActions);
+            ->fillForm(function (array $arguments): array {
+                $response = $this->resolveResponseFromArguments($arguments);
 
                 if (! $response) {
                     return [];
@@ -238,16 +253,14 @@ class CannedResponsesPlugin implements RichContentPlugin
                 ];
             })
             ->schema($this->formSchema())
-            ->action(function (array $data, array $mountedActions): void {
-                $response = $this->resolveSelectedResponse($mountedActions);
+            ->action(function (array $data, array $arguments): void {
+                $response = $this->resolveResponseFromArguments($arguments);
 
                 if (! $response) {
                     return;
                 }
 
-                $user = auth()->user();
-
-                if (! $this->canManage($user, $response)) {
+                if (! $this->canManage(auth()->user(), $response)) {
                     Notification::make()
                         ->title(__('You cannot edit this canned response.'))
                         ->danger()
@@ -262,47 +275,52 @@ class CannedResponsesPlugin implements RichContentPlugin
                     ->title(__('Canned response updated.'))
                     ->success()
                     ->send();
-            })
-            ->extraModalFooterActions(fn (): array => [
-                Action::make('deleteCannedResponse')
-                    ->label(__('Delete'))
-                    ->icon(Heroicon::Trash)
-                    ->color('danger')
-                    ->requiresConfirmation()
-                    ->modalHeading(__('Delete canned response?'))
-                    ->action(function (array $mountedActions): void {
-                        $response = $this->resolveSelectedResponse($mountedActions);
+            });
+    }
 
-                        if (! $response) {
-                            return;
-                        }
+    protected function deleteAction(): Action
+    {
+        return Action::make('deleteCannedResponse')
+            ->label(__('Delete'))
+            ->icon(Heroicon::Trash)
+            ->color('danger')
+            ->requiresConfirmation()
+            ->modalIcon(Heroicon::OutlinedTrash)
+            ->modalHeading(__('Delete canned response?'))
+            ->modalDescription(fn (array $arguments): ?string => optional($this->resolveResponseFromArguments($arguments))->title)
+            ->action(function (array $arguments, array $mountedActions, LivewireComponent $livewire): void {
+                $response = $this->resolveResponseFromArguments($arguments);
 
-                        $user = auth()->user();
+                if (! $response) {
+                    return;
+                }
 
-                        if (! $this->canManage($user, $response)) {
-                            Notification::make()
-                                ->title(__('You cannot delete this canned response.'))
-                                ->danger()
-                                ->send();
+                if (! $this->canManage(auth()->user(), $response)) {
+                    Notification::make()
+                        ->title(__('You cannot delete this canned response.'))
+                        ->danger()
+                        ->send();
 
-                            return;
-                        }
+                    return;
+                }
 
-                        $response->delete();
+                $deletedId = $response->id;
 
-                        Notification::make()
-                            ->title(__('Canned response deleted.'))
-                            ->success()
-                            ->send();
-                    })
-                    ->cancelParentActions('editCannedResponse'),
-            ]);
+                $response->delete();
+
+                $this->clearParentSelectionIfMatches($mountedActions, $livewire, $deletedId);
+
+                Notification::make()
+                    ->title(__('Canned response deleted.'))
+                    ->success()
+                    ->send();
+            });
     }
 
     protected function manageCategoriesAction(): Action
     {
         return Action::make('manageCannedResponseCategories')
-            ->label(__('Manage categories'))
+            ->label(__('Categories'))
             ->icon(Heroicon::FolderOpen)
             ->color('gray')
             ->modalHeading(__('Manage categories'))
@@ -366,39 +384,39 @@ class CannedResponsesPlugin implements RichContentPlugin
     }
 
     /**
-     * @return array<string, string>
+     * Build the data passed to the picker list Blade view.
+     *
+     * @return array{responses: Collection<int, array<string, mixed>>, totalAvailable: int}
      */
-    protected function buildOptions(Get $get): array
+    protected function buildListViewData(Get $get): array
     {
-        return self::buildQuery(
-            user: $this->currentAgent(),
-            search: $get('search'),
-            categoryId: $get('canned_response_category_id'),
-        )
-            ->limit(25)
-            ->get()
-            ->mapWithKeys(fn (CannedResponse $response): array => [
-                $response->id => $response->title,
-            ])
-            ->all();
-    }
+        $user = $this->currentAgent();
 
-    /**
-     * @return array<string, string>
-     */
-    protected function buildDescriptions(Get $get): array
-    {
-        return self::buildQuery(
-            user: $this->currentAgent(),
+        $query = self::buildQuery(
+            user: $user,
             search: $get('search'),
             categoryId: $get('canned_response_category_id'),
-        )
-            ->limit(25)
+        );
+
+        $totalAvailable = (clone $query)->count();
+
+        $responses = $query
+            ->with('category')
+            ->limit(self::PICKER_LIMIT)
             ->get()
-            ->mapWithKeys(fn (CannedResponse $response): array => [
-                $response->id => self::buildPreview($response->content),
-            ])
-            ->all();
+            ->map(fn (CannedResponse $response): array => [
+                'id' => $response->id,
+                'title' => $response->title,
+                'preview' => self::buildPreview($response->content),
+                'category' => $response->category?->name,
+                'is_shared' => $response->is_shared,
+                'can_manage' => $this->canManage($user, $response),
+            ]);
+
+        return [
+            'responses' => $responses,
+            'totalAvailable' => $totalAvailable,
+        ];
     }
 
     /**
@@ -492,17 +510,44 @@ class CannedResponsesPlugin implements RichContentPlugin
     }
 
     /**
-     * @param  array<int, Action>  $mountedActions
+     * @param  array<string, mixed>  $arguments
      */
-    protected function resolveSelectedResponse(array $mountedActions): ?CannedResponse
+    protected function resolveResponseFromArguments(array $arguments): ?CannedResponse
     {
-        $id = $mountedActions[0]?->getRawData()['canned_response_id'] ?? null;
+        $id = $arguments['record'] ?? null;
 
         if (blank($id)) {
             return null;
         }
 
         return CannedResponse::find($id);
+    }
+
+    /**
+     * Clear the picker's selection when the row that was selected has just
+     * been deleted, so the "Use response" button can't apply a stale id.
+     *
+     * @param  array<int, Action>  $mountedActions
+     */
+    protected function clearParentSelectionIfMatches(array $mountedActions, LivewireComponent $livewire, string $deletedId): void
+    {
+        $picker = $mountedActions[0] ?? null;
+
+        if (! $picker) {
+            return;
+        }
+
+        if (($picker->getRawData()['canned_response_id'] ?? null) !== $deletedId) {
+            return;
+        }
+
+        $nestingIndex = $picker->getNestingIndex();
+
+        if (! isset($livewire->mountedActions[$nestingIndex])) {
+            return;
+        }
+
+        $livewire->mountedActions[$nestingIndex]['data']['canned_response_id'] = null;
     }
 
     protected function canManage(?Authenticatable $user, CannedResponse $response): bool
