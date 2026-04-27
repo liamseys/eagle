@@ -99,19 +99,28 @@ class EditTicket extends EditRecord
             'group_id' => $data['group_id'],
         ]);
 
-        if (isset($data['priority']) && $record->priority->value !== $data['priority']) {
-            $updateTicketPriority = app(UpdateTicketPriority::class);
-            $updateTicketPriority->handle($record, TicketPriority::from($data['priority']));
+        $priority = $data['priority'] ?? null;
+        if ($priority !== null) {
+            $priority = $priority instanceof TicketPriority ? $priority : TicketPriority::from($priority);
+            if ($record->priority !== $priority) {
+                app(UpdateTicketPriority::class)->handle($record, $priority);
+            }
         }
 
-        if (isset($data['type']) && $record->type->value !== $data['type']) {
-            $updateTicketStatus = app(UpdateTicketType::class);
-            $updateTicketStatus->handle($record, TicketType::from($data['type']));
+        $type = $data['type'] ?? null;
+        if ($type !== null) {
+            $type = $type instanceof TicketType ? $type : TicketType::from($type);
+            if ($record->type !== $type) {
+                app(UpdateTicketType::class)->handle($record, $type);
+            }
         }
 
-        if (isset($data['status']) && $record->status->value !== $data['status']) {
-            $updateTicketStatus = app(UpdateTicketStatus::class);
-            $updateTicketStatus->handle($record, TicketStatus::from($data['status']));
+        $status = $data['status'] ?? null;
+        if ($status !== null) {
+            $status = $status instanceof TicketStatus ? $status : TicketStatus::from($status);
+            if ($record->status !== $status) {
+                app(UpdateTicketStatus::class)->handle($record, $status);
+            }
         }
 
         return $record;
