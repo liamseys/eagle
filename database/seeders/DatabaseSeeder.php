@@ -34,6 +34,7 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             HelpCenterSeeder::class,
             ClientSeeder::class,
+            CannedResponseSeeder::class,
         ]);
 
         $permissions = Permission::all();
