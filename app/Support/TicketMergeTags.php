@@ -45,7 +45,7 @@ class TicketMergeTags
             'client.email' => fn (): string => $ticket?->requester?->email ?? '',
             'ticket.id' => fn (): string => (string) ($ticket?->ticket_id ?? ''),
             'ticket.subject' => fn (): string => $ticket?->subject ?? '',
-            'ticket.status' => fn (): string => $ticket?->status?->value ?? '',
+            'ticket.status' => fn (): string => $ticket?->status?->getLabel() ?? '',
             'agent.name' => fn (): string => auth()->user()?->name ?? '',
             'today' => fn (): string => now()->toFormattedDateString(),
         ];
