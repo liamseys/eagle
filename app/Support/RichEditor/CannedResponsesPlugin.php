@@ -90,7 +90,6 @@ class CannedResponsesPlugin implements RichContentPlugin
         return Action::make('cannedResponses')
             ->modalHeading(__('Canned responses'))
             ->modalDescription(__('Insert a saved response into your reply.'))
-            ->modalIcon(Heroicon::ChatBubbleLeftRight)
             ->modalWidth(Width::ThreeExtraLarge)
             ->modalSubmitActionLabel(__('Insert'))
             ->fillForm([
@@ -182,7 +181,6 @@ class CannedResponsesPlugin implements RichContentPlugin
             ->icon(Heroicon::Plus)
             ->color('primary')
             ->modalHeading(__('New canned response'))
-            ->modalIcon(Heroicon::Plus)
             ->modalWidth(Width::TwoExtraLarge)
             ->slideOver()
             ->fillForm(['is_shared' => false])
@@ -213,7 +211,6 @@ class CannedResponsesPlugin implements RichContentPlugin
             ->icon(Heroicon::PencilSquare)
             ->color('gray')
             ->modalHeading(__('Edit canned response'))
-            ->modalIcon(Heroicon::PencilSquare)
             ->modalWidth(Width::TwoExtraLarge)
             ->slideOver()
             ->mountUsing(function (array $mountedActions): void {
@@ -309,7 +306,6 @@ class CannedResponsesPlugin implements RichContentPlugin
             ->icon(Heroicon::FolderOpen)
             ->color('gray')
             ->modalHeading(__('Manage categories'))
-            ->modalIcon(Heroicon::FolderOpen)
             ->modalWidth(Width::Large)
             ->slideOver()
             ->modalSubmitActionLabel(__('Save'))
