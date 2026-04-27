@@ -7,9 +7,12 @@ use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Notifications\TicketCommentByAgent;
+use App\Support\RichEditor\CannedResponsesPlugin;
+use App\Support\TicketMergeTags;
 use Filament\Actions\Concerns\InteractsWithActions;
 use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
@@ -40,17 +43,20 @@ class CreateTicketComment extends Component implements HasActions, HasForms
             ->components([
                 RichEditor::make('comment')
                     ->label(__('Comment'))
-                    ->toolbarButtons([
-                        'bold',
-                        'bulletList',
-                        'italic',
-                        'link',
-                        'orderedList',
-                        'redo',
-                        'strike',
-                        'underline',
-                        'undo',
-                    ])
+                    ->plugins(fn () => auth()->user() instanceof User ? [CannedResponsesPlugin::make()] : [])
+                    ->mergeTags(auth()->user() instanceof User ? TicketMergeTags::labels() : [])
+                    ->toolbarButtons(fn () => auth()->user() instanceof User
+                        ? [
+                            ['bold', 'italic', 'underline', 'strike', 'link'],
+                            ['bulletList', 'orderedList'],
+                            ['cannedResponses', 'mergeTags'],
+                            ['undo', 'redo'],
+                        ]
+                        : [
+                            ['bold', 'italic', 'underline', 'strike', 'link'],
+                            ['bulletList', 'orderedList'],
+                            ['undo', 'redo'],
+                        ])
                     ->maxLength(2500)
                     ->required(),
                 Toggle::make('is_public')
@@ -72,10 +78,16 @@ class CreateTicketComment extends Component implements HasActions, HasForms
         $user = auth()->user();
         $formData = $this->form->getState();
 
+        $body = $user instanceof User
+            ? RichContentRenderer::make($formData['comment'])
+                ->mergeTags(TicketMergeTags::valuesFor($this->ticket))
+                ->toHtml()
+            : $formData['comment'];
+
         $ticketComment = $this->ticket->comments()->create([
             'authorable_type' => get_class($user),
             'authorable_id' => $user->id,
-            'body' => $formData['comment'],
+            'body' => $body,
             'is_public' => $formData['is_public'] ?? true,
         ]);
 

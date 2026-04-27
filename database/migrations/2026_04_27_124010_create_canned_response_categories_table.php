@@ -11,14 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('ticket_comment_templates', function (Blueprint $table) {
+        Schema::create('canned_response_categories', function (Blueprint $table) {
             $table->ulid('id')->primary();
-            $table->foreignUlid('user_id')
-                ->nullable()
-                ->constrained()
-                ->cascadeOnDelete();
-            $table->string('name');
-            $table->text('body');
+            $table->string('name')->unique();
             $table->timestamps();
         });
     }
@@ -28,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('ticket_comment_templates');
+        Schema::dropIfExists('canned_response_categories');
     }
 };

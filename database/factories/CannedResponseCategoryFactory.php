@@ -2,14 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\TicketCommentTemplate;
-use App\Models\User;
+use App\Models\CannedResponseCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends Factory<TicketCommentTemplate>
+ * @extends Factory<CannedResponseCategory>
  */
-class TicketCommentTemplateFactory extends Factory
+class CannedResponseCategoryFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -19,9 +18,7 @@ class TicketCommentTemplateFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),
-            'name' => fake()->word(),
-            'body' => fake()->paragraph(),
+            'name' => fake()->unique()->words(2, true),
         ];
     }
 }
