@@ -491,14 +491,21 @@ class CannedResponsesPlugin implements RichContentPlugin
 
     /**
      * Replace the editor's current draft with the chosen canned response.
+     *
+     * Scoped via `visibleTo` so a tampered `canned_response_id` can't be used
+     * to read another agent's private response content through this path.
      */
     protected function applyResponse(?string $id, RichEditor $component, LivewireComponent $livewire): void
     {
-        if (blank($id)) {
+        $user = $this->currentAgent();
+
+        if (blank($id) || ! $user instanceof User) {
             return;
         }
 
-        $response = CannedResponse::find($id);
+        $response = CannedResponse::query()
+            ->visibleTo($user)
+            ->find($id);
 
         if (! $response) {
             return;
@@ -510,17 +517,24 @@ class CannedResponsesPlugin implements RichContentPlugin
     }
 
     /**
+     * Resolve a canned response from a client-supplied `record` argument,
+     * scoped to the current agent so that Edit / Delete read paths cannot
+     * disclose another agent's private responses.
+     *
      * @param  array<string, mixed>  $arguments
      */
     protected function resolveResponseFromArguments(array $arguments): ?CannedResponse
     {
         $id = $arguments['record'] ?? null;
+        $user = $this->currentAgent();
 
-        if (blank($id)) {
+        if (blank($id) || ! $user instanceof User) {
             return null;
         }
 
-        return CannedResponse::find($id);
+        return CannedResponse::query()
+            ->where('user_id', $user->id)
+            ->find($id);
     }
 
     /**
