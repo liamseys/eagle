@@ -50,13 +50,21 @@ npm install
 npm run build
 ```
 
-6. Set up a cron job to run the scheduler every minute:
+6. Seed the default permissions and canned responses:
+
+```bash
+php artisan app:install
+```
+
+This runs the `PermissionSeeder` and `CannedResponseSeeder` in a single step, populating the database with the roles/permissions and the starter canned responses Eagle needs to function.
+
+7. Set up a cron job to run the scheduler every minute:
 
 ```bash
 php artisan schedule:run
 ```
 
-7. Start the queue worker:
+8. Start the queue worker:
 
 ```bash
 php artisan queue:work
