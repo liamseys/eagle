@@ -55,6 +55,10 @@
                         </div>
                     </x-card>
 
+                    @if($article->status === ArticleStatus::PUBLISHED)
+                        <livewire:article-feedback :article="$article"/>
+                    @endif
+
                     @include('articles.partials.actions')
                 </div>
             </div>

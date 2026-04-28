@@ -74,6 +74,41 @@ class ArticleResource extends Resource
                                     ->required()
                                     ->columnSpanFull(),
                             ]),
+                        Section::make(__('Feedback'))
+                            ->schema([
+                                Placeholder::make('feedback_summary')
+                                    ->hiddenLabel()
+                                    ->content(function (Article $record): HtmlString {
+                                        $counts = $record->feedbackCounts();
+
+                                        if ($counts['total'] === 0) {
+                                            return new HtmlString(
+                                                '<span class="text-sm text-gray-500">'.e(__('No votes yet.')).'</span>'
+                                            );
+                                        }
+
+                                        $positivePct = (int) round(($counts['positive'] / $counts['total']) * 100);
+                                        $negativePct = (int) round(($counts['negative'] / $counts['total']) * 100);
+                                        $neutralPct = max(0, 100 - $positivePct - $negativePct);
+
+                                        return new HtmlString(sprintf(
+                                            '<div class="flex flex-wrap items-center gap-6 text-sm">'
+                                            .'<div><div class="text-xs uppercase tracking-wide text-gray-500">%s</div><div class="text-base font-semibold">%d</div></div>'
+                                            .'<div class="flex items-center gap-2 text-green-600"><span class="text-base">😀</span><span><strong>%d</strong> (%d%%)</span></div>'
+                                            .'<div class="flex items-center gap-2 text-yellow-600"><span class="text-base">😐</span><span><strong>%d</strong> (%d%%)</span></div>'
+                                            .'<div class="flex items-center gap-2 text-red-600"><span class="text-base">😞</span><span><strong>%d</strong> (%d%%)</span></div>'
+                                            .'</div>',
+                                            e(__('Total votes')),
+                                            $counts['total'],
+                                            $counts['positive'],
+                                            $positivePct,
+                                            $counts['neutral'],
+                                            $neutralPct,
+                                            $counts['negative'],
+                                            $negativePct,
+                                        ));
+                                    }),
+                            ])->hiddenOn(['create']),
                     ])->columnSpan(['lg' => 2]),
                 Group::make()
                     ->schema([
@@ -142,6 +177,7 @@ class ArticleResource extends Resource
             ->query(
                 Article::query()
                     ->with('category')
+                    ->withFeedbackCounts()
             )
             ->columns([
                 TextColumn::make('title')
@@ -162,6 +198,42 @@ class ArticleResource extends Resource
                 TextColumn::make('author.name')
                     ->label(__('Author'))
                     ->searchable(),
+                TextColumn::make('feedback_sentiment')
+                    ->label(__('Feedback'))
+                    ->badge()
+                    ->state(function (Article $record): ?string {
+                        $counts = $record->feedbackCounts();
+
+                        if ($counts['total'] === 0) {
+                            return __('No votes');
+                        }
+
+                        $positive = (int) round(($counts['positive'] / $counts['total']) * 100);
+
+                        return sprintf('%d %s · %d%%', $counts['total'], __('votes'), $positive);
+                    })
+                    ->color(fn (Article $record): string => match ($record->feedbackSentiment()) {
+                        'good' => 'success',
+                        'mixed' => 'warning',
+                        'poor' => 'danger',
+                        default => 'gray',
+                    })
+                    ->icon(fn (Article $record): ?string => match ($record->feedbackSentiment()) {
+                        'good' => 'heroicon-o-face-smile',
+                        'mixed' => 'heroicon-o-minus-circle',
+                        'poor' => 'heroicon-o-face-frown',
+                        default => null,
+                    }),
+                TextColumn::make('feedback_positive_count')
+                    ->label(__('Positive'))
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
+                TextColumn::make('feedback_negative_count')
+                    ->label(__('Negative'))
+                    ->numeric()
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('Created at'))
                     ->dateTime()

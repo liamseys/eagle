@@ -2,6 +2,7 @@
 
 namespace App\Models\HelpCenter;
 
+use App\Enums\HelpCenter\Articles\ArticleFeedbackValue;
 use App\Enums\HelpCenter\Articles\ArticleStatus;
 use App\Models\User;
 use App\Observers\HelpCenter\ArticleObserver;
@@ -13,6 +14,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 use Spatie\Tags\HasTags;
 
@@ -119,5 +121,84 @@ class Article extends Model
     public function getLabelAttribute(): string
     {
         return $this->title;
+    }
+
+    /**
+     * Feedback submitted for the article.
+     */
+    public function feedback(): HasMany
+    {
+        return $this->hasMany(ArticleFeedback::class);
+    }
+
+    /**
+     * Eager-load aggregated feedback counts as `feedback_{value}_count` attributes.
+     */
+    public function scopeWithFeedbackCounts(Builder $query): void
+    {
+        $query->withCount([
+            'feedback as feedback_positive_count' => fn (Builder $q) => $q->where('value', ArticleFeedbackValue::Positive),
+            'feedback as feedback_neutral_count' => fn (Builder $q) => $q->where('value', ArticleFeedbackValue::Neutral),
+            'feedback as feedback_negative_count' => fn (Builder $q) => $q->where('value', ArticleFeedbackValue::Negative),
+        ]);
+    }
+
+    /**
+     * Counts of feedback by value, lazily loaded from the relation if not pre-aggregated.
+     *
+     * @return array{positive:int, neutral:int, negative:int, total:int}
+     */
+    public function feedbackCounts(): array
+    {
+        $attributes = $this->getAttributes();
+
+        $hasPreloadedCounts = array_key_exists('feedback_positive_count', $attributes)
+            && array_key_exists('feedback_neutral_count', $attributes)
+            && array_key_exists('feedback_negative_count', $attributes);
+
+        if ($hasPreloadedCounts) {
+            $positive = (int) $attributes['feedback_positive_count'];
+            $neutral = (int) $attributes['feedback_neutral_count'];
+            $negative = (int) $attributes['feedback_negative_count'];
+        } else {
+            $counts = $this->feedback()
+                ->selectRaw('value, COUNT(*) as aggregate')
+                ->groupBy('value')
+                ->pluck('aggregate', 'value');
+
+            $positive = (int) ($counts[ArticleFeedbackValue::Positive->value] ?? 0);
+            $neutral = (int) ($counts[ArticleFeedbackValue::Neutral->value] ?? 0);
+            $negative = (int) ($counts[ArticleFeedbackValue::Negative->value] ?? 0);
+        }
+
+        return [
+            'positive' => $positive,
+            'neutral' => $neutral,
+            'negative' => $negative,
+            'total' => $positive + $neutral + $negative,
+        ];
+    }
+
+    /**
+     * Aggregate sentiment band based on feedback distribution.
+     *
+     * @return 'good'|'mixed'|'poor'|null
+     */
+    public function feedbackSentiment(): ?string
+    {
+        $counts = $this->feedbackCounts();
+
+        if ($counts['total'] === 0) {
+            return null;
+        }
+
+        $positivePct = ($counts['positive'] / $counts['total']) * 100;
+        $negativePct = ($counts['negative'] / $counts['total']) * 100;
+
+        return match (true) {
+            $positivePct >= 70 => 'good',
+            $negativePct >= 50 => 'poor',
+            default => 'mixed',
+        };
     }
 }
