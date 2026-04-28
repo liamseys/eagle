@@ -1,4 +1,4 @@
-<x-master-layout class="bg-white">
+<x-master-layout class="bg-gray-50/50">
     <header class="bg-black">
         <x-container>
             <div class="relative flex h-16 items-center justify-between">
@@ -14,21 +14,21 @@
         </x-container>
     </header>
 
-    <main class="min-h-screen">
+    <main class="min-h-dvh">
         {{ $slot }}
     </main>
 
-    <footer class="relative bottom-0 w-full bg-gray-100 py-4">
+    <footer class="border-t border-gray-950/5 bg-white py-6">
         <x-container>
-            <div class="flex flex-col items-center justify-between sm:flex-row">
+            <div class="flex flex-col items-center justify-between gap-3 sm:flex-row sm:gap-0">
                 <p class="text-sm text-gray-500">
                     {{ __('© :year :name.', ['year' => date('Y'), 'name' => !empty($generalSettings->app_name) ? $generalSettings->app_name : config('app.name')]) }}
                 </p>
 
-                <ul class="mt-2 flex space-x-4 sm:mt-0">
+                <ul class="flex items-center gap-x-4" role="list">
                     <li>
                         <a href="{{ route('filament.app.auth.login') }}"
-                           class="text-sm text-gray-500 transition hover:underline hover:text-gray-700">
+                           class="text-sm text-gray-500 transition hover:text-gray-900">
                             {{ __('Agent login') }}
                         </a>
                     </li>

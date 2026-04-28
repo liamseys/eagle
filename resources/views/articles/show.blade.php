@@ -5,31 +5,36 @@
 
     {{ Breadcrumbs::render('article', $article) }}
 
-    <section class="py-12">
+    <section class="py-14 sm:py-16">
         <x-container class="max-w-7xl">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:gap-4">
-                <div class="col-span-1">
-                    <x-card>
-                        <x-slot name="header">
-                            <h3 class="font-semibold">{{ $article->section->name }}</h3>
-                        </x-slot>
+            <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-6">
+                <aside class="sm:col-span-1">
+                    <div class="sm:sticky sm:top-6">
+                        <x-card>
+                            <x-slot name="header">
+                                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500">
+                                    {{ $article->section->name }}
+                                </h3>
+                            </x-slot>
 
-                        <ul class="-mx-4 flex flex-col space-y-2 -my-4">
-                            @foreach($article->section
+                            <ul class="-mx-2 -my-2 flex flex-col" role="list">
+                                @foreach($article->section
                                                  ->articles()
                                                  ->public()
                                                  ->published()
                                                  ->get() as $navArticle)
-                                <x-nav-link :href="route('articles.show', $navArticle)"
-                                            :active="request()->routeIs('articles.show') && request()->route('article')?->is($navArticle)">
-                                    <p class="text-sm">{{ $navArticle->title }}</p>
-                                    <x-heroicon-s-chevron-right class="h-4 w-4"/>
-                                </x-nav-link>
-                            @endforeach
-                        </ul>
-                    </x-card>
-                </div>
-                <div class="col-span-2 flex flex-col space-y-4">
+                                    <x-nav-link :href="route('articles.show', $navArticle)"
+                                                :active="request()->routeIs('articles.show') && request()->route('article')?->is($navArticle)">
+                                        <p class="text-sm">{{ $navArticle->title }}</p>
+                                        <x-heroicon-s-chevron-right class="size-4 text-gray-400 transition group-hover:text-gray-600"/>
+                                    </x-nav-link>
+                                @endforeach
+                            </ul>
+                        </x-card>
+                    </div>
+                </aside>
+
+                <div class="flex flex-col gap-5 sm:col-span-2">
                     @if (session('status'))
                         <x-alert>
                             {{ __(session('status')) }}
@@ -42,18 +47,22 @@
                         </x-alert>
                     @endif
 
-                    <x-card>
-                        <x-slot name="header">
-                            <div class="flex flex-col gap-2">
-                                <h2 class="text-xl font-semibold">{{ $article->title }}</h2>
-                                <p class="text-sm text-gray-500">{{ $article->description }}</p>
-                            </div>
-                        </x-slot>
+                    <article class="overflow-hidden rounded-2xl border border-gray-950/5 bg-white shadow-xs">
+                        <header class="border-b border-gray-950/5 px-6 py-6 sm:px-8 sm:py-7">
+                            <h1 class="text-balance text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
+                                {{ $article->title }}
+                            </h1>
+                            @if(!empty($article->description))
+                                <p class="mt-2 max-w-2xl text-pretty text-sm text-gray-500 sm:text-base">
+                                    {{ $article->description }}
+                                </p>
+                            @endif
+                        </header>
 
-                        <div class="article-content">
+                        <div class="article-content px-6 py-7 sm:px-8 sm:py-9">
                             {!! $article->body !!}
                         </div>
-                    </x-card>
+                    </article>
 
                     @if($article->status === ArticleStatus::PUBLISHED)
                         <livewire:article-feedback :article="$article"/>

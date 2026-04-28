@@ -4,26 +4,28 @@
 <x-app-layout>
     <x-hero :title="__('Help Center')"/>
 
-    <section class="py-12">
+    <section class="py-14 sm:py-16">
         <x-container class="max-w-7xl">
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-y-4 sm:gap-4">
-                <div class="col-span-1">
-                    <x-card>
-                        <x-slot name="header">
-                            <h3 class="font-semibold">{{ __('Other categories') }}</h3>
-                        </x-slot>
+            <div class="grid grid-cols-1 gap-y-6 sm:grid-cols-3 sm:gap-6">
+                <aside class="sm:col-span-1">
+                    <div class="sm:sticky sm:top-6">
+                        <x-card>
+                            <x-slot name="header">
+                                <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-500">{{ __('Other categories') }}</h3>
+                            </x-slot>
 
-                        <ul class="-mx-4 flex flex-col space-y-2 -my-4">
-                            @foreach($categories as $category)
-                                <x-nav-link :href="route('categories.show', $category)">
-                                    <p class="text-sm">{{ $category->name }}</p>
-                                    <x-heroicon-s-chevron-right class="h-4 w-4"/>
-                                </x-nav-link>
-                            @endforeach
-                        </ul>
-                    </x-card>
-                </div>
-                <div class="col-span-2 flex flex-col space-y-4">
+                            <ul class="-mx-2 -my-2 flex flex-col" role="list">
+                                @foreach($categories as $category)
+                                    <x-nav-link :href="route('categories.show', $category)">
+                                        <p class="text-sm">{{ $category->name }}</p>
+                                        <x-heroicon-s-chevron-right class="size-4 text-gray-400 transition group-hover:text-gray-600"/>
+                                    </x-nav-link>
+                                @endforeach
+                            </ul>
+                        </x-card>
+                    </div>
+                </aside>
+                <div class="flex flex-col gap-5 sm:col-span-2">
                     @if(!$form->is_active)
                         <x-alert icon="information-circle">
                             {{ __('This form is inactive. You can see it because you\'re logged in as an agent.') }}
@@ -33,7 +35,7 @@
                     <x-card>
                         <x-slot name="header">
                             <div class="flex flex-col gap-2">
-                                <h2 class="text-xl font-semibold">{{ $form->name }}</h2>
+                                <h2 class="text-balance text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl">{{ $form->name }}</h2>
                                 <div class="form-description">
                                     {!! $form->description !!}
                                 </div>

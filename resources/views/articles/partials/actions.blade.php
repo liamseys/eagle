@@ -1,13 +1,13 @@
 @use('App\Enums\HelpCenter\Articles\ArticleStatus')
 
-<div x-data="{ showShareModal: false }" class="flex items-center gap-4">
+<div x-data="{ showShareModal: false }" class="flex flex-wrap items-center gap-x-5 gap-y-2 px-1">
     <!-- Share Article -->
     <a
         href="#"
         @click.prevent="showShareModal = true"
-        class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
+        class="inline-flex items-center gap-1.5 text-sm text-gray-500 transition hover:text-gray-900"
     >
-        <x-heroicon-s-share class="w-4 h-4"/>
+        <x-heroicon-s-share class="size-4"/>
         {{ __('Share Article') }}
     </a>
 
@@ -16,9 +16,9 @@
         <a
             href="{{ route('filament.app.help-center.resources.articles.edit', $article) }}"
             target="_blank"
-            class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
+            class="inline-flex items-center gap-1.5 text-sm text-gray-500 transition hover:text-gray-900"
         >
-            <x-heroicon-s-pencil-square class="w-4 h-4"/>
+            <x-heroicon-s-pencil-square class="size-4"/>
             {{ __('Edit Article') }}
         </a>
 
@@ -26,18 +26,18 @@
             <!-- Unpublish Article -->
             <a
                 href="{{ route('articles.unpublish', $article) }}"
-                class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
+                class="inline-flex items-center gap-1.5 text-sm text-gray-500 transition hover:text-gray-900"
             >
-                <x-heroicon-s-eye-slash class="w-4 h-4"/>
+                <x-heroicon-s-eye-slash class="size-4"/>
                 {{ __('Unpublish Article') }}
             </a>
         @else
             <!-- Publish Article -->
             <a
                 href="{{ route('articles.publish', $article) }}"
-                class="flex items-center gap-1 text-sm text-gray-700 hover:underline"
+                class="inline-flex items-center gap-1.5 text-sm text-gray-500 transition hover:text-gray-900"
             >
-                <x-heroicon-s-eye class="w-4 h-4"/>
+                <x-heroicon-s-eye class="size-4"/>
                 {{ __('Publish Article') }}
             </a>
         @endif
