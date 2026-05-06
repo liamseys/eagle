@@ -11,10 +11,13 @@ use App\Filament\Resources\TicketResource\Pages\EditTicket;
 use App\Filament\Resources\TicketResource\Pages\ListTickets;
 use App\Filament\Resources\TicketResource\RelationManagers\FieldsRelationManager;
 use App\Models\Ticket;
+use App\Support\RichEditor\CannedResponsesPlugin;
+use App\Support\TicketMergeTags;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
@@ -93,10 +96,26 @@ class TicketResource extends Resource
 
                             return $record->fields->isEmpty();
                         }),
+                        Section::make()
+                            ->schema([
+                                RichEditor::make('comment')
+                                    ->label(__('Comment'))
+                                    ->plugins([CannedResponsesPlugin::make()])
+                                    ->mergeTags(TicketMergeTags::labels())
+                                    ->toolbarButtons([
+                                        ['bold', 'italic', 'underline', 'strike', 'link'],
+                                        ['bulletList', 'orderedList'],
+                                        ['cannedResponses', 'mergeTags'],
+                                        ['undo', 'redo'],
+                                    ])
+                                    ->maxLength(2500)
+                                    ->required()
+                                    ->dehydrated(false),
+                            ])
+                            ->visibleOn('create'),
                         TicketComments::make()
                             ->hiddenOn(['create']),
-                        Actions::make(fn (EditTicket $livewire): array => $livewire->getInlineFormActions())
-                            ->hiddenOn(['create']),
+                        Actions::make(fn (CreateTicket|EditTicket $livewire): array => $livewire->getInlineFormActions()),
                     ])->columnSpan(['lg' => 2]),
                 Group::make()
                     ->schema([

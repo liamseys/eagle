@@ -4,11 +4,16 @@ namespace App\Filament\Resources\ClientResource\RelationManagers;
 
 use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketType;
+use App\Models\Ticket;
+use App\Support\RichEditor\CannedResponsesPlugin;
+use App\Support\TicketMergeTags;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -48,6 +53,20 @@ class TicketsRelationManager extends RelationManager
                     ->maxLength(255)
                     ->disabledOn(['edit'])
                     ->columnSpanFull(),
+                RichEditor::make('comment')
+                    ->label(__('Comment'))
+                    ->plugins([CannedResponsesPlugin::make()])
+                    ->mergeTags(TicketMergeTags::labels())
+                    ->toolbarButtons([
+                        ['bold', 'italic', 'underline', 'strike', 'link'],
+                        ['bulletList', 'orderedList'],
+                        ['cannedResponses', 'mergeTags'],
+                        ['undo', 'redo'],
+                    ])
+                    ->maxLength(2500)
+                    ->required()
+                    ->columnSpanFull()
+                    ->visibleOn('create'),
                 Section::make()
                     ->schema([
                         Select::make('assignee_id')
@@ -62,7 +81,8 @@ class TicketsRelationManager extends RelationManager
                             ->searchable()
                             ->preload()
                             ->helperText(__('The group assigned to the ticket.')),
-                    ]),
+                    ])
+                    ->columns(2),
             ]);
     }
 
@@ -87,7 +107,19 @@ class TicketsRelationManager extends RelationManager
             ])
             ->headerActions([
                 CreateAction::make()
-                    ->modalWidth(Width::ExtraLarge),
+                    ->modalWidth(Width::ExtraLarge)
+                    ->after(function (Ticket $record, array $data) {
+                        $user = auth()->user();
+
+                        $record->comments()->create([
+                            'authorable_type' => $user::class,
+                            'authorable_id' => $user->id,
+                            'body' => RichContentRenderer::make($data['comment'])
+                                ->mergeTags(TicketMergeTags::valuesFor($record))
+                                ->toHtml(),
+                            'is_public' => true,
+                        ]);
+                    }),
             ])
             ->recordActions([
                 EditAction::make()
