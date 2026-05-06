@@ -4,14 +4,11 @@ namespace App\Filament\Resources\ClientResource\RelationManagers;
 
 use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketType;
+use App\Filament\Resources\TicketResource;
 use App\Models\Ticket;
 use App\Support\RichEditor\CannedResponsesPlugin;
 use App\Support\TicketMergeTags;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
-use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\RichEditor\RichContentRenderer;
 use Filament\Forms\Components\Select;
@@ -121,15 +118,6 @@ class TicketsRelationManager extends RelationManager
                         ]);
                     }),
             ])
-            ->recordActions([
-                EditAction::make()
-                    ->modalWidth(Width::ExtraLarge),
-                DeleteAction::make(),
-            ])
-            ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
-            ]);
+            ->recordUrl(fn (Ticket $record): string => TicketResource::getUrl('edit', ['record' => $record]));
     }
 }
