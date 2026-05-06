@@ -50,6 +50,8 @@ class TicketTypeChart extends ChartWidget
                         '#f87171',
                         '#4ade80',
                     ],
+                    'borderColor' => '#ffffff',
+                    'hoverBorderColor' => '#ffffff',
                 ],
             ],
             'labels' => $labels,

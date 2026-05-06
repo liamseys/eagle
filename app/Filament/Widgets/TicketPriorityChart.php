@@ -50,6 +50,8 @@ class TicketPriorityChart extends ChartWidget
                         '#fbbf24',
                         '#f87171',
                     ],
+                    'borderColor' => '#ffffff',
+                    'hoverBorderColor' => '#ffffff',
                 ],
             ],
             'labels' => $labels,
