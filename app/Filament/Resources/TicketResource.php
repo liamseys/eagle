@@ -18,6 +18,7 @@ use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
+use Filament\Schemas\Components\Actions;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Livewire;
@@ -93,6 +94,8 @@ class TicketResource extends Resource
                             return $record->fields->isEmpty();
                         }),
                         TicketComments::make()
+                            ->hiddenOn(['create']),
+                        Actions::make(fn (EditTicket $livewire): array => $livewire->getInlineFormActions())
                             ->hiddenOn(['create']),
                     ])->columnSpan(['lg' => 2]),
                 Group::make()

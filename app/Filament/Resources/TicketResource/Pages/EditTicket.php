@@ -91,6 +91,22 @@ class EditTicket extends EditRecord
             ->action('save');
     }
 
+    protected function getFormActions(): array
+    {
+        return [];
+    }
+
+    /**
+     * @return array<Action>
+     */
+    public function getInlineFormActions(): array
+    {
+        return [
+            $this->getSaveFormAction(),
+            $this->getCancelFormAction(),
+        ];
+    }
+
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
         $record->update([
