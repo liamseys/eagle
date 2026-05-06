@@ -1,3 +1,12 @@
+@use('App\Settings\GeneralSettings')
+
+@php
+    $generalSettings = app(GeneralSettings::class);
+
+    $brandFromColor = $generalSettings->branding_gradient_from_color ?: '#f8cb09';
+    $brandViaColor = $generalSettings->branding_gradient_via_color ?: '#eb2622';
+    $brandToColor = $generalSettings->branding_gradient_to_color ?: '#7506bf';
+@endphp
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
@@ -10,6 +19,15 @@
 @media only screen and (max-width: 600px) {
 .inner-body {
 width: 100% !important;
+border-radius: 0 !important;
+}
+
+.brand-strip {
+border-radius: 0 !important;
+}
+
+.content-cell {
+padding: 28px 24px !important;
 }
 
 .footer {
@@ -36,7 +54,11 @@ width: 100% !important;
 <!-- Email Body -->
 <tr>
 <td class="body" width="100%" cellpadding="0" cellspacing="0" style="border: hidden !important;">
-<table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0" role="presentation">
+<table class="inner-body" align="center" width="600" cellpadding="0" cellspacing="0" role="presentation">
+<!-- Brand strip -->
+<tr>
+<td class="brand-strip" height="6" style="height: 6px; line-height: 6px; font-size: 0; mso-line-height-rule: exactly; padding: 0; background-color: {{ $brandViaColor }}; background-image: linear-gradient(to right, {{ $brandFromColor }} 0%, {{ $brandViaColor }} 50%, {{ $brandToColor }} 100%); border-top-left-radius: 12px; border-top-right-radius: 12px;">&nbsp;</td>
+</tr>
 <!-- Body content -->
 <tr>
 <td class="content-cell">

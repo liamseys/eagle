@@ -1,12 +1,20 @@
+@use('App\Settings\GeneralSettings')
+
 @props(['url'])
+
+@php
+    $generalSettings = app(GeneralSettings::class);
+
+    $logoSrc = ! empty($generalSettings->branding_logo_black)
+        ? Storage::url($generalSettings->branding_logo_black)
+        : asset('img/logo/logo-black.svg');
+
+    $appName = ! empty($generalSettings->app_name) ? $generalSettings->app_name : config('app.name');
+@endphp
 <tr>
 <td class="header">
 <a href="{{ $url }}" style="display: inline-block;">
-@if (trim($slot) === 'Laravel')
-<img src="https://laravel.com/img/notification-logo-v2.1.png" class="logo" alt="Laravel Logo">
-@else
-{!! $slot !!}
-@endif
+<img src="{{ $logoSrc }}" class="logo" alt="{{ $appName }}">
 </a>
 </td>
 </tr>
