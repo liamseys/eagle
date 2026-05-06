@@ -39,6 +39,8 @@ class CreateTicket extends CreateRecord
     {
         $user = auth()->user();
 
+        $this->record->refresh();
+
         $body = RichContentRenderer::make($this->data['comment'])
             ->mergeTags(TicketMergeTags::valuesFor($this->record))
             ->toHtml();
