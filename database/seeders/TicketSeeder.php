@@ -2,10 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\Client;
-use App\Models\Group;
 use App\Models\Ticket;
-use App\Models\User;
 use Illuminate\Database\Seeder;
 
 class TicketSeeder extends Seeder
@@ -15,17 +12,6 @@ class TicketSeeder extends Seeder
      */
     public function run(): void
     {
-        $clients = Client::all();
-        $users = User::all();
-        $groups = Group::all();
-
-        Ticket::factory()
-            ->count(25)
-            ->state(fn () => [
-                'requester_id' => $clients->random()->id,
-                'assignee_id' => $users->random()->id,
-                'group_id' => $groups->random()->id,
-            ])
-            ->create();
+        Ticket::factory()->count(25)->create();
     }
 }
