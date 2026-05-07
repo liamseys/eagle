@@ -10,6 +10,24 @@
                 </x-alert>
             @endif
 
+            @if(session('form_submitted'))
+                <x-card>
+                    <div class="flex flex-col items-center gap-6 px-2 py-10 text-center sm:px-6 sm:py-12">
+                        <x-heroicon-s-check-circle class="size-12 shrink-0 fill-green-500"/>
+                        <div class="flex flex-col gap-2">
+                            <h2 class="text-balance text-xl font-semibold tracking-tight text-gray-900">
+                                {{ __('Form submitted') }}
+                            </h2>
+                            <p class="mx-auto max-w-[48ch] text-pretty text-sm text-gray-500">
+                                {{ __('We received your submission and will get back to you as soon as possible.') }}
+                            </p>
+                        </div>
+                        <x-button type="button" onclick="window.location.href='{{ route('forms.embed', $form) }}'">
+                            {{ __('Submit another response') }}
+                        </x-button>
+                    </div>
+                </x-card>
+            @else
             <x-card>
                 <x-slot name="header">
                     <div class="flex flex-col gap-2">
@@ -26,12 +44,6 @@
                     <input type="hidden" name="form_id" value="{{ $form->id }}">
 
                     <div class="flex flex-col space-y-4">
-                        @if (session('status'))
-                            <div>
-                                <p class="text-sm text-green-500">{{ session('status') }}</p>
-                            </div>
-                        @endif
-
                         @foreach($form->fields()
                                       ->orderBy('sort')
                                       ->get() as $formField)
@@ -139,6 +151,7 @@
                     </div>
                 </form>
             </x-card>
+            @endif
 
             @include('forms.partials.actions')
         </div>

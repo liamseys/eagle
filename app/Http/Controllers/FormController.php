@@ -54,7 +54,7 @@ class FormController extends Controller
     {
         $submitForm->handle($request);
 
-        return redirect()->back()->with('status', __('Form was successfully submitted.'));
+        return redirect()->back()->with('form_submitted', true);
     }
 
     /**
