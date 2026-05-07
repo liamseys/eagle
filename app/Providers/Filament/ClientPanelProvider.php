@@ -56,6 +56,7 @@ class ClientPanelProvider extends PanelProvider
             ->id('client')
             ->path('client')
             ->login()
+            ->registration()
             ->passwordReset()
             ->profile()
             ->multiFactorAuthentication([
