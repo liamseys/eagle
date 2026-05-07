@@ -3,8 +3,13 @@
 namespace Database\Seeders;
 
 use App\Enums\HelpCenter\Articles\ArticleStatus;
+use App\Enums\HelpCenter\Forms\FormFieldType;
+use App\Enums\Tickets\TicketPriority;
+use App\Enums\Tickets\TicketType;
 use App\Models\HelpCenter\Article;
 use App\Models\HelpCenter\Category;
+use App\Models\HelpCenter\Form;
+use App\Models\HelpCenter\FormField;
 use App\Models\HelpCenter\Section;
 use App\Models\User;
 use Illuminate\Database\Seeder;
@@ -108,6 +113,243 @@ class HelpCenterSeeder extends Seeder
                 'status' => ArticleStatus::PUBLISHED,
                 'is_public' => true,
             ]));
+        }
+
+        $this->seedForms($user, $basicSettings, $notifications);
+    }
+
+    /**
+     * Seed help center forms aligned with the seeded articles.
+     */
+    private function seedForms(User $user, Section $basicSettings, Section $notifications): void
+    {
+        $forms = [
+            [
+                'section_id' => $basicSettings->id,
+                'name' => 'Update profile information',
+                'description' => 'Submit a request to update the personal details on your account.',
+                'default_ticket_type' => TicketType::TASK,
+                'default_ticket_priority' => TicketPriority::NORMAL,
+                'fields' => [
+                    [
+                        'type' => FormFieldType::TEXT,
+                        'label' => 'Full name',
+                        'description' => 'The full name we should display on your account.',
+                        'is_required' => true,
+                        'validation_rules' => [
+                            ['rule' => 'string', 'value' => null],
+                            ['rule' => 'max', 'value' => '120'],
+                        ],
+                    ],
+                    [
+                        'type' => FormFieldType::EMAIL,
+                        'label' => 'Current email',
+                        'description' => 'The email address currently on file.',
+                        'is_required' => true,
+                    ],
+                    [
+                        'type' => FormFieldType::TEXT,
+                        'label' => 'Phone number',
+                        'description' => 'Optional contact number, in international format.',
+                        'is_required' => false,
+                    ],
+                    [
+                        'type' => FormFieldType::TEXTAREA,
+                        'label' => 'What would you like to update',
+                        'description' => 'Describe what should change in your profile.',
+                        'is_required' => true,
+                    ],
+                ],
+            ],
+            [
+                'section_id' => $basicSettings->id,
+                'name' => 'Reset password request',
+                'description' => 'Tell us how to help you regain access to your account.',
+                'default_ticket_type' => TicketType::PROBLEM,
+                'default_ticket_priority' => TicketPriority::HIGH,
+                'fields' => [
+                    [
+                        'type' => FormFieldType::EMAIL,
+                        'label' => 'Account email',
+                        'description' => 'The email address used to sign in.',
+                        'is_required' => true,
+                    ],
+                    [
+                        'type' => FormFieldType::SELECT,
+                        'label' => 'Account type',
+                        'options' => [
+                            'personal' => 'Personal',
+                            'business' => 'Business',
+                            'enterprise' => 'Enterprise',
+                        ],
+                        'is_required' => true,
+                    ],
+                    [
+                        'type' => FormFieldType::RADIO,
+                        'label' => 'Reason for reset',
+                        'options' => [
+                            'forgot' => 'I forgot my password',
+                            'compromised' => 'I think my account was compromised',
+                            'rotating' => 'Routine password rotation',
+                            'other' => 'Other',
+                        ],
+                        'is_required' => true,
+                    ],
+                    [
+                        'type' => FormFieldType::TEXTAREA,
+                        'label' => 'Additional details',
+                        'description' => 'Anything else our team should know.',
+                        'is_required' => false,
+                    ],
+                ],
+            ],
+            [
+                'section_id' => $basicSettings->id,
+                'name' => 'Change email address',
+                'description' => 'Move your account to a new primary email address.',
+                'default_ticket_type' => TicketType::TASK,
+                'default_ticket_priority' => TicketPriority::NORMAL,
+                'fields' => [
+                    [
+                        'type' => FormFieldType::EMAIL,
+                        'label' => 'Current email',
+                        'is_required' => true,
+                    ],
+                    [
+                        'type' => FormFieldType::EMAIL,
+                        'label' => 'New email',
+                        'description' => 'You will receive a verification link at this address.',
+                        'is_required' => true,
+                    ],
+                    [
+                        'type' => FormFieldType::TEXTAREA,
+                        'label' => 'Reason for change',
+                        'is_required' => false,
+                    ],
+                    [
+                        'type' => FormFieldType::CHECKBOX,
+                        'label' => 'Confirmation',
+                        'options' => [
+                            'has_access' => 'I confirm I have access to the new email address',
+                            'understands' => 'I understand sign-in credentials will change',
+                        ],
+                        'is_required' => true,
+                    ],
+                ],
+            ],
+            [
+                'section_id' => $basicSettings->id,
+                'name' => 'Account deletion request',
+                'description' => 'Permanently close your account. This cannot be undone.',
+                'default_ticket_type' => TicketType::PROBLEM,
+                'default_ticket_priority' => TicketPriority::URGENT,
+                'fields' => [
+                    [
+                        'type' => FormFieldType::EMAIL,
+                        'label' => 'Account email',
+                        'is_required' => true,
+                    ],
+                    [
+                        'type' => FormFieldType::SELECT,
+                        'label' => 'Reason for leaving',
+                        'options' => [
+                            'switching' => 'Switching to a different product',
+                            'privacy' => 'Privacy concerns',
+                            'unused' => 'No longer needed',
+                            'cost' => 'Too expensive',
+                            'other' => 'Other',
+                        ],
+                        'is_required' => true,
+                    ],
+                    [
+                        'type' => FormFieldType::TEXTAREA,
+                        'label' => 'Feedback',
+                        'description' => 'Help us improve — what could we have done better?',
+                        'is_required' => false,
+                    ],
+                    [
+                        'type' => FormFieldType::DATE,
+                        'label' => 'Preferred deletion date',
+                        'description' => 'Leave empty to delete as soon as possible.',
+                        'is_required' => false,
+                    ],
+                    [
+                        'type' => FormFieldType::CHECKBOX,
+                        'label' => 'Acknowledgement',
+                        'options' => [
+                            'irreversible' => 'I understand this action is permanent and irreversible',
+                            'data_loss' => 'I have downloaded any data I want to keep',
+                        ],
+                        'is_required' => true,
+                    ],
+                ],
+            ],
+            [
+                'section_id' => $notifications->id,
+                'name' => 'Notification preferences support',
+                'description' => 'Need help configuring how and when you receive notifications? Tell us what you need.',
+                'default_ticket_type' => TicketType::QUESTION,
+                'default_ticket_priority' => TicketPriority::LOW,
+                'fields' => [
+                    [
+                        'type' => FormFieldType::EMAIL,
+                        'label' => 'Account email',
+                        'is_required' => true,
+                    ],
+                    [
+                        'type' => FormFieldType::SELECT,
+                        'label' => 'Preferred channel',
+                        'options' => [
+                            'email' => 'Email',
+                            'desktop' => 'Desktop',
+                            'both' => 'Both email and desktop',
+                            'none' => 'No notifications',
+                        ],
+                        'is_required' => true,
+                    ],
+                    [
+                        'type' => FormFieldType::CHECKBOX,
+                        'label' => 'Notification categories',
+                        'description' => 'Pick everything you want to keep receiving.',
+                        'options' => [
+                            'product_updates' => 'Product updates',
+                            'newsletter' => 'Newsletter',
+                            'marketing' => 'Marketing and promotions',
+                            'security' => 'Security alerts',
+                        ],
+                        'is_required' => false,
+                    ],
+                    [
+                        'type' => FormFieldType::DATETIME_LOCAL,
+                        'label' => 'Snooze notifications until',
+                        'description' => 'Optional — pause all alerts until a specific date and time.',
+                        'is_required' => false,
+                    ],
+                    [
+                        'type' => FormFieldType::TEXTAREA,
+                        'label' => 'Additional context',
+                        'is_required' => false,
+                    ],
+                ],
+            ],
+        ];
+
+        foreach ($forms as $formData) {
+            $fields = $formData['fields'];
+            unset($formData['fields']);
+
+            $form = Form::create(array_merge($formData, [
+                'user_id' => $user->id,
+                'settings' => [],
+                'is_public' => true,
+                'is_active' => true,
+            ]));
+
+            foreach ($fields as $field) {
+                FormField::create(array_merge($field, [
+                    'form_id' => $form->id,
+                ]));
+            }
         }
     }
 }
