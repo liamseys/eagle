@@ -54,6 +54,8 @@ class TicketResource extends Resource
                             ->schema([
                                 View::make('filament.forms.components.ticket-duplicate-message')
                                     ->hidden(fn (?Ticket $record) => ! $record || ! $record->duplicate_of_ticket_id),
+                                View::make('filament.forms.components.ticket-scheduled-close-message')
+                                    ->hidden(fn (?Ticket $record) => ! $record || ! $record->scheduled_close_at || $record->status === TicketStatus::CLOSED),
                                 Grid::make()
                                     ->schema([
                                         Select::make('priority')

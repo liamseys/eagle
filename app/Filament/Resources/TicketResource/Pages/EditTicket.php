@@ -12,8 +12,10 @@ use App\Filament\Infolists\Components\TicketActivity;
 use App\Filament\Resources\TicketResource;
 use App\Models\Ticket;
 use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Notifications\Notification;
 use Filament\Resources\Pages\EditRecord;
@@ -79,6 +81,54 @@ class EditTicket extends EditRecord
                         ->success()
                         ->send();
                 })->hidden(fn ($livewire) => $livewire->record->duplicate_of_ticket_id),
+            ActionGroup::make([
+                Action::make('closeNow')
+                    ->label(__('Close now'))
+                    ->icon('heroicon-o-check-circle')
+                    ->requiresConfirmation()
+                    ->action(function (Ticket $record) {
+                        app(UpdateTicketStatus::class)->handle($record, TicketStatus::CLOSED);
+
+                        Notification::make()
+                            ->title(__('Ticket closed'))
+                            ->success()
+                            ->send();
+                    }),
+                Action::make('scheduleClose')
+                    ->label(__('Schedule for closing'))
+                    ->icon('heroicon-o-clock')
+                    ->modalHeading(__('Schedule ticket for closing'))
+                    ->modalDescription(__('The ticket will be automatically closed at the selected date and time.'))
+                    ->modalSubmitActionLabel(__('Schedule'))
+                    ->modalWidth(Width::Medium)
+                    ->schema([
+                        DateTimePicker::make('scheduled_close_at')
+                            ->label(__('Scheduled close at'))
+                            ->seconds(false)
+                            ->native(false)
+                            ->required()
+                            ->after('now'),
+                    ])
+                    ->fillForm(fn (Ticket $record): array => [
+                        'scheduled_close_at' => $record->scheduled_close_at,
+                    ])
+                    ->action(function (array $data, Ticket $record) {
+                        $record->update([
+                            'scheduled_close_at' => $data['scheduled_close_at'],
+                        ]);
+
+                        Notification::make()
+                            ->title(__('Ticket scheduled for closing'))
+                            ->success()
+                            ->send();
+                    }),
+            ])
+                ->label(__('Close'))
+                ->icon('heroicon-o-x-circle')
+                ->color('warning')
+                ->button()
+                ->dropdownPlacement('bottom-end')
+                ->hidden(fn ($livewire) => $livewire->record->status === TicketStatus::CLOSED),
             DeleteAction::make()
                 ->icon('heroicon-o-trash'),
         ];

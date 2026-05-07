@@ -41,6 +41,7 @@ class Ticket extends Model
         'type',
         'status',
         'is_escalated',
+        'scheduled_close_at',
     ];
 
     /**
@@ -55,6 +56,7 @@ class Ticket extends Model
             'type' => TicketType::class,
             'status' => TicketStatus::class,
             'is_escalated' => 'boolean',
+            'scheduled_close_at' => 'datetime',
         ];
     }
 
