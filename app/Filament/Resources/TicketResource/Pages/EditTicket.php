@@ -71,10 +71,11 @@ class EditTicket extends EditRecord
                         'duplicate_of_ticket_id' => $ticket->id,
                     ]);
 
-                    $updateTicketStatus = app(UpdateTicketStatus::class);
-                    $updateTicketStatus->handle($record, TicketStatus::CLOSED, [
-                        'reason' => 'The ticket was closed because it is a duplicate.',
-                    ]);
+                    if ($record->status !== TicketStatus::CLOSED) {
+                        app(UpdateTicketStatus::class)->handle($record, TicketStatus::CLOSED, [
+                            'reason' => 'The ticket was closed because it is a duplicate.',
+                        ]);
+                    }
 
                     Notification::make()
                         ->title(__('Merged into ticket #'.$ticket->ticket_id))
