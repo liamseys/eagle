@@ -97,6 +97,7 @@ class EditTicket extends EditRecord
                 Action::make('scheduleClose')
                     ->label(__('Schedule for closing'))
                     ->icon('heroicon-o-clock')
+                    ->disabled(fn (Ticket $record): bool => $record->scheduled_close_at !== null)
                     ->modalHeading(__('Schedule ticket for closing'))
                     ->modalDescription(__('The ticket will be automatically closed at the selected date and time.'))
                     ->modalSubmitActionLabel(__('Schedule'))
