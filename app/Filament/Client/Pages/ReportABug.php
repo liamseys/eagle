@@ -3,7 +3,6 @@
 namespace App\Filament\Client\Pages;
 
 use App\Enums\Tickets\TicketPriority;
-use App\Enums\Tickets\TicketStatus;
 use App\Enums\Tickets\TicketType;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
@@ -77,7 +76,6 @@ class ReportABug extends Page
             'subject' => $formData['title'],
             'priority' => TicketPriority::NORMAL,
             'type' => TicketType::PROBLEM,
-            'status' => TicketStatus::OPEN,
         ]);
 
         $ticket->comments()->create([
