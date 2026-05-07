@@ -104,7 +104,7 @@ class EditTicket extends EditRecord
                     ->modalWidth(Width::Medium)
                     ->schema([
                         DateTimePicker::make('scheduled_close_at')
-                            ->label(__('Scheduled close at'))
+                            ->label(__('Close ticket on'))
                             ->seconds(false)
                             ->native(false)
                             ->required()
