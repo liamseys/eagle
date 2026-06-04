@@ -3,4 +3,4 @@
 <textarea
     {{ $disabled ? 'disabled' : '' }}
     {{ $required ? 'required' : '' }}
-    {!! $attributes->merge(['class' => 'text-sm rounded-md border-gray-300 shadow-sm focus:border-black focus:ring-black disabled:cursor-not-allowed disabled:bg-gray-50 disabled:text-gray-500 disabled:ring-gray-200']) !!}></textarea>
+    {!! $attributes->merge(['class' => 'block w-full rounded-lg border-gray-950/10 text-sm text-gray-900 shadow-xs transition placeholder:text-gray-400 focus:border-gray-950 focus:ring-1 focus:ring-gray-950 disabled:cursor-not-allowed disabled:border-gray-950/5 disabled:bg-gray-50 disabled:text-gray-500']) !!}></textarea>

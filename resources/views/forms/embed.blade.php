@@ -77,10 +77,10 @@
                                         <fieldset class="flex flex-col space-y-1">
                                             @foreach($formField->options as $value => $label)
                                                 <div class="flex flex-row items-center gap-2">
-                                                    <input type="radio" name="{{ $formField->name }}"
-                                                           id="{{ $formField->name . '_' . $value }}"
-                                                           value="{{ $value }}"
-                                                        {{ $formField->is_required ? 'required' : '' }}>
+                                                    <x-radio name="{{ $formField->name }}"
+                                                             id="{{ $formField->name . '_' . $value }}"
+                                                             value="{{ $value }}"
+                                                             :required="$formField->is_required"/>
                                                     <x-label
                                                         for="{{ $formField->name . '_' . $value }}">{{ $label }}</x-label>
                                                 </div>
@@ -126,6 +126,8 @@
                                 @isset($formField->description)
                                     <p class="break-words text-sm text-gray-500">{{ $formField->description }}</p>
                                 @endisset
+
+                                <x-input-error :messages="$errors->get($formField->name)"/>
                             </div>
                         @endforeach
 
