@@ -49,14 +49,9 @@
 
                     <article class="overflow-hidden rounded-2xl border border-gray-950/5 bg-white shadow-xs">
                         <header class="border-b border-gray-950/5 px-6 py-6 sm:px-8 sm:py-7">
-                            <h1 class="text-balance text-2xl font-semibold tracking-tight text-gray-900 sm:text-3xl">
-                                {{ $article->title }}
-                            </h1>
-                            @if(!empty($article->description))
-                                <p class="mt-2 max-w-2xl text-pretty text-sm text-gray-500 sm:text-base">
-                                    {{ $article->description }}
-                                </p>
-                            @endif
+                            <x-page-header as="h1" :title="$article->title">
+                                {{ $article->description }}
+                            </x-page-header>
                         </header>
 
                         <div class="article-content px-6 py-7 sm:px-8 sm:py-9">

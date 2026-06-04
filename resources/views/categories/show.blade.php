@@ -7,12 +7,9 @@
 
     <section class="py-14 sm:py-16">
         <x-container class="max-w-7xl">
-            <div class="flex flex-col gap-1">
-                <h2 class="text-balance text-2xl font-semibold tracking-tight text-gray-900">{{ $category->name }}</h2>
-                @if(!empty($category->description))
-                    <p class="max-w-2xl text-pretty text-sm text-gray-500">{{ $category->description }}</p>
-                @endif
-            </div>
+            <x-page-header :title="$category->name">
+                {{ $category->description }}
+            </x-page-header>
 
             @if(!$sections->isEmpty())
                 <div class="mt-8 grid grid-cols-1 items-start gap-5 sm:grid-cols-2 lg:grid-cols-3">

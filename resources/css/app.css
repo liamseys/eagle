@@ -58,10 +58,3 @@
         @apply rounded-xl;
     }
 }
-
-.form-description {
-    & p,
-    & ul {
-        @apply text-sm text-gray-500;
-    }
-}

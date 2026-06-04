@@ -58,12 +58,9 @@
                     @else
                     <x-card>
                         <x-slot name="header">
-                            <div class="flex flex-col gap-2">
-                                <h2 class="text-balance text-xl font-semibold tracking-tight text-gray-900 sm:text-2xl">{{ $form->name }}</h2>
-                                <div class="form-description">
-                                    {!! $form->description !!}
-                                </div>
-                            </div>
+                            <x-page-header :title="$form->name">
+                                {!! $form->description !!}
+                            </x-page-header>
                         </x-slot>
 
                         <form method="POST" action="{{ route('forms.submit') }}">
