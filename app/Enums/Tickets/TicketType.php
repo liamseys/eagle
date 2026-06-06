@@ -2,15 +2,26 @@
 
 namespace App\Enums\Tickets;
 
+use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
 
-enum TicketType: string implements HasIcon, HasLabel
+enum TicketType: string implements HasColor, HasIcon, HasLabel
 {
     case QUESTION = 'question';
     case INCIDENT = 'incident';
     case PROBLEM = 'problem';
     case TASK = 'task';
+
+    public function getColor(): string|array|null
+    {
+        return match ($this) {
+            self::QUESTION => 'info',
+            self::INCIDENT => 'warning',
+            self::PROBLEM => 'danger',
+            self::TASK => 'success',
+        };
+    }
 
     public function getIcon(): ?string
     {
