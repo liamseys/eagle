@@ -3,11 +3,12 @@
 namespace App\Notifications;
 
 use App\Models\Ticket;
+use App\Settings\AdvancedSettings;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class TicketResolved extends Notification
+class TicketSolved extends Notification
 {
     use Queueable;
 
@@ -36,11 +37,13 @@ class TicketResolved extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $hours = app(AdvancedSettings::class)->auto_close_solved_after_hours;
+
         return (new MailMessage)
             ->replyTo($this->ticket->getSupportEmailWithTicketId())
-            ->subject(__('Ticket resolved'))
-            ->line(__('An agent has marked your ticket as resolved.'))
-            ->line(__('To reopen the ticket, simply reply to this email. Otherwise, it will be automatically closed after 48 hours.'));
+            ->subject(__('Ticket solved'))
+            ->line(__('An agent has marked your ticket as solved.'))
+            ->line(__('To reopen the ticket, simply reply to this email. Otherwise, it will be automatically closed after :hours hours.', ['hours' => $hours]));
     }
 
     /**

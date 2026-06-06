@@ -34,7 +34,7 @@ return new class extends Migration
                 ->default(TicketPriority::NORMAL);
             $table->string('type');
             $table->string('status')
-                ->default(TicketStatus::OPEN);
+                ->default(TicketStatus::NEW);
             $table->boolean('is_escalated')
                 ->default(false);
             $table->timestamps();

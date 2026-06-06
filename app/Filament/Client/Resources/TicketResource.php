@@ -18,6 +18,7 @@ use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class TicketResource extends Resource
 {
@@ -65,7 +66,7 @@ class TicketResource extends Resource
 
                                 Placeholder::make('status')
                                     ->label(__('Status'))
-                                    ->content(fn (Ticket $record): ?string => $record->status->getLabel()),
+                                    ->content(fn (Ticket $record): ?string => $record->status->requesterFacing()->getLabel()),
                                 Placeholder::make('assignee')
                                     ->label(__('Assignee'))
                                     ->content(fn (Ticket $record): ?string => $record->assignee ? $record->assignee->name : '-'),
@@ -109,7 +110,10 @@ class TicketResource extends Resource
                 TextColumn::make('status')
                     ->label(__('Status'))
                     ->badge()
-                    ->searchable(),
+                    // Requesters never see On-hold; it is presented as Open.
+                    ->formatStateUsing(fn (TicketStatus $state): string => $state->requesterFacing()->getLabel())
+                    ->color(fn (TicketStatus $state): string|array|null => $state->requesterFacing()->getColor())
+                    ->icon(fn (TicketStatus $state): ?string => $state->requesterFacing()->getIcon()),
                 TextColumn::make('created_at')
                     ->label(__('Created at'))
                     ->dateTime()
@@ -124,7 +128,25 @@ class TicketResource extends Resource
             ->filters([
                 SelectFilter::make('status')
                     ->label(__('Status'))
-                    ->options(TicketStatus::class)
+                    // On-hold is internal; requesters filter by the statuses they can see.
+                    ->options(collect(TicketStatus::cases())
+                        ->reject(fn (TicketStatus $status): bool => $status === TicketStatus::ON_HOLD)
+                        ->mapWithKeys(fn (TicketStatus $status): array => [$status->value => $status->getLabel()])
+                        ->all())
+                    ->query(function (Builder $query, array $data): Builder {
+                        $value = $data['value'] ?? null;
+
+                        if ($value === null || $value === '') {
+                            return $query;
+                        }
+
+                        // Since On-hold appears as Open to requesters, the Open filter matches both.
+                        if ($value === TicketStatus::OPEN->value) {
+                            return $query->whereIn('status', [TicketStatus::OPEN->value, TicketStatus::ON_HOLD->value]);
+                        }
+
+                        return $query->where('status', $value);
+                    })
                     ->searchable()
                     ->preload(),
             ])

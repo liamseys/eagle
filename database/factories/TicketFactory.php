@@ -35,4 +35,14 @@ class TicketFactory extends Factory
             'created_at' => fake()->dateTimeBetween('-3 months', 'now'),
         ];
     }
+
+    /**
+     * Set a specific status on the ticket.
+     */
+    public function withStatus(TicketStatus $status): static
+    {
+        return $this->state(fn (array $attributes): array => [
+            'status' => $status,
+        ]);
+    }
 }

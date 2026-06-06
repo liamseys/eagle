@@ -68,6 +68,14 @@ class ManageAdvanced extends SettingsPage
                                         'current' => app(AdvancedSettings::class)->ticket_id_start ?? 1,
                                     ]))
                                     ->columnSpan(2),
+                                TextInput::make('auto_close_solved_after_hours')
+                                    ->label(__('Auto-close solved tickets after (hours)'))
+                                    ->numeric()
+                                    ->required()
+                                    ->minValue(1)
+                                    ->maxValue(8760)
+                                    ->helperText(__('Number of hours a ticket stays Solved before it is automatically closed.'))
+                                    ->columnSpan(2),
                             ])->columns(3),
                     ]),
             ]);

@@ -151,7 +151,7 @@ class Ticket extends Model
      */
     public function scopeSolved(Builder $query): void
     {
-        $query->whereIn('status', [TicketStatus::RESOLVED->value, TicketStatus::CLOSED->value]);
+        $query->whereIn('status', [TicketStatus::SOLVED->value, TicketStatus::CLOSED->value]);
     }
 
     /**
@@ -159,6 +159,6 @@ class Ticket extends Model
      */
     public function scopeUnsolved(Builder $query): void
     {
-        $query->whereIn('status', [TicketStatus::OPEN->value, TicketStatus::PENDING->value, TicketStatus::ON_HOLD->value]);
+        $query->whereIn('status', [TicketStatus::NEW->value, TicketStatus::OPEN->value, TicketStatus::PENDING->value, TicketStatus::ON_HOLD->value]);
     }
 }

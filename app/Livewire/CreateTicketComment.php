@@ -2,7 +2,6 @@
 
 namespace App\Livewire;
 
-use App\Actions\Tickets\UpdateTicketStatus;
 use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket;
 use App\Models\User;
@@ -95,8 +94,7 @@ class CreateTicketComment extends Component implements HasActions, HasForms
             $this->ticket->update(['assignee_id' => $user->id]);
         }
 
-        // Update the ticket status
-        app(UpdateTicketStatus::class)->handle($this->ticket, TicketStatus::PENDING);
+        // Comment-driven status transitions are handled by TicketCommentObserver.
 
         // Notify the requester if the comment is public
         if (isset($formData['is_public']) && $formData['is_public'] && $this->ticket->requester) {

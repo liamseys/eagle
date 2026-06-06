@@ -15,7 +15,7 @@ return new class extends Migration
             $table->dropConstrainedForeignId('user_id');
 
             $table->after('ticket_id', function (Blueprint $table) {
-                $table->ulidMorphs('authorable');
+                $table->nullableUlidMorphs('authorable');
             });
         });
     }

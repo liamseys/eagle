@@ -105,7 +105,7 @@ class CannedResponseSeeder extends Seeder
                 'content' => "<p>Hi {$clientName},</p><p>Thanks for the detail. I've escalated this to our engineering team under ticket #{$ticketId} — current status is <strong>{$ticketStatus}</strong>. I'll come back to you as soon as I have an update.</p><p>{$agentName}</p>",
             ],
             [
-                'title' => 'Resolved — ask to confirm',
+                'title' => 'Solved — ask to confirm',
                 'category' => 'Closing',
                 'is_shared' => true,
                 'content' => "<p>Hi {$clientName},</p><p>I believe we've sorted out \"{$ticketSubject}\". Could you take a quick look on your side and let me know it's working as expected? I'll keep the ticket open for 48 hours just in case.</p><p>Cheers,<br>{$agentName}</p>",

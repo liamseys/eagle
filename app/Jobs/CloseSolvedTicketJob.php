@@ -8,7 +8,7 @@ use App\Models\Ticket;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 
-class CloseResolvedTicketJob implements ShouldQueue
+class CloseSolvedTicketJob implements ShouldQueue
 {
     use Queueable;
 

@@ -74,6 +74,11 @@ class TicketResource extends Resource
                                         Select::make('status')
                                             ->label(__('Status'))
                                             ->options(TicketStatus::class)
+                                            // New can't be set back to, and Closed is reached via the Close action only.
+                                            ->disableOptionWhen(fn (string $value): bool => in_array($value, [
+                                                TicketStatus::NEW->value,
+                                                TicketStatus::CLOSED->value,
+                                            ], true))
                                             ->searchable()
                                             ->preload()
                                             ->required()

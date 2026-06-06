@@ -2,13 +2,16 @@
 
 namespace App\Models;
 
+use App\Observers\TicketCommentObserver;
 use Database\Factories\TicketCommentFactory;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
+#[ObservedBy([TicketCommentObserver::class])]
 class TicketComment extends Model
 {
     /** @use HasFactory<TicketCommentFactory> */
