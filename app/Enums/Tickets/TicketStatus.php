@@ -2,7 +2,6 @@
 
 namespace App\Enums\Tickets;
 
-use Filament\Support\Colors\Color;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasIcon;
 use Filament\Support\Contracts\HasLabel;
@@ -22,7 +21,7 @@ enum TicketStatus: string implements HasColor, HasIcon, HasLabel
             self::NEW => 'warning',
             self::OPEN => 'danger',
             self::PENDING => 'info',
-            self::ON_HOLD => Color::Violet,
+            self::ON_HOLD => 'onhold',
             self::SOLVED => 'gray',
             self::CLOSED => 'gray',
         };
