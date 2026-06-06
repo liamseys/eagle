@@ -101,16 +101,6 @@ class Ticket extends Model
     }
 
     /**
-     * A ticket has many SLAs.
-     *
-     * @return HasMany
-     */
-    public function slas()
-    {
-        return $this->hasMany(TicketSla::class);
-    }
-
-    /**
      * A ticket has many fields.
      *
      * @return HasMany
