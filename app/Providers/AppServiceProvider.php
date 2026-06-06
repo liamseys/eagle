@@ -94,29 +94,6 @@ class AppServiceProvider extends ServiceProvider
     }
 
     /**
-     * A dedicated dark neutral palette, used exclusively for the "On Hold" ticket status.
-     *
-     * Soft mid-gray light shades render a filled badge background, while the darker
-     * shades give charcoal text. This keeps "On Hold" recognisably heavier than the
-     * near-white zinc badges used by the Solved and Closed statuses.
-     *
-     * @var array<int, string>
-     */
-    private const ON_HOLD_COLOR = [
-        50 => 'oklch(0.93 0 0)',
-        100 => 'oklch(0.88 0 0)',
-        200 => 'oklch(0.81 0 0)',
-        300 => 'oklch(0.73 0 0)',
-        400 => 'oklch(0.65 0 0)',
-        500 => 'oklch(0.57 0 0)',
-        600 => 'oklch(0.38 0 0)',
-        700 => 'oklch(0.31 0 0)',
-        800 => 'oklch(0.24 0 0)',
-        900 => 'oklch(0.18 0 0)',
-        950 => 'oklch(0.12 0 0)',
-    ];
-
-    /**
      * Configure the Filament color settings.
      */
     private function configureFilamentColor(GeneralSettings $generalSettings): void
@@ -127,10 +104,7 @@ class AppServiceProvider extends ServiceProvider
             $color = Color::generateV3Palette('#000000');
         }
 
-        FilamentColor::register([
-            'primary' => $color,
-            'onhold' => self::ON_HOLD_COLOR,
-        ]);
+        FilamentColor::register(['primary' => $color]);
     }
 
     /**
