@@ -8,6 +8,8 @@ use App\Enums\Tickets\TicketType;
 use App\Models\Scopes\ClientScope;
 use App\Models\Scopes\GroupScope;
 use App\Observers\TicketObserver;
+use App\Services\Sla\SlaStatusFactory;
+use App\Support\Sla\TicketSla;
 use App\Traits\HasNotes;
 use Database\Factories\TicketFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -57,7 +59,22 @@ class Ticket extends Model
             'status' => TicketStatus::class,
             'is_escalated' => 'boolean',
             'scheduled_close_at' => 'datetime',
+            'first_response_due_at' => 'datetime',
+            'first_responded_at' => 'datetime',
+            'resolution_due_at' => 'datetime',
+            'resolved_at' => 'datetime',
+            'sla_alerts' => 'array',
         ];
+    }
+
+    /**
+     * The live SLA status (deadlines, achievements and breach state) for the ticket.
+     *
+     * The calculation lives in the factory so the model stays free of SLA logic.
+     */
+    public function sla(): TicketSla
+    {
+        return app(SlaStatusFactory::class)->for($this);
     }
 
     /**

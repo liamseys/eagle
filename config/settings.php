@@ -2,6 +2,7 @@
 
 use App\Settings\AdvancedSettings;
 use App\Settings\GeneralSettings;
+use App\Settings\WorkflowSettings;
 use Spatie\LaravelData\Data;
 use Spatie\LaravelSettings\SettingsCasts\DataCast;
 use Spatie\LaravelSettings\SettingsCasts\DateTimeInterfaceCast;
@@ -17,8 +18,8 @@ return [
      */
     'settings' => [
         GeneralSettings::class,
-        GeneralSettings::class,
         AdvancedSettings::class,
+        WorkflowSettings::class,
     ],
 
     /*

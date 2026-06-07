@@ -7,6 +7,7 @@ use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket;
 use App\Models\TicketComment;
 use App\Models\User;
+use App\Services\Sla\SlaTracker;
 
 class TicketCommentObserver
 {
@@ -31,6 +32,12 @@ class TicketCommentObserver
         }
 
         if ($comment->authorable_type === User::class) {
+            // A public agent reply is the SLA first response, even on a New ticket
+            // whose status is intentionally left unchanged.
+            if ($comment->is_public === true) {
+                app(SlaTracker::class)->recordFirstResponse($ticket);
+            }
+
             // Public agent reply -> Pending. Internal notes never change the status, and a
             // New ticket is left as New.
             if ($comment->is_public === true && in_array($ticket->status, [

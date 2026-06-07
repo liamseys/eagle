@@ -149,6 +149,9 @@ class TicketResource extends Resource
                                     ->preload()
                                     ->helperText(__('The group assigned to the ticket.')),
                             ]),
+                        View::make('filament.infolists.components.ticket-sla')
+                            ->hiddenOn(['create'])
+                            ->visible(fn (?Ticket $record): bool => (bool) $record?->sla()->isActive()),
                         Section::make(__('Metadata'))
                             ->schema([
                                 Placeholder::make('created_at')
@@ -191,6 +194,14 @@ class TicketResource extends Resource
                     ->label(__('Status'))
                     ->badge()
                     ->searchable(),
+                TextColumn::make('sla_status')
+                    ->label(__('SLA'))
+                    ->badge()
+                    ->state(fn (Ticket $record): ?string => $record->sla()->overallState()?->getLabel())
+                    ->color(fn (Ticket $record): string => $record->sla()->overallState()?->getColor() ?? 'gray')
+                    ->icon(fn (Ticket $record): ?string => $record->sla()->overallState()?->getIcon())
+                    ->placeholder('—')
+                    ->toggleable(),
                 TextColumn::make('created_at')
                     ->label(__('Created at'))
                     ->dateTime()

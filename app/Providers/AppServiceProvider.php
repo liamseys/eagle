@@ -11,6 +11,7 @@ use App\Policies\ArticlePolicy;
 use App\Policies\CategoryPolicy;
 use App\Policies\FormPolicy;
 use App\Settings\GeneralSettings;
+use App\Support\Sla\BusinessHours;
 use BeyondCode\Mailbox\Facades\Mailbox;
 use Filament\Schemas\Components\Fieldset;
 use Filament\Schemas\Components\Grid;
@@ -35,6 +36,10 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->singleton(GeneralSettings::class, function () {
             return new GeneralSettings;
+        });
+
+        $this->app->bind(BusinessHours::class, function ($app) {
+            return BusinessHours::fromSettings($app->make(GeneralSettings::class));
         });
     }
 

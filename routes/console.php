@@ -2,6 +2,7 @@
 
 use App\Console\Commands\CloseScheduledTicketsCommand;
 use App\Console\Commands\CloseSolvedTicketsCommand;
+use App\Console\Commands\EvaluateSlaCommand;
 use App\Console\Commands\ImportImapEmailsCommand;
 use BeyondCode\Mailbox\Console\CleanEmails;
 use Illuminate\Foundation\Inspiring;
@@ -15,6 +16,7 @@ Artisan::command('inspire', function () {
 Schedule::command(CleanEmails::class)->daily();
 Schedule::command(CloseSolvedTicketsCommand::class)->daily();
 Schedule::command(CloseScheduledTicketsCommand::class)->everyMinute();
+Schedule::command(EvaluateSlaCommand::class)->everyFiveMinutes();
 Schedule::command(ImportImapEmailsCommand::class)->everyMinute();
 Schedule::command('auth:clear-resets')->everyFifteenMinutes();
 Schedule::command('sanctum:prune-expired --hours=24')->daily();
