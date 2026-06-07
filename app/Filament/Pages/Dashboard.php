@@ -2,14 +2,12 @@
 
 namespace App\Filament\Pages;
 
+use App\Filament\Widgets\AnalyticsOverview;
 use App\Filament\Widgets\OpenTicketsByAgentChart;
 use App\Filament\Widgets\OperationalOverview;
 use App\Filament\Widgets\ResponseTimeMetrics;
 use App\Filament\Widgets\SlaAttentionTable;
 use App\Filament\Widgets\SlaPerformanceOverview;
-use App\Filament\Widgets\StatsOverview;
-use App\Filament\Widgets\TicketPriorityChart;
-use App\Filament\Widgets\TicketTypeChart;
 use App\Filament\Widgets\WorkloadOverview;
 use App\Models\Client;
 use App\Models\Group;
@@ -134,17 +132,18 @@ class Dashboard extends BaseDashboard
                     ->tabs([
                         Tab::make(__('Overview'))
                             ->icon('heroicon-m-bolt')
-                            ->schema($this->tabWidgets([
-                                OperationalOverview::class,
-                                SlaAttentionTable::class,
-                            ])),
+                            ->schema([
+                                Grid::make(4)
+                                    ->schema([
+                                        $this->widget(OperationalOverview::class, ['default' => 4, 'lg' => 3]),
+                                        ...$this->getWidgetsSchemaComponents([SlaAttentionTable::class]),
+                                    ]),
+                            ]),
                         Tab::make(__('Analytics'))
                             ->icon('heroicon-m-chart-pie')
                             ->schema($this->tabWidgets([
-                                StatsOverview::class,
-                                TicketPriorityChart::class,
-                                TicketTypeChart::class,
-                            ])),
+                                AnalyticsOverview::class,
+                            ], columns: 1)),
                         Tab::make(__('Performance'))
                             ->icon('heroicon-m-trophy')
                             ->schema($this->tabWidgets([
@@ -162,17 +161,32 @@ class Dashboard extends BaseDashboard
     }
 
     /**
-     * Render a list of widget classes in the dashboard's responsive grid.
+     * Render a list of widget classes in a responsive grid.
      *
      * @param  array<class-string>  $widgets
+     * @param  int|array<string, int>|null  $columns
      * @return array<Component>
      */
-    private function tabWidgets(array $widgets): array
+    private function tabWidgets(array $widgets, int|array|null $columns = null): array
     {
         return [
-            Grid::make($this->getColumns())
+            Grid::make($columns ?? $this->getColumns())
                 ->schema($this->getWidgetsSchemaComponents($widgets)),
         ];
+    }
+
+    /**
+     * Build a single widget component that participates in the surrounding grid at
+     * a given column span (rather than being liberated from it).
+     *
+     * @param  class-string  $widgetClass
+     * @param  int|string|array<string, int|string>  $columnSpan
+     */
+    private function widget(string $widgetClass, int|string|array $columnSpan): Component
+    {
+        return $this->getWidgetsSchemaComponents([$widgetClass])[0]
+            ->liberatedFromContainerGrid(false)
+            ->columnSpan($columnSpan);
     }
 
     public function persistsFiltersInSession(): bool

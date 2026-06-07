@@ -2,6 +2,7 @@
 
 use App\Enums\Tickets\TicketStatus;
 use App\Filament\Pages\Dashboard;
+use App\Filament\Widgets\AnalyticsOverview;
 use App\Filament\Widgets\OpenTicketsByAgentChart;
 use App\Filament\Widgets\OperationalOverview;
 use App\Filament\Widgets\ResponseTimeMetrics;
@@ -97,6 +98,17 @@ it('reports the open workload', function () {
         ->assertSuccessful()
         ->assertSee('Open tickets')
         ->assertSee('Unassigned');
+});
+
+it('renders the analytics overview with volume and distribution', function () {
+    openTicket();
+
+    Livewire::test(AnalyticsOverview::class)
+        ->assertSuccessful()
+        ->assertSee('Created')
+        ->assertSee('Solve rate')
+        ->assertSee('By priority')
+        ->assertSee('By type');
 });
 
 it('renders the open tickets by agent chart', function () {
