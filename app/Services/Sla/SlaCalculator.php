@@ -29,7 +29,9 @@ final class SlaCalculator
             return null;
         }
 
-        return $this->businessHours->addMinutes($ticket->created_at, $target->firstResponseMinutes);
+        return $this->toStorageTimezone(
+            $this->businessHours->addMinutes($ticket->created_at, $target->firstResponseMinutes)
+        );
     }
 
     public function resolutionDueAt(Ticket $ticket): ?CarbonImmutable
@@ -40,7 +42,20 @@ final class SlaCalculator
             return null;
         }
 
-        return $this->businessHours->addMinutes($ticket->created_at, $target->resolutionMinutes);
+        return $this->toStorageTimezone(
+            $this->businessHours->addMinutes($ticket->created_at, $target->resolutionMinutes)
+        );
+    }
+
+    /**
+     * Deadlines are computed in the business timezone, but Eloquent persists a
+     * datetime's wall-clock without converting timezones. Normalise to the app
+     * (storage) timezone so the saved instant matches the real deadline instead
+     * of drifting by the business-hours offset.
+     */
+    private function toStorageTimezone(CarbonImmutable $moment): CarbonImmutable
+    {
+        return $moment->setTimezone(config('app.timezone'));
     }
 
     private function targetFor(Ticket $ticket): ?SlaTarget

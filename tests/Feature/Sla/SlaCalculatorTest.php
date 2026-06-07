@@ -45,6 +45,22 @@ it('computes the resolution deadline across multiple business days', function ()
     expect($due->format('Y-m-d H:i'))->toBe('2026-06-10 17:00');
 });
 
+it('persists deadlines as the correct instant in a non-UTC business timezone', function () {
+    config(['app.timezone_display' => 'Europe/Brussels']);
+
+    $ticket = Ticket::factory()->create([
+        'priority' => TicketPriority::NORMAL,
+        'created_at' => CarbonImmutable::parse('2026-06-08 07:00', 'UTC'), // 09:00 Brussels
+    ]);
+
+    // 240 business minutes from 09:00 Brussels = 13:00 Brussels = 11:00 UTC.
+    $due = app(SlaCalculator::class)->firstResponseDueAt($ticket);
+
+    expect($due->utc()->format('Y-m-d H:i'))->toBe('2026-06-08 11:00')
+        // The deadline assigned on creation round-trips to the same instant (no +2h drift).
+        ->and($ticket->fresh()->first_response_due_at->utc()->format('Y-m-d H:i'))->toBe('2026-06-08 11:00');
+});
+
 it('returns no deadlines when SLA tracking is disabled', function () {
     $settings = app(WorkflowSettings::class);
     $settings->sla_enabled = false;
