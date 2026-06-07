@@ -6,6 +6,7 @@ use Database\Factories\NoteFactory;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 class Note extends Model
@@ -33,5 +34,13 @@ class Note extends Model
     public function noteable()
     {
         return $this->morphTo();
+    }
+
+    /**
+     * The agent who wrote the note.
+     */
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class);
     }
 }
