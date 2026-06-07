@@ -15,7 +15,6 @@ use App\Support\RichEditor\CannedResponsesPlugin;
 use App\Support\TicketMergeTags;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
@@ -28,11 +27,13 @@ use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\View;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 
 class TicketResource extends Resource
 {
@@ -168,31 +169,32 @@ class TicketResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->modifyQueryUsing(fn (Builder $query) => $query->with(['duplicateOf']))
+            ->modifyQueryUsing(fn (Builder $query) => $query->with(['duplicateOf', 'requester']))
+            ->recordUrl(fn (Ticket $record): string => static::getUrl('edit', ['record' => $record]))
             ->columns([
-                TextColumn::make('ticket_id')
-                    ->label(__('Ticket ID'))
-                    ->prefix('#')
-                    ->description(fn (Ticket $record): ?string => $record->duplicateOf?->ticket_id ? "Duplicate of #{$record->duplicateOf->ticket_id}" : null)
-                    ->copyable()
-                    ->copyMessage(__('Ticket ID copied to clipboard'))
-                    ->copyMessageDuration(1500)
-                    ->searchable(),
                 TextColumn::make('subject')
                     ->label(__('Subject'))
-                    ->searchable(),
-                TextColumn::make('priority')
-                    ->label(__('Priority'))
-                    ->badge()
-                    ->searchable(),
-                TextColumn::make('type')
-                    ->label(__('Type'))
-                    ->badge()
-                    ->searchable(),
+                    ->weight(FontWeight::SemiBold)
+                    ->limit(60)
+                    ->tooltip(fn (Ticket $record): ?string => mb_strlen($record->subject) > 60 ? $record->subject : null)
+                    // Fold the identifier, requester and timing into a quiet secondary line
+                    // (with an inline copy-to-clipboard control for the ticket ID) so the
+                    // subject can lead and the row stays scannable.
+                    ->description(fn (Ticket $record): HtmlString => new HtmlString(
+                        view('filament.tables.ticket-meta', ['record' => $record])->render()
+                    ))
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->where(function (Builder $query) use ($search): void {
+                            $query->where('subject', 'like', "%{$search}%")
+                                ->orWhere('ticket_id', 'like', "%{$search}%");
+                        });
+                    }),
                 TextColumn::make('status')
                     ->label(__('Status'))
-                    ->badge()
-                    ->searchable(),
+                    ->badge(),
+                TextColumn::make('priority')
+                    ->label(__('Priority'))
+                    ->badge(),
                 TextColumn::make('sla_status')
                     ->label(__('SLA'))
                     ->badge()
@@ -201,6 +203,10 @@ class TicketResource extends Resource
                     ->icon(fn (Ticket $record): ?string => $record->sla()->overallState()?->getIcon())
                     ->placeholder('—')
                     ->toggleable(),
+                TextColumn::make('type')
+                    ->label(__('Type'))
+                    ->badge()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('Created at'))
                     ->dateTime()
@@ -230,9 +236,6 @@ class TicketResource extends Resource
                     ->options(TicketType::class)
                     ->searchable()
                     ->preload(),
-            ])
-            ->recordActions([
-                EditAction::make(),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
