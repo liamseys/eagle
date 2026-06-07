@@ -5,13 +5,6 @@ namespace App\Providers\Filament;
 use App\Filament\AvatarProviders\GravatarProvider;
 use App\Filament\Pages\Auth\EditProfile;
 use App\Filament\Pages\Dashboard;
-use App\Filament\Widgets\OpenTicketsByAgentChart;
-use App\Filament\Widgets\SlaAttentionTable;
-use App\Filament\Widgets\SlaPerformanceOverview;
-use App\Filament\Widgets\StatsOverview;
-use App\Filament\Widgets\TicketPriorityChart;
-use App\Filament\Widgets\TicketTypeChart;
-use App\Filament\Widgets\WorkloadOverview;
 use App\Http\Middleware\EnsureDomainIsAllowlisted;
 use App\Http\Middleware\EnsureUserIsActive;
 use App\Settings\GeneralSettings;
@@ -88,15 +81,6 @@ class AppPanelProvider extends PanelProvider
                 in: app_path('Filament/Widgets'),
                 for: 'App\\Filament\\Widgets',
             )
-            ->widgets([
-                SlaPerformanceOverview::class,
-                SlaAttentionTable::class,
-                WorkloadOverview::class,
-                OpenTicketsByAgentChart::class,
-                StatsOverview::class,
-                TicketPriorityChart::class,
-                TicketTypeChart::class,
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

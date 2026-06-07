@@ -1,7 +1,10 @@
 <?php
 
 use App\Enums\Tickets\TicketStatus;
+use App\Filament\Pages\Dashboard;
 use App\Filament\Widgets\OpenTicketsByAgentChart;
+use App\Filament\Widgets\OperationalOverview;
+use App\Filament\Widgets\ResponseTimeMetrics;
 use App\Filament\Widgets\SlaAttentionTable;
 use App\Filament\Widgets\SlaPerformanceOverview;
 use App\Filament\Widgets\WorkloadOverview;
@@ -42,11 +45,15 @@ function openTicket(array $attributes = [], array $sla = []): Ticket
     return $ticket;
 }
 
-it('renders the SLA performance widget', function () {
-    Livewire::test(SlaPerformanceOverview::class)
+it('renders the operational overview widget', function () {
+    openTicket(['assignee_id' => null]);
+
+    Livewire::test(OperationalOverview::class)
         ->assertSuccessful()
-        ->assertSee('First response SLA')
-        ->assertSee('Resolution SLA');
+        ->assertSee('Breached')
+        ->assertSee('At risk')
+        ->assertSee('Unassigned')
+        ->assertSee('Open tickets');
 });
 
 it('lists overdue tickets in the needs-attention table and excludes on-track ones', function () {
@@ -65,9 +72,26 @@ it('lists overdue tickets in the needs-attention table and excludes on-track one
         ->assertCanNotSeeTableRecords([$onTrack]);
 });
 
+it('renders the SLA compliance widget', function () {
+    Livewire::test(SlaPerformanceOverview::class)
+        ->assertSuccessful()
+        ->assertSee('First response SLA')
+        ->assertSee('Resolution SLA');
+});
+
+it('reports median response times in business hours', function () {
+    openTicket(['created_at' => CarbonImmutable::parse('2026-06-08 09:00')], [
+        'first_responded_at' => CarbonImmutable::parse('2026-06-08 11:00'),
+    ]);
+
+    Livewire::test(ResponseTimeMetrics::class)
+        ->assertSuccessful()
+        ->assertSee('Median first response')
+        ->assertSee('2h');
+});
+
 it('reports the open workload', function () {
     openTicket(['assignee_id' => null]);
-    openTicket(['assignee_id' => User::factory()->create()->id]);
 
     Livewire::test(WorkloadOverview::class)
         ->assertSuccessful()
@@ -81,8 +105,13 @@ it('renders the open tickets by agent chart', function () {
     Livewire::test(OpenTicketsByAgentChart::class)->assertSuccessful();
 });
 
-it('renders the full dashboard page with every widget', function () {
+it('renders the tabbed dashboard page', function () {
     openTicket(['first_response_due_at' => CarbonImmutable::parse('2026-06-08 09:00')]);
 
-    Livewire::test(App\Filament\Pages\Dashboard::class)->assertSuccessful();
+    Livewire::test(Dashboard::class)
+        ->assertSuccessful()
+        ->assertSee('Overview')
+        ->assertSee('Analytics')
+        ->assertSee('Performance')
+        ->assertSee('Workload');
 });

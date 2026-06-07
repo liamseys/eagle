@@ -13,7 +13,7 @@ class WorkloadOverview extends BaseWidget
     use InteractsWithPageFilters;
     use InteractsWithTicketFilters;
 
-    protected static ?int $sort = -3;
+    protected static ?int $sort = 1;
 
     protected ?string $heading = 'Workload';
 
