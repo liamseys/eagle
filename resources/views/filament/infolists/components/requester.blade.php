@@ -1,68 +1,106 @@
 @use(Symfony\Component\Intl\Locales)
 @use(Symfony\Component\Intl\Timezones)
 
+@php
+    $requester = $getRecord()->requester;
+
+    $timezone = $requester->timezone ?: 'UTC';
+    $localeName = Locales::exists($requester->locale) ? Locales::getName($requester->locale) : __('Unknown');
+    $timezoneName = Timezones::exists($timezone) ? Timezones::getName($timezone) : __('Unknown');
+@endphp
+
 <x-filament::section>
-    <div class="flex flex-col space-y-4 text-gray-950 dark:text-white">
-        <div class="flex items-center gap-3">
+    <x-slot name="heading">{{ __('Requester') }}</x-slot>
+
+    <div class="flex flex-col antialiased">
+        {{-- Identity --}}
+        <div class="flex items-center gap-4 pb-5">
             <img
-                src="{{ $getRecord()->requester->avatar }}"
-                alt="{{ __('Avatar') }}"
-                class="h-12 w-12 rounded-full"
+                src="{{ $requester->avatar }}"
+                alt="{{ $requester->name }}"
+                class="size-14 shrink-0 rounded-full bg-gray-100 object-cover shadow-sm outline-1 -outline-offset-1 outline-black/5 dark:bg-white/10 dark:outline-white/10"
             />
 
-            <div class="flex flex-col">
-                <span class="text-md font-bold leading-6 text-gray-950">
-                    {{ $getRecord()->requester->name }}
-                </span>
-                <span class="text-xs text-gray-500">
-                    {{ __('Created') }} {{ $getRecord()->requester->created_at->diffForHumans() }}
-                </span>
+            <div class="flex min-w-0 flex-1 flex-col gap-1.5">
+                <p class="truncate text-base font-semibold text-gray-950 dark:text-white">
+                    {{ $requester->name }}
+                </p>
+
+                <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <x-filament::badge :color="$requester->is_active ? 'success' : 'gray'">
+                        {{ $requester->is_active ? __('Active') : __('Inactive') }}
+                    </x-filament::badge>
+
+                    <p class="text-xs text-gray-500 dark:text-gray-400">
+                        {{ __('Member since :date', ['date' => $requester->created_at->translatedFormat('M Y')]) }}
+                    </p>
+                </div>
             </div>
         </div>
 
-        <div class="flex flex-col space-y-1">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-1">
-                    <x-heroicon-s-envelope class="h-4 w-4"/>
-                    <p class="text-sm font-medium leading-6 text-gray-950">{{ __('Email') }}</p>
-                </div>
-                <p class="text-sm">
-                    {{ $getRecord()->requester->email }}
-                </p>
+        {{-- Contact --}}
+        <dl class="flex flex-col gap-4 border-t border-gray-950/5 py-5 dark:border-white/10">
+            <div class="flex min-w-0 flex-col gap-1">
+                <dt class="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400">
+                    <x-filament::icon icon="heroicon-m-envelope" aria-hidden="true" class="size-4 shrink-0" />
+                    {{ __('Email') }}
+                </dt>
+                <dd class="truncate text-sm text-gray-950 dark:text-white">
+                    <a
+                        href="mailto:{{ $requester->email }}"
+                        class="font-medium transition hover:text-primary-600 hover:underline dark:hover:text-primary-400"
+                    >
+                        {{ $requester->email }}
+                    </a>
+                </dd>
             </div>
 
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-1">
-                    <x-heroicon-s-phone class="h-4 w-4"/>
-                    <p class="text-sm font-medium leading-6 text-gray-950">{{ __('Phone') }}</p>
-                </div>
-                <p class="text-sm">
-                    {{ $getRecord()->requester->phone ?? '-' }}
-                </p>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-1">
-                    <x-heroicon-s-map-pin class="h-4 w-4"/>
-                    <p class="text-sm font-medium leading-6 text-gray-950">{{ __('Locale') }}</p>
-                </div>
-                <p class="text-sm">
-                    {{ Locales::exists($getRecord()->requester->locale) ? Locales::getName($getRecord()->requester->locale) : __('Unknown') }}
-                </p>
-            </div>
-
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-1">
-                    <x-heroicon-s-clock class="h-4 w-4"/>
-                    <p class="text-sm font-medium leading-6 text-gray-950">{{ __('Time') }}</p>
-                </div>
-                <p class="text-sm">
-                    {{ now()->tz($getRecord()->requester->timezone)->format('H:i') }}
-                    @if($getRecord()->requester->timezone !== 'UTC')
-                        <span>|</span> {{ Timezones::exists($getRecord()->requester->timezone) ? Timezones::getName(timezone: $getRecord()->requester->timezone) : __('Unknown') }}
+            <div class="flex min-w-0 flex-col gap-1">
+                <dt class="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400">
+                    <x-filament::icon icon="heroicon-m-phone" aria-hidden="true" class="size-4 shrink-0" />
+                    {{ __('Phone') }}
+                </dt>
+                <dd class="truncate text-sm text-gray-950 dark:text-white">
+                    @if ($requester->phone)
+                        <a
+                            href="tel:{{ preg_replace('/[^0-9+]/', '', $requester->phone) }}"
+                            class="font-medium transition hover:text-primary-600 hover:underline dark:hover:text-primary-400"
+                        >
+                            {{ $requester->phone }}
+                        </a>
+                    @else
+                        <span class="text-gray-400 dark:text-gray-500">{{ __('Not provided') }}</span>
                     @endif
-                </p>
+                </dd>
             </div>
-        </div>
+        </dl>
+
+        {{-- Locale & local time --}}
+        <dl class="grid grid-cols-2 divide-x divide-gray-950/5 overflow-hidden rounded-xl bg-gray-50 ring-1 ring-gray-950/5 dark:divide-white/10 dark:bg-white/5 dark:ring-white/10">
+            <div class="flex min-w-0 flex-col gap-1 p-3">
+                <dt class="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400">
+                    <x-filament::icon icon="heroicon-m-globe-alt" aria-hidden="true" class="size-4 shrink-0" />
+                    {{ __('Locale') }}
+                </dt>
+                <dd class="truncate text-sm font-medium text-gray-950 dark:text-white">
+                    {{ $localeName }}
+                </dd>
+            </div>
+
+            <div class="flex min-w-0 flex-col gap-1 p-3">
+                <dt class="flex items-center gap-1.5 text-xs font-medium text-gray-500 dark:text-gray-400">
+                    <x-filament::icon icon="heroicon-m-clock" aria-hidden="true" class="size-4 shrink-0" />
+                    {{ __('Local time') }}
+                </dt>
+                <dd class="flex min-w-0 flex-col gap-0.5">
+                    <p class="text-sm font-semibold text-gray-950 tabular-nums dark:text-white">
+                        {{ now()->tz($timezone)->format('H:i') }}
+                    </p>
+                    <p class="truncate text-xs text-gray-500 dark:text-gray-400">
+                        {{ $timezoneName }}
+                    </p>
+                </dd>
+            </div>
+        </dl>
     </div>
 </x-filament::section>
