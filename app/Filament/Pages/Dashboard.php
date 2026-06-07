@@ -3,6 +3,8 @@
 namespace App\Filament\Pages;
 
 use App\Models\Client;
+use App\Models\Group;
+use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Select;
@@ -48,6 +50,16 @@ class Dashboard extends BaseDashboard
                         Select::make('clientId')
                             ->label('Client')
                             ->options(Client::query()->pluck('name', 'id'))
+                            ->searchable()
+                            ->live(),
+                        Select::make('assigneeId')
+                            ->label('Agent')
+                            ->options(User::query()->pluck('name', 'id'))
+                            ->searchable()
+                            ->live(),
+                        Select::make('groupId')
+                            ->label('Group')
+                            ->options(Group::query()->pluck('name', 'id'))
                             ->searchable()
                             ->live(),
                     ])
