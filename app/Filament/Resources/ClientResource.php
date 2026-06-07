@@ -11,7 +11,6 @@ use App\Models\Client;
 use Filament\Actions\Action;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
-use Filament\Actions\EditAction;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\SpatieTagsInput;
@@ -26,6 +25,7 @@ use Filament\Tables\Columns\SpatieTagsColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Spatie\Tags\Tag;
@@ -128,18 +128,37 @@ class ClientResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->recordUrl(fn (Client $record): string => static::getUrl('edit', ['record' => $record]))
             ->columns([
+                // Avatar leads, with the email folded into a quiet secondary line
+                // (with an inline copy control) so the row stays scannable.
                 ViewColumn::make('name')
-                    ->label(__('Name'))
-                    ->view('filament.tables.columns.avatar-name')
-                    ->searchable(),
-                TextColumn::make('email')
-                    ->label(__('Email'))
-                    ->searchable(),
+                    ->label(__('Client'))
+                    ->view('filament.tables.columns.client')
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->where(function (Builder $query) use ($search): void {
+                            $query->where('name', 'like', "%{$search}%")
+                                ->orWhere('email', 'like', "%{$search}%")
+                                ->orWhere('phone', 'like', "%{$search}%");
+                        });
+                    }),
+                SpatieTagsColumn::make('tags')
+                    ->label(__('Tags')),
+                TextColumn::make('tickets_count')
+                    ->label(__('Tickets'))
+                    ->counts('tickets')
+                    ->badge()
+                    ->color('gray')
+                    ->icon('heroicon-m-ticket')
+                    ->sortable(),
+                TextColumn::make('is_active')
+                    ->label(__('Status'))
+                    ->badge()
+                    ->formatStateUsing(fn ($state): string => $state ? __('Active') : __('Inactive'))
+                    ->color(fn ($state): string => $state ? 'success' : 'gray'),
                 TextColumn::make('phone')
                     ->label(__('Phone'))
-                    ->searchable(),
-                SpatieTagsColumn::make('tags'),
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('Created at'))
                     ->dateTime()
@@ -160,9 +179,11 @@ class ClientResource extends Resource
                             return $query->withAnyTags($values);
                         });
                     }),
-            ])
-            ->recordActions([
-                EditAction::make(),
+                TernaryFilter::make('is_active')
+                    ->label(__('Status'))
+                    ->placeholder(__('All clients'))
+                    ->trueLabel(__('Active'))
+                    ->falseLabel(__('Inactive')),
             ])
             ->toolbarActions([
                 BulkActionGroup::make([
