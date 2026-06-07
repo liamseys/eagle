@@ -110,6 +110,8 @@ it('renders the tabbed dashboard page', function () {
 
     Livewire::test(Dashboard::class)
         ->assertSuccessful()
+        ->assertSee('Filters')
+        ->assertSee('Start date')
         ->assertSee('Overview')
         ->assertSee('Analytics')
         ->assertSee('Performance')

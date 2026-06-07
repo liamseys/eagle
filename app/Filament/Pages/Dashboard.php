@@ -24,6 +24,8 @@ use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Livewire\Attributes\Url;
 
@@ -38,45 +40,83 @@ class Dashboard extends BaseDashboard
     {
         return $schema
             ->components([
-                Section::make()
-                    ->schema([
-                        DatePicker::make('startDate')
-                            ->label('Start date')
-                            ->native(false)
-                            ->suffixAction(
-                                Action::make('clearStartDate')
-                                    ->icon('heroicon-m-x-mark')
-                                    ->action(fn ($set) => $set('startDate', null))
-                                    ->visible(fn ($state) => filled($state))
-                            )
-                            ->live(),
-                        DatePicker::make('endDate')
-                            ->label('End date')
-                            ->native(false)
-                            ->suffixAction(
-                                Action::make('clearEndDate')
-                                    ->icon('heroicon-m-x-mark')
-                                    ->action(fn ($set) => $set('endDate', null))
-                                    ->visible(fn ($state) => filled($state))
-                            )
-                            ->live(),
-                        Select::make('clientId')
-                            ->label('Client')
-                            ->options(Client::query()->pluck('name', 'id'))
-                            ->searchable()
-                            ->live(),
-                        Select::make('assigneeId')
-                            ->label('Agent')
-                            ->options(User::query()->pluck('name', 'id'))
-                            ->searchable()
-                            ->live(),
-                        Select::make('groupId')
-                            ->label('Group')
-                            ->options(Group::query()->pluck('name', 'id'))
-                            ->searchable()
-                            ->live(),
+                Section::make(__('Filters'))
+                    ->icon('heroicon-m-funnel')
+                    ->description(__('Refine every tab by date range, client, agent or group.'))
+                    ->compact()
+                    ->collapsible()
+                    ->afterHeader([
+                        Action::make('resetFilters')
+                            ->label(__('Reset'))
+                            ->icon('heroicon-m-arrow-path')
+                            ->link()
+                            ->color('gray')
+                            ->visible(fn (Get $get): bool => filled($get('startDate'))
+                                || filled($get('endDate'))
+                                || filled($get('clientId'))
+                                || filled($get('assigneeId'))
+                                || filled($get('groupId')))
+                            ->action(function (Set $set): void {
+                                $set('startDate', null);
+                                $set('endDate', null);
+                                $set('clientId', null);
+                                $set('assigneeId', null);
+                                $set('groupId', null);
+                            }),
                     ])
-                    ->columns(3),
+                    ->schema([
+                        Grid::make(2)
+                            ->schema([
+                                DatePicker::make('startDate')
+                                    ->label(__('Start date'))
+                                    ->prefixIcon('heroicon-m-calendar')
+                                    ->native(false)
+                                    ->maxDate(fn (Get $get) => $get('endDate'))
+                                    ->suffixAction(
+                                        Action::make('clearStartDate')
+                                            ->icon('heroicon-m-x-mark')
+                                            ->action(fn (Set $set) => $set('startDate', null))
+                                            ->visible(fn ($state) => filled($state))
+                                    )
+                                    ->live(),
+                                DatePicker::make('endDate')
+                                    ->label(__('End date'))
+                                    ->prefixIcon('heroicon-m-calendar')
+                                    ->native(false)
+                                    ->minDate(fn (Get $get) => $get('startDate'))
+                                    ->suffixAction(
+                                        Action::make('clearEndDate')
+                                            ->icon('heroicon-m-x-mark')
+                                            ->action(fn (Set $set) => $set('endDate', null))
+                                            ->visible(fn ($state) => filled($state))
+                                    )
+                                    ->live(),
+                            ]),
+                        Grid::make(3)
+                            ->schema([
+                                Select::make('clientId')
+                                    ->label(__('Client'))
+                                    ->placeholder(__('All clients'))
+                                    ->prefixIcon('heroicon-m-user')
+                                    ->options(Client::query()->pluck('name', 'id'))
+                                    ->searchable()
+                                    ->live(),
+                                Select::make('assigneeId')
+                                    ->label(__('Agent'))
+                                    ->placeholder(__('All agents'))
+                                    ->prefixIcon('heroicon-m-lifebuoy')
+                                    ->options(User::query()->pluck('name', 'id'))
+                                    ->searchable()
+                                    ->live(),
+                                Select::make('groupId')
+                                    ->label(__('Group'))
+                                    ->placeholder(__('All groups'))
+                                    ->prefixIcon('heroicon-m-user-group')
+                                    ->options(Group::query()->pluck('name', 'id'))
+                                    ->searchable()
+                                    ->live(),
+                            ]),
+                    ]),
             ]);
     }
 
