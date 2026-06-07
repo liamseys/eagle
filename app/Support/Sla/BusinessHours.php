@@ -32,6 +32,16 @@ final class BusinessHours
         $this->days = $this->normalise($schedule);
     }
 
+    /**
+     * Build from settings, evaluating the weekly schedule in the application's
+     * configured timezone (`app.timezone_display`).
+     *
+     * Timestamps are always stored in UTC (`app.timezone`); this timezone is used
+     * only to anchor the wall-clock business-hours window (e.g. "09:00–17:00")
+     * during calculation. Callers convert the resulting instant back to UTC before
+     * persisting it (see SlaCalculator). It is deliberately the same setting used
+     * to display times, since that represents where the business operates.
+     */
     public static function fromSettings(GeneralSettings $settings): self
     {
         return new self(
