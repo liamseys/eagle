@@ -50,7 +50,25 @@
 }
 
 .ticket-comment-body {
+    @apply text-sm/6 text-gray-700 dark:text-gray-200;
+
     p {
-        @apply text-sm mb-2 last:mb-0;
+        @apply mb-2 last:mb-0;
+    }
+
+    a {
+        @apply font-medium text-primary-600 underline underline-offset-2 hover:text-primary-500 dark:text-primary-400;
+    }
+
+    ul {
+        @apply mb-2 list-disc ps-5 last:mb-0;
+    }
+
+    ol {
+        @apply mb-2 list-decimal ps-5 last:mb-0;
+    }
+
+    strong {
+        @apply font-semibold text-gray-950 dark:text-white;
     }
 }
