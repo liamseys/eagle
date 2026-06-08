@@ -1,5 +1,6 @@
 @php
     $showRequester = $showRequester ?? true;
+    $showDuplicate = $showDuplicate ?? true;
     $segments = [];
 
     if ($showRequester && $record->requester) {
@@ -8,7 +9,7 @@
 
     $segments[] = $record->created_at->diffForHumans();
 
-    if ($record->duplicateOf?->ticket_id) {
+    if ($showDuplicate && $record->duplicateOf?->ticket_id) {
         $segments[] = __('Duplicate of #:id', ['id' => $record->duplicateOf->ticket_id]);
     }
 @endphp

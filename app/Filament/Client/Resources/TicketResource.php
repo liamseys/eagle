@@ -2,23 +2,26 @@
 
 namespace App\Filament\Client\Resources;
 
+use App\Enums\Tickets\TicketPriority;
 use App\Enums\Tickets\TicketStatus;
+use App\Enums\Tickets\TicketType;
 use App\Filament\Client\Resources\TicketResource\Pages\ListTickets;
 use App\Filament\Client\Resources\TicketResource\Pages\ViewTicket;
 use App\Filament\Forms\Components\TicketComments;
 use App\Filament\Resources\TicketResource\RelationManagers\FieldsRelationManager;
 use App\Models\Ticket;
-use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Placeholder;
 use Filament\Resources\Resource;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\HtmlString;
 
 class TicketResource extends Resource
 {
@@ -88,25 +91,25 @@ class TicketResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->recordUrl(fn (Ticket $record): string => static::getUrl('view', ['record' => $record]))
             ->columns([
-                TextColumn::make('ticket_id')
-                    ->label(__('Ticket ID'))
-                    ->prefix('#')
-                    ->copyable()
-                    ->copyMessage(__('Ticket ID copied to clipboard'))
-                    ->copyMessageDuration(1500)
-                    ->searchable(),
                 TextColumn::make('subject')
                     ->label(__('Subject'))
-                    ->searchable(),
-                TextColumn::make('priority')
-                    ->label(__('Priority'))
-                    ->badge()
-                    ->searchable(),
-                TextColumn::make('type')
-                    ->label(__('Type'))
-                    ->badge()
-                    ->searchable(),
+                    ->weight(FontWeight::SemiBold)
+                    ->limit(60)
+                    ->tooltip(fn (Ticket $record): ?string => mb_strlen($record->subject) > 60 ? $record->subject : null)
+                    // Fold the identifier (with an inline copy control) and timing into a quiet
+                    // secondary line so the subject can lead and the row stays scannable. The
+                    // requester and duplicate markers are agent-only and omitted in the portal.
+                    ->description(fn (Ticket $record): HtmlString => new HtmlString(
+                        view('filament.tables.ticket-meta', ['record' => $record, 'showRequester' => false, 'showDuplicate' => false])->render()
+                    ))
+                    ->searchable(query: function (Builder $query, string $search): Builder {
+                        return $query->where(function (Builder $query) use ($search): void {
+                            $query->where('subject', 'like', "%{$search}%")
+                                ->orWhere('ticket_id', 'like', "%{$search}%");
+                        });
+                    }),
                 TextColumn::make('status')
                     ->label(__('Status'))
                     ->badge()
@@ -114,6 +117,13 @@ class TicketResource extends Resource
                     ->formatStateUsing(fn (TicketStatus $state): string => $state->requesterFacing()->getLabel())
                     ->color(fn (TicketStatus $state): string|array|null => $state->requesterFacing()->getColor())
                     ->icon(fn (TicketStatus $state): ?string => $state->requesterFacing()->getIcon()),
+                TextColumn::make('priority')
+                    ->label(__('Priority'))
+                    ->badge(),
+                TextColumn::make('type')
+                    ->label(__('Type'))
+                    ->badge()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('Created at'))
                     ->dateTime()
@@ -149,9 +159,16 @@ class TicketResource extends Resource
                     })
                     ->searchable()
                     ->preload(),
-            ])
-            ->recordActions([
-                ViewAction::make(),
+                SelectFilter::make('priority')
+                    ->label(__('Priority'))
+                    ->options(TicketPriority::class)
+                    ->searchable()
+                    ->preload(),
+                SelectFilter::make('type')
+                    ->label(__('Type'))
+                    ->options(TicketType::class)
+                    ->searchable()
+                    ->preload(),
             ])
             ->toolbarActions([])
             ->defaultSort('ticket_id', 'DESC');
