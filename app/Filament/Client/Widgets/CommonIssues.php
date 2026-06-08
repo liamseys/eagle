@@ -13,10 +13,17 @@ class CommonIssues extends Widget
 
     public function getViewData(): array
     {
-        $sections = Section::whereHas('forms', function ($query) {
-            $query->where('is_public', true)
-                ->where('settings->client_portal_featured', true);
-        })->get();
+        // A form is shown in the portal only when it is public AND explicitly featured for the
+        // client portal. Sections appear only when they contain at least one such form, and only
+        // those featured forms are eager-loaded so the view renders nothing else.
+        $featuredForms = fn ($query) => $query
+            ->public()
+            ->where('settings->client_portal_featured', true);
+
+        $sections = Section::query()
+            ->whereHas('forms', $featuredForms)
+            ->with(['forms' => fn ($query) => $featuredForms($query)->orderBy('sort')])
+            ->get();
 
         return [
             'sections' => $sections,

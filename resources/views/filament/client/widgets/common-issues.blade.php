@@ -20,10 +20,7 @@
                         </x-slot>
 
                         <ul class="-mx-4 flex flex-col space-y-2 -my-4">
-                            @foreach($section->forms()
-                                             ->public()
-                                             ->get()
-                                             ->sortBy('sort') as $form)
+                            @foreach($section->forms as $form)
                                 <x-nav-link
                                     :href="route('forms.show', ['locale' => config('app.locale'), 'form' => $form])">
                                     <p class="text-sm">{{ $form->label }}</p>
