@@ -1,7 +1,8 @@
 @php
+    $showRequester = $showRequester ?? true;
     $segments = [];
 
-    if ($record->requester) {
+    if ($showRequester && $record->requester) {
         $segments[] = $record->requester->name;
     }
 
