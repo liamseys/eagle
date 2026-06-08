@@ -71,6 +71,39 @@ it('keeps a New ticket as New after an initial agent comment', function () {
     expect($ticket->fresh()->status)->toBe(TicketStatus::NEW);
 });
 
+it('moves a New ticket to Pending when an agent replies to the requester', function () {
+    $ticket = Ticket::factory()->withStatus(TicketStatus::NEW)->create();
+
+    // The inbound requester message creates the ticket and keeps it in the New queue.
+    requesterComment($ticket);
+    expect($ticket->fresh()->status)->toBe(TicketStatus::NEW);
+
+    // The agent's public reply is a genuine response, so the ticket leaves New.
+    agentComment($ticket, isPublic: true);
+    expect($ticket->fresh()->status)->toBe(TicketStatus::PENDING);
+});
+
+it('moves a New ticket to Pending on a second public agent comment', function () {
+    $ticket = Ticket::factory()->withStatus(TicketStatus::NEW)->create();
+
+    // The creation comment (e.g. an agent-created ticket) keeps the ticket New...
+    agentComment($ticket, isPublic: true);
+    expect($ticket->fresh()->status)->toBe(TicketStatus::NEW);
+
+    // ...but a follow-up public reply moves it on to Pending.
+    agentComment($ticket, isPublic: true);
+    expect($ticket->fresh()->status)->toBe(TicketStatus::PENDING);
+});
+
+it('keeps a New ticket as New when an agent adds an internal note', function () {
+    $ticket = Ticket::factory()->withStatus(TicketStatus::NEW)->create();
+
+    requesterComment($ticket);
+    agentComment($ticket, isPublic: false);
+
+    expect($ticket->fresh()->status)->toBe(TicketStatus::NEW);
+});
+
 it('reopens to Open when the requester replies', function (TicketStatus $status) {
     $ticket = Ticket::factory()->withStatus($status)->create();
 

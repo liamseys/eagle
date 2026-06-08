@@ -78,7 +78,7 @@ class TicketResource extends Resource
                                                 ->reject(fn (TicketStatus $status): bool => $status === TicketStatus::CLOSED && $record?->status !== TicketStatus::CLOSED)
                                                 ->mapWithKeys(fn (TicketStatus $status): array => [$status->value => $status->getLabel()])
                                                 ->all())
-                                            ->disableOptionWhen(fn (string $value): bool => $value === TicketStatus::NEW->value)
+                                            ->disableOptionWhen(fn (string $value, ?Ticket $record): bool => $value === TicketStatus::NEW->value && $record?->status !== TicketStatus::NEW)
                                             ->searchable()
                                             ->preload()
                                             ->required()

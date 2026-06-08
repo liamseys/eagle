@@ -18,8 +18,9 @@ class TicketCommentObserver
      * - a requester reply reopens a ticket that was waiting on them (or already solved);
      * - a public agent reply moves the ticket to Pending (waiting on the requester).
      *
-     * New tickets are intentionally left untouched so the initial comment created alongside
-     * a ticket (agent-created tickets, inbound email, the AI tool) keeps the New status.
+     * A brand-new ticket keeps the New status for its very first (creation) comment — the one
+     * created alongside the ticket (agent-created tickets, inbound email, the AI tool). A later
+     * public agent reply is a genuine response, so it moves the ticket on out of New to Pending.
      */
     public function created(TicketComment $comment): void
     {
@@ -32,19 +33,23 @@ class TicketCommentObserver
         }
 
         if ($comment->authorable_type === User::class) {
-            // A public agent reply is the SLA first response, even on a New ticket
-            // whose status is intentionally left unchanged.
+            // A public agent reply is the SLA first response, even on a New ticket whose
+            // creation comment intentionally leaves the status unchanged.
             if ($comment->is_public === true) {
                 app(SlaTracker::class)->recordFirstResponse($ticket);
             }
 
-            // Public agent reply -> Pending. Internal notes never change the status, and a
-            // New ticket is left as New.
-            if ($comment->is_public === true && in_array($ticket->status, [
+            // Public agent reply -> Pending. Internal notes never change the status. A New
+            // ticket only moves once it has more than its single creation comment, so a genuine
+            // agent reply transitions it while the initial comment keeps it in the New queue.
+            $isReplyToNewTicket = $ticket->status === TicketStatus::NEW
+                && $ticket->comments()->count() > 1;
+
+            if ($comment->is_public === true && ($isReplyToNewTicket || in_array($ticket->status, [
                 TicketStatus::OPEN,
                 TicketStatus::ON_HOLD,
                 TicketStatus::SOLVED,
-            ], true)) {
+            ], true))) {
                 app(UpdateTicketStatus::class)->handle($ticket, TicketStatus::PENDING);
             }
 
