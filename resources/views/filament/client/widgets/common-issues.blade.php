@@ -1,12 +1,18 @@
 <x-filament-widgets::widget>
     <div class="flex flex-col gap-6">
-        <div>
-            <h2 class="text-lg font-bold">{{ __('Common issues') }}</h2>
-            <p>{{ __('Links to our most frequently used help forms.') }}</p>
+        <div class="flex items-start gap-4">
+            <div class="flex size-11 flex-none items-center justify-center rounded-xl bg-gray-950/5 text-gray-700">
+                <x-heroicon-o-question-mark-circle class="size-6"/>
+            </div>
+
+            <div class="space-y-1">
+                <h2 class="text-xl font-bold tracking-tight text-gray-950">{{ __('Common issues') }}</h2>
+                <p class="text-sm text-gray-500">{{ __('Browse our most frequently used help forms and jump straight to the right one.') }}</p>
+            </div>
         </div>
 
         @if(!$sections->isEmpty())
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 items-start">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
                 @foreach($sections as $section)
                     <x-card>
                         <x-slot name="header">
@@ -29,9 +35,13 @@
                 @endforeach
             </div>
         @else
-            <div class="text-center flex flex-col gap-6 mt-6">
-                <img src="{{ asset('img/no_results.svg') }}" alt="No sections" class="h-24 mx-auto">
-                <p class="text-gray-500">{{ __('No sections found.') }}</p>
+            <div class="flex flex-col items-center justify-center gap-4 py-10 text-center">
+                <img src="{{ asset('img/no_results.svg') }}" alt="" class="h-24">
+
+                <div class="space-y-1">
+                    <p class="text-sm font-medium text-gray-950">{{ __('No common issues yet') }}</p>
+                    <p class="text-sm text-gray-500">{{ __('Featured help forms will appear here once they become available.') }}</p>
+                </div>
             </div>
         @endif
     </div>
