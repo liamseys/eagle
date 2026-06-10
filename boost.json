@@ -3,17 +3,23 @@
         "claude_code",
         "junie"
     ],
+    "cloud": false,
     "guidelines": true,
     "mcp": true,
-    "nightwatch_mcp": false,
+    "nightwatch": false,
     "packages": [
         "filament/filament",
-        "filament/blueprint"
+        "filament/blueprint",
+        "barryvdh/laravel-debugbar"
     ],
     "sail": false,
     "skills": [
+        "ai-sdk-development",
         "laravel-best-practices",
         "pest-testing",
-        "tailwindcss-development"
+        "echo-development",
+        "tailwindcss-development",
+        "debug-using-debugbar",
+        "filament-security-audit"
     ]
 }
