@@ -2,10 +2,12 @@
 
 namespace App\Livewire;
 
+use App\Actions\Tickets\NotifyMentionedAgents;
 use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Notifications\TicketCommentByAgent;
+use App\Support\RichEditor\AgentMentions;
 use App\Support\RichEditor\AiReplyPlugin;
 use App\Support\RichEditor\CannedResponsesPlugin;
 use App\Support\TicketMergeTags;
@@ -44,6 +46,7 @@ class CreateTicketComment extends Component implements HasActions, HasForms
                 RichEditor::make('comment')
                     ->label(__('Comment'))
                     ->plugins(fn () => auth()->user() instanceof User ? [AiReplyPlugin::make(), CannedResponsesPlugin::make()] : [])
+                    ->mentions(fn () => auth()->user() instanceof User ? [AgentMentions::provider()] : [])
                     ->mergeTags(auth()->user() instanceof User ? TicketMergeTags::labels() : [])
                     ->toolbarButtons(fn () => auth()->user() instanceof User
                         ? [
@@ -81,6 +84,7 @@ class CreateTicketComment extends Component implements HasActions, HasForms
         $body = $user instanceof User
             ? RichContentRenderer::make($formData['comment'])
                 ->mergeTags(TicketMergeTags::valuesFor($this->ticket))
+                ->mentions([AgentMentions::provider()])
                 ->toHtml()
             : $formData['comment'];
 
@@ -90,6 +94,10 @@ class CreateTicketComment extends Component implements HasActions, HasForms
             'body' => $body,
             'is_public' => $formData['is_public'] ?? true,
         ]);
+
+        if ($user instanceof User) {
+            app(NotifyMentionedAgents::class)->handle($ticketComment, $formData['comment'], $user);
+        }
 
         if ($user instanceof User && is_null($this->ticket->assignee_id)) {
             $this->ticket->update(['assignee_id' => $user->id]);

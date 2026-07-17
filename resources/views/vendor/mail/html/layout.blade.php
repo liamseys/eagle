@@ -40,6 +40,22 @@ width: 100% !important;
 width: 100% !important;
 }
 }
+
+/* Keep button colors intact in dark mode clients that would otherwise
+invert the near-black background while leaving the text white. */
+@media (prefers-color-scheme: dark) {
+.button {
+background-color: #18181b !important;
+border-color: #18181b !important;
+color: #ffffff !important;
+}
+}
+
+[data-ogsc] .button {
+background-color: #18181b !important;
+border-color: #18181b !important;
+color: #ffffff !important;
+}
 </style>
 {!! $head ?? '' !!}
 </head>

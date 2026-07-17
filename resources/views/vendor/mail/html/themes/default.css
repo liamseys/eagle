@@ -305,6 +305,14 @@ img {
     border-top: 12px solid #dc2626;
 }
 
+/* The generic `.inner-body a` link color has higher specificity than
+   `.button`, so without this rule the inliner paints button text in the
+   near-black link color — invisible on the button background. */
+.inner-body a.button {
+    color: #ffffff;
+    word-break: normal;
+}
+
 /* Panels */
 
 .panel {

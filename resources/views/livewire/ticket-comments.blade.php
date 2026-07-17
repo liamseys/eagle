@@ -24,7 +24,7 @@
                     </li>
                 @endif
 
-                <li class="flex items-start gap-3">
+                <li id="comment-{{ $comment->id }}" class="flex scroll-mt-24 items-start gap-3">
                     <img
                         src="{{ GravatarProvider::generateGravatarUrl($comment->authorable?->email ?? '') }}"
                         alt="{{ $comment->authorable?->name }}"
