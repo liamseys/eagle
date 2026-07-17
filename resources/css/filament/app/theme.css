@@ -49,6 +49,65 @@
     }
 }
 
+/*
+ * AI Reply generation state (see App\Support\RichEditor\AiReplyPlugin).
+ *
+ * While a reply is being generated, the plugin's toolbar handler sets a
+ * `data-ai-reply-generating` attribute (holding the translated status
+ * message) on the editor root. These styles lock the editor, dim it behind
+ * a veil, show a pulsing status pill, and spin the AI Reply toolbar icon.
+ * The short animation delay keeps fast requests from flashing the overlay.
+ */
+.fi-fo-rich-editor[data-ai-reply-generating] {
+    @apply pointer-events-none relative select-none;
+}
+
+.fi-fo-rich-editor[data-ai-reply-generating]::after {
+    content: '';
+    border-radius: inherit;
+    animation: ai-reply-fade-in 200ms ease 100ms both;
+
+    @apply absolute inset-0 z-10 bg-white/60 dark:bg-gray-900/60;
+}
+
+.fi-fo-rich-editor[data-ai-reply-generating]::before {
+    content: attr(data-ai-reply-generating);
+    animation:
+        ai-reply-fade-in 200ms ease 100ms both,
+        ai-reply-pulse 1.6s ease-in-out 300ms infinite;
+
+    @apply absolute left-1/2 top-1/2 z-20 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap rounded-full bg-gray-900 px-4 py-2 text-sm font-medium text-white shadow-lg dark:bg-white dark:text-gray-900;
+}
+
+.fi-fo-rich-editor[data-ai-reply-generating] .fi-fo-rich-editor-tool-ai-reply {
+    @apply opacity-70;
+
+    svg {
+        @apply animate-spin;
+    }
+}
+
+@keyframes ai-reply-fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes ai-reply-pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.65;
+    }
+}
+
 .ticket-comment-body {
     @apply text-sm/6 text-gray-700 dark:text-gray-200;
 

@@ -5,6 +5,7 @@ namespace App\Support\RichEditor;
 use App\Models\CannedResponse;
 use App\Models\CannedResponseCategory;
 use App\Models\User;
+use App\Support\HtmlToText;
 use App\Support\TicketMergeTags;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Hidden;
@@ -421,32 +422,10 @@ class CannedResponsesPlugin implements RichContentPlugin
 
     /**
      * Build a plain-text preview from saved rich-editor HTML.
-     *
-     * The editor stores merge tags as empty `<span data-type="mergeTag" ...>`
-     * elements (the visible `{{ id }}` text is rendered client-side), so we
-     * substitute them back to their placeholder form before stripping tags.
-     * Block boundaries are turned into spaces so adjacent paragraphs don't
-     * collapse into one word, and HTML entities are decoded so apostrophes
-     * and other escaped characters render naturally.
      */
     protected static function buildPreview(?string $html): string
     {
-        if (blank($html)) {
-            return '';
-        }
-
-        $html = preg_replace_callback(
-            '/<span\b[^>]*\bdata-type=(["\'])mergeTag\1[^>]*\bdata-id=(["\'])([^"\']+)\2[^>]*>\s*<\/span>/i',
-            fn (array $matches): string => '{{ '.$matches[3].' }}',
-            $html,
-        ) ?? $html;
-
-        $html = preg_replace('/<\s*br\s*\/?>|<\/(p|div|li|h[1-6]|tr|blockquote)\s*>/i', ' ', $html) ?? $html;
-
-        $text = html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
-        $text = preg_replace('/\s+/u', ' ', $text) ?? $text;
-
-        return Str::limit(trim($text), 120);
+        return Str::limit(HtmlToText::convert($html), 120);
     }
 
     /**

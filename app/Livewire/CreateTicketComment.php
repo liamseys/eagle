@@ -6,6 +6,7 @@ use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Notifications\TicketCommentByAgent;
+use App\Support\RichEditor\AiReplyPlugin;
 use App\Support\RichEditor\CannedResponsesPlugin;
 use App\Support\TicketMergeTags;
 use Filament\Actions\Concerns\InteractsWithActions;
@@ -42,13 +43,13 @@ class CreateTicketComment extends Component implements HasActions, HasForms
             ->components([
                 RichEditor::make('comment')
                     ->label(__('Comment'))
-                    ->plugins(fn () => auth()->user() instanceof User ? [CannedResponsesPlugin::make()] : [])
+                    ->plugins(fn () => auth()->user() instanceof User ? [AiReplyPlugin::make(), CannedResponsesPlugin::make()] : [])
                     ->mergeTags(auth()->user() instanceof User ? TicketMergeTags::labels() : [])
                     ->toolbarButtons(fn () => auth()->user() instanceof User
                         ? [
                             ['bold', 'italic', 'underline', 'strike', 'link'],
                             ['bulletList', 'orderedList'],
-                            ['cannedResponses', 'mergeTags'],
+                            ['aiReply', 'cannedResponses', 'mergeTags'],
                             ['undo', 'redo'],
                         ]
                         : [
