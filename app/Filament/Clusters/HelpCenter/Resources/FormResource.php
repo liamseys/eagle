@@ -217,7 +217,8 @@ class FormResource extends Resource
                             ->schema([
                                 Placeholder::make('created_by')
                                     ->label(__('Created by'))
-                                    ->content(fn (Form $record): ?string => $record->user?->name),
+                                    ->content(fn (Form $record): ?string => $record->user?->name)
+                                    ->columnSpanFull(),
 
                                 Placeholder::make('created_at')
                                     ->label(__('Created at'))
@@ -226,7 +227,7 @@ class FormResource extends Resource
                                 Placeholder::make('updated_at')
                                     ->label(__('Updated at'))
                                     ->content(fn (Form $record): ?string => $record->updated_at?->diffForHumans()),
-                            ])->hiddenOn(['create']),
+                            ])->columns(2)->hiddenOn(['create']),
                         Section::make(__('Embed'))
                             ->schema([
                                 Toggle::make('is_embeddable')

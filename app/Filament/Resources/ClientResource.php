@@ -118,7 +118,7 @@ class ClientResource extends Resource
                                 Placeholder::make('updated_at')
                                     ->label(__('Updated at'))
                                     ->content(fn (Client $record): ?string => $record->updated_at?->diffForHumans()),
-                            ])->hiddenOn(['create']),
+                            ])->columns(2)->hiddenOn(['create']),
                         Notes::make()
                             ->hiddenOn(['create']),
                     ])->columnSpan(1),

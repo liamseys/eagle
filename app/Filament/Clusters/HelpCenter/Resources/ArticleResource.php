@@ -157,7 +157,8 @@ class ArticleResource extends Resource
                             ->schema([
                                 Placeholder::make('created_by')
                                     ->label(__('Created by'))
-                                    ->content(fn (Article $record): ?string => $record->author?->name),
+                                    ->content(fn (Article $record): ?string => $record->author?->name)
+                                    ->columnSpanFull(),
 
                                 Placeholder::make('created_at')
                                     ->label(__('Created at'))
@@ -166,7 +167,7 @@ class ArticleResource extends Resource
                                 Placeholder::make('updated_at')
                                     ->label(__('Updated at'))
                                     ->content(fn (Article $record): ?string => $record->updated_at?->diffForHumans()),
-                            ])->hiddenOn(['create']),
+                            ])->columns(2)->hiddenOn(['create']),
                     ])->columnSpan(1),
             ])->columns(3);
     }

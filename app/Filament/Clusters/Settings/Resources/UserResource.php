@@ -142,7 +142,7 @@ class UserResource extends Resource
                                 Placeholder::make('updated_at')
                                     ->label(__('Updated at'))
                                     ->content(fn (User $record): ?string => $record->updated_at?->diffForHumans()),
-                            ])->hiddenOn(['create']),
+                            ])->columns(2)->hiddenOn(['create']),
                     ])->columnSpan(1),
             ])->columns(3);
     }
