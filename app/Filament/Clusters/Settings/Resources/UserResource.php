@@ -24,6 +24,7 @@ use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -53,15 +54,17 @@ class UserResource extends Resource
                             Grid::make()
                                 ->schema([
                                     TextInput::make('name')
+                                        ->label(__('Name'))
                                         ->required()
                                         ->maxLength(255),
                                     TextInput::make('email')
+                                        ->label(__('Email'))
                                         ->email()
                                         ->required()
                                         ->maxLength(255),
                                 ]),
                             Toggle::make('send_welcome_email')
-                                ->label('Send welcome email')
+                                ->label(__('Send welcome email'))
                                 ->default(true)
                                 ->live()
                                 ->helperText(__('By default, we\'ll send a welcome email for the user to set their password. If unchecked, you can set the password manually, and no email will be sent.'))
@@ -87,9 +90,10 @@ class UserResource extends Resource
                                 ->hiddenOn(['edit']),
                         ]),
                     Section::make(__('Permissions'))
+                        ->description(__('Control which areas of Eagle this user can access. Users cannot change their own permissions.'))
                         ->schema([
                             CheckboxList::make('permissions')
-                                ->label('')
+                                ->hiddenLabel()
                                 ->relationship()
                                 ->options($permissions->pluck('display_name', 'id'))
                                 ->descriptions($permissions->pluck('description', 'id'))
@@ -107,6 +111,7 @@ class UserResource extends Resource
                         Section::make(__('Associations'))
                             ->schema([
                                 Select::make('groups')
+                                    ->label(__('Groups'))
                                     ->relationship(name: 'groups', titleAttribute: 'name')
                                     ->multiple()
                                     ->preload()
@@ -152,24 +157,35 @@ class UserResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->searchable(),
-                TextColumn::make('email')
-                    ->searchable(),
+                    ->label(__('Name'))
+                    ->weight(FontWeight::Medium)
+                    ->description(fn (User $record): ?string => $record->email)
+                    ->searchable(['name', 'email']),
                 TextColumn::make('groups_count')
                     ->counts('groups')
-                    ->label(__('Groups')),
+                    ->label(__('Groups'))
+                    ->badge()
+                    ->color('gray')
+                    ->icon('heroicon-m-rectangle-stack'),
                 IconColumn::make('is_active')
                     ->label(__('Active'))
                     ->boolean(),
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label(__('Created at'))
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label(__('Updated at'))
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->emptyStateHeading(__('No users yet'))
+            ->emptyStateDescription(__('Invite your first agent to start working on tickets together.'))
+            ->emptyStateIcon('heroicon-o-users')
             ->filters([
                 //
             ])

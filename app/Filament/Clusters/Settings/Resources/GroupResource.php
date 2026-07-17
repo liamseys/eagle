@@ -12,10 +12,10 @@ use Filament\Actions\EditAction;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\HtmlString;
 
 class GroupResource extends Resource
 {
@@ -32,10 +32,12 @@ class GroupResource extends Resource
         return $schema
             ->components([
                 TextInput::make('name')
+                    ->label(__('Name'))
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull(),
                 TextInput::make('description')
+                    ->label(__('Description'))
                     ->maxLength(255)
                     ->placeholder(__('(Optional) A brief description of the group'))
                     ->columnSpanFull(),
@@ -47,24 +49,32 @@ class GroupResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->formatStateUsing(fn ($record) => new HtmlString(sprintf(
-                        '%s<br><span class="text-xs text-gray-500">%s</span>',
-                        $record->name,
-                        $record->description
-                    )))
+                    ->label(__('Name'))
+                    ->weight(FontWeight::Medium)
+                    ->description(fn (Group $record): ?string => $record->description)
                     ->searchable(),
                 TextColumn::make('users_count')
                     ->counts('users')
-                    ->label(__('Users')),
+                    ->label(__('Users'))
+                    ->badge()
+                    ->color('gray')
+                    ->icon('heroicon-m-users'),
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label(__('Created at'))
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label(__('Updated at'))
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->emptyStateHeading(__('No groups yet'))
+            ->emptyStateDescription(__('Groups let you route tickets, forms, and clients to the right team.'))
+            ->emptyStateIcon('heroicon-o-rectangle-stack')
             ->filters([
                 //
             ])

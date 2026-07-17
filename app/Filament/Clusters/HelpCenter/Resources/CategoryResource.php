@@ -15,10 +15,10 @@ use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 class CategoryResource extends Resource
@@ -40,10 +40,12 @@ class CategoryResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 TextInput::make('name')
+                    ->label(__('Name'))
                     ->required()
                     ->maxLength(255)
                     ->columnSpanFull(),
                 Textarea::make('description')
+                    ->label(__('Description'))
                     ->maxLength(255)
                     ->placeholder(__('(Optional) A brief description of the category'))
                     ->columnSpanFull(),
@@ -55,24 +57,34 @@ class CategoryResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                    ->formatStateUsing(fn ($record) => new HtmlString(sprintf(
-                        '%s<br><span class="text-xs text-gray-500">%s</span>',
-                        $record->name,
-                        Str::limit($record->description, 75),
-                    )))
+                    ->label(__('Name'))
+                    ->weight(FontWeight::Medium)
+                    ->description(fn (Category $record): ?string => filled($record->description)
+                        ? Str::limit($record->description, 75)
+                        : null)
                     ->searchable(),
                 TextColumn::make('articles_count')
                     ->counts('articles')
-                    ->label(__('Articles')),
+                    ->label(__('Articles'))
+                    ->badge()
+                    ->color('gray')
+                    ->icon('heroicon-m-document-text'),
                 TextColumn::make('created_at')
-                    ->dateTime()
+                    ->label(__('Created at'))
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
-                    ->dateTime()
+                    ->label(__('Updated at'))
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->emptyStateHeading(__('No categories yet'))
+            ->emptyStateDescription(__('Categories group your Help Center sections and articles so clients can browse them easily.'))
+            ->emptyStateIcon('heroicon-o-rectangle-stack')
             ->filters([
                 //
             ])

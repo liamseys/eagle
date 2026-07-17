@@ -27,10 +27,12 @@ use Filament\Schemas\Components\Livewire;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\HtmlString;
 
 class FormResource extends Resource
@@ -55,6 +57,7 @@ class FormResource extends Resource
                             ->schema([
                                 TextInput::make('name')
                                     ->label(__('Name'))
+                                    ->placeholder(__('e.g. Contact support'))
                                     ->required()
                                     ->maxLength(255),
                                 RichEditor::make('description')
@@ -88,7 +91,8 @@ class FormResource extends Resource
                             'ownerRecord' => $record,
                             'pageClass' => $livewire::class,
                         ])->hiddenOn(['create']),
-                        Section::make(__('Other settings'))
+                        Section::make(__('Behavior'))
+                            ->description(__('What happens when clients find and submit this form.'))
                             ->schema([
                                 Toggle::make('settings.create_client')
                                     ->label(__('Create client on form submission'))
@@ -260,9 +264,12 @@ class FormResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(fn (Builder $query) => $query->with('section'))
             ->columns([
                 TextColumn::make('name')
                     ->label(__('Name'))
+                    ->weight(FontWeight::Medium)
+                    ->description(fn (Form $record): ?string => $record->section?->name)
                     ->searchable(),
                 IconColumn::make('is_public')
                     ->label(__('Public'))
@@ -272,15 +279,20 @@ class FormResource extends Resource
                     ->boolean(),
                 TextColumn::make('created_at')
                     ->label(__('Created at'))
-                    ->dateTime()
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label(__('Updated at'))
-                    ->dateTime()
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->emptyStateHeading(__('No forms yet'))
+            ->emptyStateDescription(__('Create a form to let clients submit structured requests that become tickets.'))
+            ->emptyStateIcon('heroicon-o-clipboard-document-list')
             ->filters([
                 //
             ])

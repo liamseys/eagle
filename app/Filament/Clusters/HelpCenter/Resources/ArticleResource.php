@@ -22,6 +22,7 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Components\Group;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
+use Filament\Support\Enums\FontWeight;
 use Filament\Support\Enums\Width;
 use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -48,12 +49,14 @@ class ArticleResource extends Resource
                         Section::make()
                             ->schema([
                                 TextInput::make('title')
+                                    ->label(__('Title'))
+                                    ->placeholder(__('e.g. How to reset your password'))
                                     ->required()
                                     ->maxLength(255),
                                 Textarea::make('description')
                                     ->label(__('Description'))
                                     ->autosize()
-                                    ->helperText(__('(Optional) A brief description of the article. This will be displayed on the article\'s page. '))
+                                    ->helperText(__('(Optional) A brief description of the article. This will be displayed on the article\'s page.'))
                                     ->columnSpanFull(),
                                 RichEditor::make('body')
                                     ->label(__('Content'))
@@ -93,10 +96,10 @@ class ArticleResource extends Resource
 
                                         return new HtmlString(sprintf(
                                             '<div class="flex flex-wrap items-center gap-6 text-sm">'
-                                            .'<div><div class="text-xs uppercase tracking-wide text-gray-500">%s</div><div class="text-base font-semibold">%d</div></div>'
-                                            .'<div class="flex items-center gap-2 text-green-600"><span class="text-base">😀</span><span><strong>%d</strong> (%d%%)</span></div>'
-                                            .'<div class="flex items-center gap-2 text-yellow-600"><span class="text-base">😐</span><span><strong>%d</strong> (%d%%)</span></div>'
-                                            .'<div class="flex items-center gap-2 text-red-600"><span class="text-base">😞</span><span><strong>%d</strong> (%d%%)</span></div>'
+                                            .'<div><div class="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400">%s</div><div class="text-base font-semibold">%d</div></div>'
+                                            .'<div class="flex items-center gap-2 text-green-600 dark:text-green-400"><span class="text-base">😀</span><span><strong>%d</strong> (%d%%)</span></div>'
+                                            .'<div class="flex items-center gap-2 text-yellow-600 dark:text-yellow-400"><span class="text-base">😐</span><span><strong>%d</strong> (%d%%)</span></div>'
+                                            .'<div class="flex items-center gap-2 text-red-600 dark:text-red-400"><span class="text-base">😞</span><span><strong>%d</strong> (%d%%)</span></div>'
                                             .'</div>',
                                             e(__('Total votes')),
                                             $counts['total'],
@@ -183,11 +186,8 @@ class ArticleResource extends Resource
             ->columns([
                 TextColumn::make('title')
                     ->label(__('Title'))
-                    ->formatStateUsing(fn ($record) => new HtmlString(sprintf(
-                        '%s<br><span class="text-xs text-gray-500">%s</span>',
-                        $record->title,
-                        $record->category?->name,
-                    )))
+                    ->weight(FontWeight::Medium)
+                    ->description(fn (Article $record): ?string => $record->category?->name)
                     ->searchable(),
                 TextColumn::make('status')
                     ->label(__('Status'))
@@ -198,6 +198,7 @@ class ArticleResource extends Resource
                     ->boolean(),
                 TextColumn::make('author.name')
                     ->label(__('Author'))
+                    ->placeholder('—')
                     ->searchable(),
                 TextColumn::make('feedback_sentiment')
                     ->label(__('Feedback'))
@@ -237,15 +238,20 @@ class ArticleResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('Created at'))
-                    ->dateTime()
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label(__('Updated at'))
-                    ->dateTime()
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->emptyStateHeading(__('No articles yet'))
+            ->emptyStateDescription(__('Write your first Help Center article to start answering common questions.'))
+            ->emptyStateIcon('heroicon-o-document-text')
             ->filters([
                 SelectFilter::make('category')
                     ->relationship('category', 'name')

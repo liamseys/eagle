@@ -54,9 +54,11 @@ class ClientResource extends Resource
                                     ->schema([
                                         TextInput::make('name')
                                             ->label(__('Name'))
+                                            ->placeholder(__('e.g. Jane Cooper'))
                                             ->required()
                                             ->maxLength(255),
                                         Select::make('groups')
+                                            ->label(__('Groups'))
                                             ->relationship(name: 'groups', titleAttribute: 'name')
                                             ->multiple()
                                             ->preload()
@@ -79,11 +81,13 @@ class ClientResource extends Resource
                                     ->schema([
                                         TextInput::make('email')
                                             ->label(__('Email'))
+                                            ->placeholder(__('e.g. jane@example.com'))
                                             ->email()
                                             ->required()
                                             ->maxLength(255),
                                         TextInput::make('phone')
                                             ->label(__('Phone'))
+                                            ->placeholder(__('(Optional) e.g. +32 470 12 34 56'))
                                             ->tel()
                                             ->maxLength(255),
                                     ]),
@@ -104,7 +108,8 @@ class ClientResource extends Resource
                                             ->required()
                                             ->default('UTC'),
                                     ]),
-                                SpatieTagsInput::make('tags'),
+                                SpatieTagsInput::make('tags')
+                                    ->label(__('Tags')),
                             ]),
                     ])->columnSpan(['lg' => 2]),
                 Group::make()
@@ -158,18 +163,24 @@ class ClientResource extends Resource
                     ->color(fn ($state): string => $state ? 'success' : 'gray'),
                 TextColumn::make('phone')
                     ->label(__('Phone'))
+                    ->placeholder('—')
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('Created at'))
-                    ->dateTime()
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label(__('Updated at'))
-                    ->dateTime()
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->emptyStateHeading(__('No clients yet'))
+            ->emptyStateDescription(__('Clients appear here as soon as they are created manually or through a form submission.'))
+            ->emptyStateIcon('heroicon-o-users')
             ->filters([
                 SelectFilter::make('tags')
                     ->multiple()

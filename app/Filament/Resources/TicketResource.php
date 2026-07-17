@@ -209,15 +209,20 @@ class TicketResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('created_at')
                     ->label(__('Created at'))
-                    ->dateTime()
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('updated_at')
                     ->label(__('Updated at'))
-                    ->dateTime()
+                    ->since()
+                    ->dateTimeTooltip()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->emptyStateHeading(__('No tickets yet'))
+            ->emptyStateDescription(__('Tickets created by agents or submitted by clients will appear here.'))
+            ->emptyStateIcon('heroicon-o-ticket')
             ->filters([
                 Filter::make('is_assigned_to_me')
                     ->label(__('Assigned to me'))
