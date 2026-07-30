@@ -2,6 +2,7 @@
 
 namespace App\Notifications;
 
+use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -13,12 +14,15 @@ class TicketClosed extends Notification
 
     public Ticket $ticket;
 
+    public ?TicketStatus $previousStatus;
+
     /**
      * Create a new notification instance.
      */
-    public function __construct(Ticket $ticket)
+    public function __construct(Ticket $ticket, ?TicketStatus $previousStatus = null)
     {
         $this->ticket = $ticket;
+        $this->previousStatus = $previousStatus;
     }
 
     /**
@@ -36,10 +40,14 @@ class TicketClosed extends Notification
      */
     public function toMail(object $notifiable): MailMessage
     {
+        $closedLine = $this->previousStatus === TicketStatus::SOLVED
+            ? __('Your ticket was marked as solved and has now been automatically closed.')
+            : __('We noticed that there was no response regarding your ticket, so it has been automatically closed.');
+
         return (new MailMessage)
             ->replyTo($this->ticket->getSupportEmailWithTicketId())
             ->subject(__('Ticket closed'))
-            ->line(__('We noticed that there was no response regarding your ticket, so it has been automatically closed.'))
+            ->line($closedLine)
             ->line(__('If you still need help, feel free to open a new ticket about this issue.'));
     }
 

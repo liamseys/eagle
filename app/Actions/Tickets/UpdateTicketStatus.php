@@ -26,7 +26,9 @@ final class UpdateTicketStatus
         // since this action runs from system contexts (jobs, commands, observers) too.
         $ticket->loadMissing('requester');
 
-        DB::transaction(function () use ($ticket, $ticketStatus, $attributes, $requireEscalation) {
+        $previousStatus = $ticket->status;
+
+        DB::transaction(function () use ($ticket, $ticketStatus, $previousStatus, $attributes, $requireEscalation) {
             $ticket->update([
                 'status' => $ticketStatus,
             ]);
@@ -50,7 +52,7 @@ final class UpdateTicketStatus
                         (new TicketSolved($ticket))->delay($notificationDelay)
                     ),
                     TicketStatus::CLOSED => $ticket->requester->notify(
-                        (new TicketClosed($ticket))->delay($notificationDelay)
+                        (new TicketClosed($ticket, $previousStatus))->delay($notificationDelay)
                     ),
                     default => null,
                 };
