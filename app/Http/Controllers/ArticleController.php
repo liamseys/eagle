@@ -13,7 +13,7 @@ class ArticleController extends Controller
      */
     public function show($locale, Article $article)
     {
-        if (! auth()->check() && $article->status !== ArticleStatus::PUBLISHED) {
+        if (! auth('web')->check() && $article->status !== ArticleStatus::PUBLISHED) {
             abort(404);
         }
 
@@ -30,7 +30,7 @@ class ArticleController extends Controller
      */
     public function publish($locale, Article $article)
     {
-        if (auth()->check() && ! auth()->user()->hasPermissionTo('hc-articles')) {
+        if (! auth('web')->check() || ! auth('web')->user()->hasPermissionTo('hc-articles')) {
             abort(403);
         }
 
@@ -46,7 +46,7 @@ class ArticleController extends Controller
      */
     public function unpublish($locale, Article $article)
     {
-        if (auth()->check() && ! auth()->user()->hasPermissionTo('hc-articles')) {
+        if (! auth('web')->check() || ! auth('web')->user()->hasPermissionTo('hc-articles')) {
             abort(403);
         }
 

@@ -11,7 +11,7 @@
         {{ __('Share Article') }}
     </a>
 
-    @if(auth()->check() && auth()->user()->hasPermissionTo('hc-articles'))
+    @if(auth('web')->check() && auth('web')->user()->hasPermissionTo('hc-articles'))
         <!-- Edit Article -->
         <a
             href="{{ route('filament.app.help-center.resources.articles.edit', $article) }}"
