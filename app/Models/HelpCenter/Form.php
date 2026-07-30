@@ -11,6 +11,7 @@ use App\Traits\HasActiveScope;
 use App\Traits\HasPublicScope;
 use Database\Factories\HelpCenter\FormFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -126,6 +127,30 @@ class Form extends Model
     public function fields()
     {
         return $this->hasMany(FormField::class);
+    }
+
+    /**
+     * Scope a query to forms visible to the current viewer.
+     * Group-restricted forms are only visible to agents and to clients
+     * that belong to one of the form's groups.
+     */
+    public function scopeVisibleToViewer(Builder $query): void
+    {
+        if (auth('web')->check()) {
+            return;
+        }
+
+        $client = auth('client')->user();
+
+        $query->where(function (Builder $query) use ($client) {
+            $query->whereDoesntHave('groups');
+
+            if ($client) {
+                $query->orWhereHas('groups', function (Builder $query) use ($client) {
+                    $query->whereIn('groups.id', $client->groups()->pluck('groups.id'));
+                });
+            }
+        });
     }
 
     /**

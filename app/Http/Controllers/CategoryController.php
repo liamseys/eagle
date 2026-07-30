@@ -13,13 +13,15 @@ class CategoryController extends Controller
     public function show($locale, Category $category)
     {
         $sections = $category->sections()
-            ->with(['articles', 'forms'])
+            ->with(['articles', 'forms' => function ($query) {
+                $query->visibleToViewer();
+            }])
             ->where(function ($query) {
                 $query->whereHas('articles', function ($q) {
                     $q->where('status', ArticleStatus::PUBLISHED)
                         ->where('is_public', true);
                 })->orWhereHas('forms', function ($q) {
-                    $q->where('is_public', true);
+                    $q->where('is_public', true)->visibleToViewer();
                 });
             })
             ->get();
