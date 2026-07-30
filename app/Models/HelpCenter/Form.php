@@ -130,13 +130,15 @@ class Form extends Model
     }
 
     /**
-     * Scope a query to forms visible to the current viewer, mirroring the
-     * access rules of FormController@show. Agents see every form. Other
-     * viewers see unrestricted forms only while active, and group-restricted
-     * forms only when the authenticated client belongs to one of the groups.
+     * Scope a query to forms visible to the current viewer. Inactive forms
+     * are hidden from everyone, including agents. Active group-restricted
+     * forms are only visible to agents and to clients that belong to one
+     * of the form's groups. Must stay in sync with isAccessibleToViewer().
      */
     public function scopeVisibleToViewer(Builder $query): void
     {
+        $query->active();
+
         if (auth('web')->check()) {
             return;
         }
@@ -144,7 +146,7 @@ class Form extends Model
         $client = auth('client')->user();
 
         $query->where(function (Builder $query) use ($client) {
-            $query->whereDoesntHave('groups')->active();
+            $query->whereDoesntHave('groups');
 
             if ($client) {
                 $query->orWhereHas('groups', function (Builder $query) use ($client) {
@@ -152,6 +154,27 @@ class Form extends Model
                 });
             }
         });
+    }
+
+    /**
+     * Determine if the current viewer may access this form, applying the
+     * same rules as the visibleToViewer() scope.
+     */
+    public function isAccessibleToViewer(): bool
+    {
+        if (! $this->is_active) {
+            return false;
+        }
+
+        if (! $this->groups()->exists() || auth('web')->check()) {
+            return true;
+        }
+
+        $client = auth('client')->user();
+
+        return $client && $client->groups()
+            ->whereIn('groups.id', $this->groups()->pluck('groups.id'))
+            ->exists();
     }
 
     /**

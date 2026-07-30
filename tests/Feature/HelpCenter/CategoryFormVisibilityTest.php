@@ -77,6 +77,58 @@ it('shows group-restricted forms to agents', function () {
         ->assertSee('Restricted Partner Form');
 });
 
+it('hides deactivated forms from everyone on the category page', function (?string $viewer) {
+    $category = Category::factory()->create();
+    $section = Section::factory()->for($category)->create(['name' => 'Account Section']);
+
+    Form::factory()->for($section)->create([
+        'name' => 'Active Contact Form',
+        'is_public' => true,
+        'is_active' => true,
+    ]);
+
+    $deactivatedForm = Form::factory()->for($section)->create([
+        'name' => 'Deactivated Contact Form',
+        'is_public' => true,
+        'is_active' => false,
+    ]);
+
+    $group = Group::factory()->create();
+    $deactivatedForm->groups()->attach($group);
+
+    if ($viewer === 'agent') {
+        $this->actingAs(User::factory()->create());
+    }
+
+    if ($viewer === 'client') {
+        $client = Client::factory()->create();
+        $client->groups()->attach($group);
+        $this->actingAs($client, 'client');
+    }
+
+    $this->get(route('categories.show', ['locale' => 'en', 'category' => $category]))
+        ->assertOk()
+        ->assertSee('Active Contact Form')
+        ->assertDontSee('Deactivated Contact Form');
+})->with(['guest' => [null], 'agent' => ['agent'], 'client in allowed group' => ['client']]);
+
+it('hides sections whose only form is deactivated, even from agents', function () {
+    $category = Category::factory()->create();
+    $section = Section::factory()->for($category)->create(['name' => 'Dormant Section']);
+
+    Form::factory()->for($section)->create([
+        'name' => 'Deactivated Contact Form',
+        'is_public' => true,
+        'is_active' => false,
+    ]);
+
+    $this->actingAs(User::factory()->create())
+        ->get(route('categories.show', ['locale' => 'en', 'category' => $category]))
+        ->assertOk()
+        ->assertDontSee('Dormant Section')
+        ->assertDontSee('Deactivated Contact Form');
+});
+
 it('hides sections whose only content is a group-restricted form from guests', function () {
     $category = Category::factory()->create();
     $section = Section::factory()->for($category)->create(['name' => 'Partners Only Section']);

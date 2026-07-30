@@ -26,12 +26,6 @@
                     </div>
                 </aside>
                 <div class="flex flex-col gap-5 sm:col-span-2">
-                    @if(!$form->is_active)
-                        <x-alert icon="information-circle">
-                            {{ __('This form is inactive. You can see it because you\'re logged in as an agent.') }}
-                        </x-alert>
-                    @endif
-
                     @if(session('form_submitted'))
                         <x-card>
                             <div class="flex flex-col items-center gap-6 px-2 py-10 text-center sm:px-6 sm:py-14">

@@ -19,6 +19,8 @@ final class SubmitForm
     {
         $form = Form::findOrFail($request->get('form_id'));
 
+        abort_unless($form->isAccessibleToViewer(), 404);
+
         $validationRules = $this->getValidationRules($form);
         $request->validate($validationRules);
 

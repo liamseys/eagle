@@ -9,7 +9,7 @@
         {{ __('Share Form') }}
     </a>
 
-    @if(auth()->check() && auth()->user()->hasPermissionTo('hc-forms'))
+    @if(auth('web')->check() && auth('web')->user()->hasPermissionTo('hc-forms'))
         <!-- Edit Form -->
         <a
             href="{{ route('filament.app.help-center.resources.forms.edit', $form) }}"
@@ -20,21 +20,12 @@
             {{ __('Edit Form') }}
         </a>
 
-        @if ($form->is_active)
-            <!-- Deactivate Form -->
-            <a href="{{ route('forms.deactivate', $form) }}"
-               class="flex items-center gap-1 text-sm text-gray-700 hover:underline">
-                <x-heroicon-s-eye-slash class="w-4 h-4"/>
-                {{ __('Deactivate Form') }}
-            </a>
-        @else
-            <!-- Activate Form -->
-            <a href="{{ route('forms.activate', $form) }}"
-               class="flex items-center gap-1 text-sm text-gray-700 hover:underline">
-                <x-heroicon-s-eye class="w-4 h-4"/>
-                {{ __('Activate Form') }}
-            </a>
-        @endif
+        <!-- Deactivate Form -->
+        <a href="{{ route('forms.deactivate', $form) }}"
+           class="flex items-center gap-1 text-sm text-gray-700 hover:underline">
+            <x-heroicon-s-eye-slash class="w-4 h-4"/>
+            {{ __('Deactivate Form') }}
+        </a>
     @endif
 
     <!-- Share Modal -->
