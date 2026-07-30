@@ -130,9 +130,10 @@ class Form extends Model
     }
 
     /**
-     * Scope a query to forms visible to the current viewer.
-     * Group-restricted forms are only visible to agents and to clients
-     * that belong to one of the form's groups.
+     * Scope a query to forms visible to the current viewer, mirroring the
+     * access rules of FormController@show. Agents see every form. Other
+     * viewers see unrestricted forms only while active, and group-restricted
+     * forms only when the authenticated client belongs to one of the groups.
      */
     public function scopeVisibleToViewer(Builder $query): void
     {
@@ -143,7 +144,7 @@ class Form extends Model
         $client = auth('client')->user();
 
         $query->where(function (Builder $query) use ($client) {
-            $query->whereDoesntHave('groups');
+            $query->whereDoesntHave('groups')->active();
 
             if ($client) {
                 $query->orWhereHas('groups', function (Builder $query) use ($client) {
