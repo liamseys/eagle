@@ -37,6 +37,12 @@
                     {{ $description }}
                 </p>
             @endif
+
+            @if($slot->isNotEmpty())
+                <div class="mt-3 w-full max-w-xl">
+                    {{ $slot }}
+                </div>
+            @endif
         </div>
     </x-container>
 </section>

@@ -1,6 +1,8 @@
 <x-app-layout>
     <x-hero :title="__('Help Center')"
-            :description="__('Here you\'ll find answers to many common questions about our services, policies, and features. If you need further assistance, our team is always ready to help you find the information or support you need.')"/>
+            :description="__('Here you\'ll find answers to many common questions about our services, policies, and features. If you need further assistance, our team is always ready to help you find the information or support you need.')">
+        <x-search-bar/>
+    </x-hero>
 
     {{ Breadcrumbs::render('index') }}
 

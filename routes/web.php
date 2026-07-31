@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ChatbotWidgetController;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\IndexController;
+use App\Http\Controllers\SearchController;
 use App\Http\Middleware\SetDefaultLocaleForUrls;
 use Illuminate\Support\Facades\Route;
 use Spatie\WelcomeNotification\WelcomesNewUsers;
@@ -20,6 +21,7 @@ Route::group([
     'middleware' => SetDefaultLocaleForUrls::class,
 ], function () {
     Route::get('/', IndexController::class)->name('index');
+    Route::get('search', SearchController::class)->name('search');
     Route::resource('categories', CategoryController::class)->only('show');
     Route::resource('articles', ArticleController::class)->only('show');
     Route::get('articles/{article}/publish', [ArticleController::class, 'publish'])

@@ -9,6 +9,11 @@ Breadcrumbs::for('index', function (BreadcrumbTrail $trail) {
     $trail->push(__('Help Center'), route('index'));
 });
 
+Breadcrumbs::for('search', function (BreadcrumbTrail $trail) {
+    $trail->parent('index');
+    $trail->push(__('Search'), route('search'));
+});
+
 Breadcrumbs::for('category', function (BreadcrumbTrail $trail, Category $category) {
     $trail->parent('index');
     $trail->push($category->name, route('categories.show', $category));
