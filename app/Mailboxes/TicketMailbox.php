@@ -3,6 +3,7 @@
 namespace App\Mailboxes;
 
 use App\Enums\Tickets\TicketPriority;
+use App\Enums\Tickets\TicketStatus;
 use App\Enums\Tickets\TicketType;
 use App\Models\Client;
 use App\Models\Ticket;
@@ -38,6 +39,12 @@ class TicketMailbox
     private function addCommentToExistingTicket($ticketId, InboundEmail $email): void
     {
         $ticket = Ticket::where('ticket_id', $ticketId)->firstOrFail();
+
+        if ($ticket->status === TicketStatus::CLOSED) {
+            $this->createNewTicketWithComment($email);
+
+            return;
+        }
 
         $ticket->comments()->create([
             'authorable_type' => get_class($ticket->requester),

@@ -47,6 +47,10 @@ class ListTickets extends ListRecords
                                 if ($ticket->is_escalated) {
                                     return $fail(__('Ticket has already been escalated.'));
                                 }
+
+                                if ($ticket->status === TicketStatus::CLOSED) {
+                                    return $fail(__('Closed tickets cannot be escalated.'));
+                                }
                             },
                         ])
                         ->required(),

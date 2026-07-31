@@ -27,6 +27,7 @@ final class SubmitForm
         return DB::transaction(function () use ($request, $form) {
             $ticket = $this->createTicketBasedOnClientSettings($request, $form);
             $this->attachTicketFields($ticket, $form, $request);
+            $this->createInitialComment($ticket, $form, $request);
 
             if (array_key_exists('require_escalation', $form->settings) && $form->settings['require_escalation'] === true) {
                 $updateTicketStatus = app(UpdateTicketStatus::class);
@@ -110,5 +111,33 @@ final class SubmitForm
                 ];
             })->toArray()
         );
+    }
+
+    /**
+     * Record the submitted answers as the ticket's creation comment, authored
+     * by the requester when the form created one. Every other ticket source
+     * (agent-created, inbound email, the AI tool) opens the conversation with
+     * a creation comment, and the comment-driven status transitions rely on
+     * that: without one, the first agent reply would be treated as the
+     * creation comment and the ticket would never leave the New queue.
+     */
+    private function createInitialComment(Ticket $ticket, Form $form, Request $request): void
+    {
+        $ticket->loadMissing('requester');
+
+        $body = $form->fields
+            ->map(function (FormField $field) use ($request) {
+                $value = $request->input($field->name);
+                $value = is_array($value) ? implode(', ', $value) : (string) $value;
+
+                return '<p><strong>'.e($field->label ?: $field->name).':</strong> '.e($value).'</p>';
+            })
+            ->implode('');
+
+        $ticket->comments()->create([
+            'authorable_type' => $ticket->requester?->getMorphClass(),
+            'authorable_id' => $ticket->requester?->getKey(),
+            'body' => $body !== '' ? $body : e($form->name),
+        ]);
     }
 }
