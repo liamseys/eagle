@@ -72,7 +72,7 @@ class MentionedInTicketComment extends Notification
      */
     public function commentUrl(): string
     {
-        return TicketResource::getUrl('edit', ['record' => $this->ticketComment->ticket])
+        return TicketResource::getUrl('edit', ['record' => $this->ticketComment->ticket], panel: 'app')
             .'#comment-'.$this->ticketComment->id;
     }
 

@@ -71,11 +71,14 @@ class TicketCommentByRequester extends Notification
     }
 
     /**
-     * The deep link to the reply on the ticket's edit page.
+     * The deep link to the reply on the ticket's edit page. The panel is
+     * pinned because the notification is often generated outside the agent
+     * panel (client portal replies, inbound email), where the current panel
+     * would resolve to a route that does not exist.
      */
     public function commentUrl(): string
     {
-        return TicketResource::getUrl('edit', ['record' => $this->ticketComment->ticket])
+        return TicketResource::getUrl('edit', ['record' => $this->ticketComment->ticket], panel: 'app')
             .'#comment-'.$this->ticketComment->id;
     }
 

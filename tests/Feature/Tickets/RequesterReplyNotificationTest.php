@@ -6,6 +6,7 @@ use App\Models\Group;
 use App\Models\Ticket;
 use App\Models\User;
 use App\Notifications\TicketCommentByRequester;
+use Filament\Facades\Filament;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Notification;
 
@@ -98,6 +99,26 @@ it('does not notify agents about their own comments', function () {
     ]);
 
     Notification::assertNotSentTo($assignee, TicketCommentByRequester::class);
+});
+
+it('links to the agent panel even when generated from the client portal', function () {
+    Filament::setCurrentPanel(Filament::getPanel('client'));
+
+    $ticket = Ticket::factory()->withStatus(TicketStatus::OPEN)->create();
+
+    $comment = $ticket->comments()->create([
+        'authorable_type' => Client::class,
+        'authorable_id' => $ticket->requester_id,
+        'body' => 'Requester reply',
+        'is_public' => true,
+    ]);
+
+    $url = (new TicketCommentByRequester($comment))->commentUrl();
+
+    expect($url)->toBe(
+        route('filament.app.resources.tickets.edit', ['record' => $ticket])
+            .'#comment-'.$comment->id,
+    );
 });
 
 it('does not notify when a comment lands on a closed ticket', function () {
