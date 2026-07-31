@@ -113,12 +113,17 @@ it('links to the agent panel even when generated from the client portal', functi
         'is_public' => true,
     ]);
 
-    $url = (new TicketCommentByRequester($comment))->commentUrl();
+    $notification = new TicketCommentByRequester($comment);
 
-    expect($url)->toBe(
-        route('filament.app.resources.tickets.edit', ['record' => $ticket])
-            .'#comment-'.$comment->id,
-    );
+    $expectedUrl = route('filament.app.resources.tickets.edit', ['record' => $ticket])
+        .'#comment-'.$comment->id;
+
+    expect($notification->commentUrl())->toBe($expectedUrl);
+
+    $ticket->loadMissing('assignee');
+
+    expect($notification->toDatabase($ticket->assignee))->toBeArray()
+        ->and($notification->toMail($ticket->assignee)->actionUrl)->toBe($expectedUrl);
 });
 
 it('does not notify when a comment lands on a closed ticket', function () {

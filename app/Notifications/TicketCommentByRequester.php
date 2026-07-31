@@ -4,7 +4,7 @@ namespace App\Notifications;
 
 use App\Filament\Resources\TicketResource;
 use App\Models\TicketComment;
-use Filament\Notifications\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
