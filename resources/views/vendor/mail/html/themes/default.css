@@ -77,6 +77,10 @@ p {
     text-align: left;
 }
 
+.content-cell p:last-child {
+    margin-bottom: 0;
+}
+
 p.sub {
     color: #71717a;
     font-size: 13px;
