@@ -7,7 +7,9 @@ use App\Enums\Tickets\TicketStatus;
 use App\Models\Ticket;
 use App\Models\TicketComment;
 use App\Models\User;
+use App\Notifications\TicketCommentByRequester;
 use App\Services\Sla\SlaTracker;
+use Illuminate\Support\Facades\Notification;
 
 class TicketCommentObserver
 {
@@ -63,6 +65,31 @@ class TicketCommentObserver
             TicketStatus::SOLVED,
         ], true)) {
             app(UpdateTicketStatus::class)->handle($ticket, TicketStatus::OPEN);
+        }
+
+        $this->notifyAgentsOfRequesterReply($ticket, $comment);
+    }
+
+    /**
+     * Surface a requester reply to the agents responsible for the ticket:
+     * the assignee, or every member of the ticket's group while unassigned.
+     * The creation comment is not a reply — ticket creation is already
+     * covered by the TicketCreated notification.
+     */
+    private function notifyAgentsOfRequesterReply(Ticket $ticket, TicketComment $comment): void
+    {
+        if ($ticket->comments()->count() <= 1) {
+            return;
+        }
+
+        $ticket->loadMissing(['assignee', 'group.users']);
+
+        $recipients = $ticket->assignee !== null
+            ? collect([$ticket->assignee])
+            : ($ticket->group?->users ?? collect());
+
+        if ($recipients->isNotEmpty()) {
+            Notification::send($recipients, new TicketCommentByRequester($comment));
         }
     }
 }
