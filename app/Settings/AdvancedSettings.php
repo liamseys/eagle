@@ -10,6 +10,8 @@ class AdvancedSettings extends Settings
 
     public int $auto_close_solved_after_hours;
 
+    public bool $hc_search_engine_indexing;
+
     public static function group(): string
     {
         return 'advanced';

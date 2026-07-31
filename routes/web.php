@@ -8,6 +8,7 @@ use App\Http\Controllers\FormController;
 use App\Http\Controllers\IndexController;
 use App\Http\Controllers\SearchController;
 use App\Http\Middleware\SetDefaultLocaleForUrls;
+use App\Http\Middleware\SetHelpCenterIndexingHeaders;
 use Illuminate\Support\Facades\Route;
 use Spatie\WelcomeNotification\WelcomesNewUsers;
 
@@ -18,7 +19,7 @@ Route::get('/', function () {
 Route::group([
     'prefix' => 'hc/{locale}',
     'where' => ['locale' => '[a-zA-Z]{2}'],
-    'middleware' => SetDefaultLocaleForUrls::class,
+    'middleware' => [SetDefaultLocaleForUrls::class, SetHelpCenterIndexingHeaders::class],
 ], function () {
     Route::get('/', IndexController::class)->name('index');
     Route::get('search', SearchController::class)->name('search');

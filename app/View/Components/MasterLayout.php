@@ -2,6 +2,7 @@
 
 namespace App\View\Components;
 
+use App\Settings\AdvancedSettings;
 use App\Settings\GeneralSettings;
 use Illuminate\View\Component;
 use Illuminate\View\View;
@@ -13,10 +14,9 @@ class MasterLayout extends Component
      */
     public function render(): View
     {
-        $generalSettings = app(GeneralSettings::class);
-
         return view('layouts.master', [
-            'generalSettings' => $generalSettings,
+            'generalSettings' => app(GeneralSettings::class),
+            'advancedSettings' => app(AdvancedSettings::class),
         ]);
     }
 }

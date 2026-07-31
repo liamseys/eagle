@@ -6,6 +6,7 @@ use App\Filament\Clusters\Settings;
 use App\Settings\AdvancedSettings;
 use Closure;
 use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Pages\SettingsPage;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
@@ -75,6 +76,10 @@ class ManageAdvanced extends SettingsPage
                                     ->minValue(1)
                                     ->maxValue(8760)
                                     ->helperText(__('Number of hours a ticket stays Solved before it is automatically closed.'))
+                                    ->columnSpan(2),
+                                Toggle::make('hc_search_engine_indexing')
+                                    ->label(__('Help Center search engine indexing'))
+                                    ->helperText(__('Allow search engines to index the public Help Center. When disabled, Help Center pages are served with a noindex directive asking search engines to leave them out of their results.'))
                                     ->columnSpan(2),
                             ])->columns(3),
                     ]),
